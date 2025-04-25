@@ -1,0 +1,185 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+@plugin "daisyui";
+@tailwind utilities;
+
+
+
+@theme {
+  --font-display: "Satoshi", "sans-serif";
+
+  --color-Gold:  #FFB400 ; 
+  --color-tealGreenish: #3B5552; /* gold #D7A30F */
+  --color-darkTealGreenish:  #1E2727;
+  --color-offWhite: #B3C7C6;
+  --color-darkOffWhite: #B3C7C6;
+  --color-Red: #FF6B6B;
+  --color-hoverGold: #8B8000;
+}
+
+
+/* @layer base {
+    body {
+        @apply [scrollbar-color:_#cbd5e1_transparent] dark:[scrollbar-color:_#334155_transparent] bg-[#e0fde3];
+    }
+} */
+
+@layer components {
+    .sidebar-group {
+        @apply flex w-full flex-col gap-y-2;
+    }
+
+    .sidebar-group-title {
+        @apply overflow-hidden text-ellipsis text-sm font-medium text-slate-600 dark:text-slate-400;
+    }
+
+    .sidebar-item {
+        @apply flex h-[40px] w-full flex-shrink-0 items-center gap-x-3 rounded-lg p-3 text-base font-medium text-white transition-colors hover:bg-hoverGold dark:text-slate-50 dark:hover:bg-black;
+        &.active {
+            @apply bg-darkTealGreenish text-offWhite dark:bg-tealGreenish dark:text-black;
+        }
+    }
+
+    .title {
+        @apply text-3xl font-semibold text-slate-900 transition-colors dark:text-slate-50;
+    }
+
+    .btn-ghost {
+        @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-darkTealGreenish dark:text-Gold transition-colors hover:bg-offWhite hover:text-slate-500 dark:hover:bg-offWhite dark:hover:text-black;
+    }
+
+    .link {
+        @apply text-base font-medium text-slate-900 transition-colors hover:underline dark:text-slate-50;
+    }
+
+    .input {
+        @apply hidden h-10 flex-shrink-0 items-center gap-x-2 rounded-lg border border-darkTealGreenish px-2 text-base  transition-colors has-[input:focus]:border-blue-500 md:flex md:w-auto lg:w-80 dark:border-slate-700 dark:text-slate-50 dark:focus:border-Gold;
+    }
+
+    .input-inside{
+        @apply 
+    }
+
+    .card {
+        @apply flex flex-col gap-y-4 rounded-lg border border-slate-300 bg-white p-4 transition-colors dark:border-slate-700 dark:bg-slate-900;
+    }
+
+    .card-header {
+        @apply flex items-center gap-x-2;
+    }
+
+    .card-title {
+        @apply font-medium text-slate-900 transition-colors dark:text-slate-50;
+    }
+
+    .card-body {
+        @apply flex flex-col gap-y-2 rounded-lg p-4;
+    }
+
+    .table {
+        @apply h-full w-full text-slate-900 dark:text-slate-50;
+    }
+
+    .table-header {
+        @apply sticky top-0 bg-slate-200 transition-[background] dark:bg-slate-800;
+    }
+
+    .table-row {
+        @apply border-b border-slate-300 transition-colors last:border-none dark:border-slate-700;
+    }
+
+    .table-head {
+        @apply h-12 px-4 text-start;
+    }
+
+    .table-cell {
+        @apply w-fit whitespace-nowrap p-4 font-medium;
+    }
+}
+
+.recharts-default-tooltip {
+    @apply !rounded-lg !border !border-slate-300 !bg-white transition-colors dark:!border-slate-700 dark:!bg-slate-900;
+}
+
+.recharts-tooltip-label {
+    @apply text-base font-medium text-slate-900 dark:text-slate-50;
+}
+
+.recharts-tooltip-item {
+    @apply text-base font-medium !text-Gold dark:!text-Gold;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Madimi+One&family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'); */
+
+
+/* body{
+  background-color: #e0fde3;
+} */
+
+
+.sp-bf{
+  position: relative;
+  width: fit-content;
+}
+
+.sp-bf::before{
+  content: "";
+  height: 3px;
+  width: 100%;
+  background-color: #16a34a ;
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  border-radius: 10px;
+}
+
+.bg-two{
+  background-image: url('./assets/images/image2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.logo{
+  border-radius: 0px 80px 0px 0px;
+}
+.blur-1{
+  backdrop-filter: blur(25px);
+}
+
+.bg {
+  background-image: url('https://i.pinimg.com/736x/45/35/18/45351888ccceca31e9c5ae5d138c2832.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.bg-blur{
+  position: absolute;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0);
+}
