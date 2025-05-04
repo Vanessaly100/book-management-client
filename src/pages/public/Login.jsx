@@ -3,111 +3,124 @@ import { useState } from 'react';
 import {  Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate(); 
+  const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate(); // ✅ Use it inside the component
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-
-    try {
-      const userData = await login(email, password);
-      
-      // ✅ Now navigate after successful login
-      if (userData.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/user/home");
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string().required("Required").min(6, "Password too short"),
+    }),
+    onSubmit: async (values, { resetForm }) => {
+      setError("");
+      setLoading(true);
+    
+      try {
+        const response = await login(values.email, values.password);
+    
+        if (response.message !== "Login successful") {
+          setError(response.message || "Login failed");
+        } else {
+          resetForm();
+          const role = response.role?.toLowerCase();
+          if (role === "admin") {
+            navigate("/admin");
+          } else if (role === "user") {
+            navigate("/user/home");
+          } else {
+            setError("Unknown role");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        setError("Something went wrong during login");
       }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("Invalid credentials");
-    } finally {
+    
       setLoading(false);
-    }
-  };
+    },
+    
+  });
+
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-            {error}
-          </div>
-        )}
+    <main className="min-h-screen w-screen bg">
+      <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full lg:px-28 md:px-0 px-20'>
+        <div className="md:w-1/3 sm:w-11/12 w-full bg-[#00000086] shadow-lg rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-center mb-4 text-green-700">Login</h2>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+            {/* Email */}
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
-              </label>
+              <label className="block text-gray-400 text-xl">Email</label>
               <input
-                id="email"
-                name="email"
                 type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
               />
+              {formik.touched.email && formik.errors.email ? (
+                <p className="text-red-500 text-sm">{formik.errors.email}</p>
+              ) : null}
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-          </div>
 
-          <div>
+            {/* Password */}
+            <div>
+              <label className="block text-gray-400 text-xl">Password</label>
+              <div className='h-fit bg-white rounded-md border relative'>
+                <input
+                  {...(isOpen ? { type: 'text' } : { type: 'password' })}
+                  name="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                />
+                <div
+                  className='absolute top-3 right-2 z-10'
+                  onClick={() => setIsOpen((prev) => !prev)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {isOpen ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="gray" />}
+                </div>
+              </div>
+              {formik.touched.password && formik.errors.password ? (
+                <p className="text-red-500 text-sm">{formik.errors.password}</p>
+              ) : null}
+            </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
+              className="bg-green-500 text-white py-2 mt-2 rounded-md hover:bg-green-600 transition-all"
               disabled={loading}
-              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                loading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? "Logging in..." : "Login"}
             </button>
+          </form>
+          <div>
+            <p className="text-gray-400 text-center mt-4">Don't have an account? <Link to="/register" className="text-green-500 hover:underline">
+              Register
+            </Link></p>
           </div>
-          
-          <div className="text-center">
-            <Link
-              to="/register"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              Dont have an account? Register
-            </Link>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

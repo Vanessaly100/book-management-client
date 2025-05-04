@@ -12,7 +12,7 @@ function Books() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/books", { withCredentials: true });
+        const res = await axios.get("http://localhost:4000/api/books/all", { withCredentials: true });
         console.log("📚 Books:", res.data);
         setBooks(res.data);
         setFilteredBooks(res.data);

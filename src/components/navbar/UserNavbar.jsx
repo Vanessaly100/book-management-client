@@ -61,8 +61,10 @@ const UserNavbar = () => {
 
   return (
     <>
+    <div className=''>
+      {/* Main Header */}
       <div className='bg-white text-black h-28 pt-4 w-full flex justify-between items-center flex-col shadow z-10' id='main-header'>
-        <div className='h-10 w-full flex justify-center items-center bg-green-600 text-white relative overflow-hidden'>
+        <div className='h-10 w-full flex justify-center items-center bg-tealGreenish/95 text-white relative overflow-hidden'>
           <span className='moving-tex absolute flex justify-center items-center'>
             {`😊 welcome back! ${user ? user.first_name : 'Guest'}`}
           </span>
@@ -80,17 +82,17 @@ const UserNavbar = () => {
               <span className='text-2xl -mt-3'>e-library</span>
             </div>
           </div>
-          <div className='border border-black'>
+          <div className='w-56'>
             logo
           </div>
           {/* Navbar Items */}
           <nav>
             <div>
-              <Link to="/" className="mr-4">Home</Link>
-              <Link to="/books" className="mr-4">Books</Link>
-              <Link to="/profile" className="mr-4">Profile</Link>
-              <Link to="/reservations" className="mr-4">Reservations</Link>
-              <Link to="/borrowed" className="mr-4">Borrowed Books</Link>
+            <Link to="/user/home" className="mr-4">Home</Link>
+              <Link to="/user/books" className="mr-4">Books</Link>
+              <Link to="/user/profile" className="mr-4">Profile</Link>
+              <Link to="/user/about" className="mr-4">About Us</Link>
+              <Link to="/user/services" className="mr-4">Our Services</Link>
             </div>
           </nav>
           <div>
@@ -150,11 +152,11 @@ const UserNavbar = () => {
           {/* Navbar Items */}
           <nav>
             <div>
-              <Link to="/" className="mr-4">Home</Link>
-              <Link to="/books" className="mr-4">Books</Link>
-              <Link to="/profile" className="mr-4">Profile</Link>
-              <Link to="/reservations" className="mr-4">Reservations</Link>
-              <Link to="/borrowed" className="mr-4">Borrowed Books</Link>
+              <Link to="/user/home" className="mr-4">Home</Link>
+              <Link to="/user/books" className="mr-4">Books</Link>
+              <Link to="/user/profile" className="mr-4">Profile</Link>
+              <Link to="/user/about" className="mr-4">About Us</Link>
+              <Link to="/user/services" className="mr-4">Our Services</Link>
             </div>
           </nav>
           <div>
@@ -195,7 +197,7 @@ const UserNavbar = () => {
               <RiLogoutBoxRLine color='white' size={24}/>
               <span className='text-white uppercase text-xs font-bold'>Log Out</span>
             </div>
-            <div className='border h-1/2 w-full rounded-lg flex items-center justify-center gap-4 cursor-pointer' onClick={() => { navigate('/profile'); setProfile(false); }}>
+            <div className='border h-1/2 w-full rounded-lg flex items-center justify-center gap-4 cursor-pointer' onClick={() => { navigate('/user/profile'); setProfile(false); }}>
               <FaRegEdit color='white' size={24}/>
               <span className='text-white uppercase text-xs font-bold'>My Profile</span>
             </div>
@@ -233,6 +235,7 @@ const UserNavbar = () => {
           </div>
         </div>
       )}
+    </div>
     </>
   );
 };
