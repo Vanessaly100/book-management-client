@@ -1,16 +1,29 @@
+import {useState, useEffect} from "react";
 import { useTheme } from "../hooks/use-theme";
-
 import { Bell, ChevronsLeft, Moon, Search, Sun } from "lucide-react";
-
-import profileImg from "../assets/profile-image.jpg";
-
 import PropTypes from "prop-types";
+import LogoutButton from "../components/buttons/LogoutButton";
+import { getUser } from "../api/users"; 
 
 export const Header = ({ collapsed, setCollapsed }) => {
     const { theme, setTheme } = useTheme();
+    const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const userData = await getUser();  // just call your function
+        setUser(userData);
+      } catch (error) {
+        console.error('Failed to fetch user profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
     return (
-        <header className="relative z-10 flex h-[60px] items-center justify-between bg-[#EAEAEA] px-4 shadow-md transition-colors dark:bg-[#1E2727]">
+        <header className="relative z-10 flex h-[60px] items-center justify-between bg-tealGreenish px-4 shadow-md transition-colors dark:bg-[#1E2727]">
             <div className="flex items-center gap-x-3">
                 <button
                     className="btn-ghost size-10"
@@ -49,13 +62,22 @@ export const Header = ({ collapsed, setCollapsed }) => {
                 <button className="btn-ghost size-10">
                     <Bell size={20} />
                 </button>
-                <button className="size-10 overflow-hidden rounded-full">
-                    <img
-                        src={profileImg}
-                        alt="profile image"
-                        className="size-full object-cover"
-                    />
-                </button>
+                <button className="size-10 overflow-hidden rounded-full text-white">
+  {user ? (
+          <>
+            <img
+              src={user.profile_picture_url || '../assets/gray-user-profile-icon-png-fP8Q1P.png'}
+              alt="Profile"
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <span className="text-sm font-medium">{user.first_name}</span>
+          </>
+        ) : (
+          <div>Loading...</div>
+        )}
+</button>
+
+                <LogoutButton/>
             </div>
         </header>
     );

@@ -32,15 +32,16 @@ export const navbarLinks = [
                 icon: Users,
                 path: "/users",
             },
+            
             {
-                label: "New User",
-                icon: UserPlus,
-                path: "/new-user",
+                label: "Authors",
+                icon: UserCheck,
+                path: "/authors",
             },
             {
-                label: "Verified users",
+                label: "Categories",
                 icon: UserCheck,
-                path: "/verified-users",
+                path: "/categories",
             },
         ],
     },
@@ -50,7 +51,7 @@ export const navbarLinks = [
             {
                 label: "Books",
                 icon: Package,
-                path: "/books",
+                path: "/bookPage",
             },
             {
                 label: "New book",
@@ -58,9 +59,9 @@ export const navbarLinks = [
                 path: "/new-book",
             },
             {
-                label: "Inventory",
+                label: "Profile",
                 icon: ShoppingBag,
-                path: "/inventory",
+                path: "/adminProfile",
             },
         ],
     },

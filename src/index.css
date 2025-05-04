@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @custom-variant dark (&:is(.dark *));
-@plugin "daisyui";
+/* @plugin "daisyui"; */
 @tailwind utilities;
 
 
@@ -35,18 +35,19 @@
     }
 
     .sidebar-item {
-        @apply flex h-[40px] w-full flex-shrink-0 items-center gap-x-3 rounded-lg p-3 text-base font-medium text-white transition-colors hover:bg-hoverGold dark:text-slate-50 dark:hover:bg-black;
-        &.active {
-            @apply bg-darkTealGreenish text-offWhite dark:bg-tealGreenish dark:text-black;
-        }
+        @apply flex h-[40px] w-full flex-shrink-0 items-center gap-x-3 rounded-lg p-3 text-base font-medium  transition-colors hover:bg-hoverGold dark:hover:bg-hoverGold 
+       
     }
 
+    .sidebar-item.active {
+  @apply bg-darkTealGreenish text-offWhite dark:bg-tealGreenish dark:text-white;
+}
     .title {
         @apply text-3xl font-semibold text-slate-900 transition-colors dark:text-slate-50;
     }
 
     .btn-ghost {
-        @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-darkTealGreenish dark:text-Gold transition-colors hover:bg-offWhite hover:text-slate-500 dark:hover:bg-offWhite dark:hover:text-black;
+        @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-Gold transition-colors hover:bg-offWhite hover:text-slate-500 dark:hover:bg-offWhite dark:hover:text-black;
     }
 
     .link {
@@ -58,8 +59,19 @@
     }
 
     .input-inside{
-        @apply 
+        @apply bg-gray-100 dark:text-white border border-white mb-4;
     }
+
+    .input-field {
+  @apply w-full px-3 py-2 border rounded-md text-black dark:text-white bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-700;
+}
+/* .btn-primary {
+  @apply bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700;
+}
+.btn-secondary {
+  @apply bg-gray-600 text-black px-4 py-2 rounded hover:bg-gray-700;
+} */
+
 
     .card {
         @apply flex flex-col gap-y-4 rounded-lg border border-slate-300 bg-white p-4 transition-colors dark:border-slate-700 dark:bg-slate-900;
@@ -137,49 +149,41 @@
   background-color: #e0fde3;
 } */
 
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
 
-.sp-bf{
-  position: relative;
-  width: fit-content;
-}
+@layer components {
+  .sp-bf {
+    @apply relative w-fit;
+  }
 
-.sp-bf::before{
-  content: "";
-  height: 3px;
-  width: 100%;
-  background-color: #16a34a ;
-  position: absolute;
-  left: 0;
-  bottom: 0px;
-  border-radius: 10px;
-}
+  .sp-bf::before {
+    content: "";
+    @apply absolute left-0 bottom-0 h-[3px] w-full bg-green-600 rounded-[10px];
+  }
 
-.bg-two{
-  background-image: url('./assets/images/image2.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-}
+  .bg-two {
+    @apply relative bg-center bg-no-repeat bg-cover;
+    background-image: url('./assets/images/image2.png');
+  }
 
-.logo{
-  border-radius: 0px 80px 0px 0px;
-}
-.blur-1{
-  backdrop-filter: blur(25px);
-}
+  .logo {
+    @apply rounded-tr-[80px];
+  }
 
-.bg {
-  background-image: url('https://i.pinimg.com/736x/45/35/18/45351888ccceca31e9c5ae5d138c2832.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-}
-.bg-blur{
-  position: absolute;
-  top: 0;
-  left: 0;
-  backdrop-filter: blur(5px);
-  background-color: rgba(255, 255, 255, 0);
+  .blur-1 {
+    backdrop-filter: blur(25px);
+  }
+
+  .bg {
+    @apply relative bg-center bg-no-repeat bg-cover;
+    background-image: url('https://i.pinimg.com/736x/45/35/18/45351888ccceca31e9c5ae5d138c2832.jpg');
+  }
+
+  .bg-blur {
+    @apply absolute top-0 left-0;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0);
+  }
 }
