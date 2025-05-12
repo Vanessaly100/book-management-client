@@ -65,8 +65,8 @@ const Profile = () => {
           {/* Profile Icon */}
           <div className="flex items-center space-x-5">
             <span className='capitalize font-bold'>hi {user.first_name }!</span>
-            <button className="p-2 rounded-full bg-darkTealGreenish text-white hover:bg-Gold">
-              <FiUser size={24} />
+            <button className="border-2 border-black rounded-full h-10 w-10 bg-darkTealGreenish text-white hover:bg-Gold">
+              {<img src= {user.profile_picture_url} alt='profile-pic' className='w-full h-full object-cover rounded-full' /> || <FiUser size={24} />}
             </button>
             <LogoutButton />
           </div>

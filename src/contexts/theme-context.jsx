@@ -14,12 +14,10 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 
     useEffect(() => {
         const root = window.document.documentElement;
-
         root.classList.remove("light", "dark");
 
         if (theme === "system") {
             const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
             root.classList.add(systemTheme);
             return;
         }
@@ -29,22 +27,18 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 
     const value = {
         theme,
-        setTheme: (theme) => {
-            localStorage.setItem(storageKey, theme);
-            setTheme(theme);
+        setTheme: (newTheme) => { // 💥 Fixed here!
+            localStorage.setItem(storageKey, newTheme);
+            setTheme(newTheme);
         },
     };
 
     return (
-        <ThemeProviderContext.Provider
-            {...props}
-            value={value}
-        >
+        <ThemeProviderContext.Provider {...props} value={value}>
             {children}
         </ThemeProviderContext.Provider>
     );
 }
-
 ThemeProvider.propTypes = {
     children: PropTypes.node,
     defaultTheme: PropTypes.string,

@@ -6,7 +6,7 @@ import { updateUserProfile } from "../../../api/users";
 import { Pencil } from "lucide-react"; 
 import avatarPlaceholder from "../../../assets/gray-user-profile-icon-png-fP8Q1P.png"; 
 
- const EditProfile =() => {
+ const AdminProfile =() => {
   const { user, setUser } = useAuth();
   const [editing, setEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -63,7 +63,7 @@ onSubmit: async (values) => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-[#f5f6f7] rounded-xl shadow-md">
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-[#f5f6f7] rounded-xl shadow-md dark:bg-[#354343]">
       <div className="flex flex-col items-center mb-6 relative">
         <img
           src={
@@ -181,11 +181,4 @@ onSubmit: async (values) => {
 }
 
 
-export default EditProfile;
-
-
-
-
-
-
-
+export default AdminProfile;

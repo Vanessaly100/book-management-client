@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet } from "react-router-dom";
-import Profile from "../pages/user/userProfile/Profile";
+// import Profile from "../pages/user/userProfile/Profile";
 import Reservations from "../pages/user/userProfile/Reservations";
 import Home from "@/pages/user/Home";
 import Books from "@/pages/public/Books";
@@ -10,6 +10,10 @@ import Navbar from "@/components/navbar/Navbar";
 import Reviews from "@/pages/user/userProfile/Reviews";
 import Footer from "@/components/navbar/Footer";
 import EditProfile from "@/pages/user/userProfile/EditProfile";
+import Layout from "@/pages/user/main/layout";
+import Dashboard from "@/pages/user/userProfile/Dashboard";
+import Notification from "@/pages/user/userProfile/Notification";
+import ErrorPage from "@/pages/public/ErrorPage";
 
 const UserLayout = () => {
   return (
@@ -31,13 +35,18 @@ const UserRoutes = () => {
           <Route path="services" element={<Services />} />
         </Route>
         {/* Nested under profile */}
-        <Route path="profile" element={<Profile />}>
+        <Route path="/" element={<Layout/>}>
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="reservations" element={<Reservations />} />
           <Route path="borrowed" element={<BorrowedBooks />} />
           <Route path="reviews" element={<Reviews/>} />
           <Route path="edit" element={<EditProfile/>} />
+          <Route path="notifications" element={<Notification/>} />
         </Route>
-      <Route path="*" element={<h2>User Page Not Found</h2>} />
+      <Route path="*" element={<ErrorPage 
+      route = "/user/home"
+      page = "User Page Not Found"
+      />} />
     </Routes>
   );
 };

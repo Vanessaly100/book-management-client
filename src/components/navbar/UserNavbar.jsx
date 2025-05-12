@@ -1,15 +1,12 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from 'react';
 import logo from '../../assets/image_prev_ui.png';
-import { TfiAlignRight } from "react-icons/tfi";
 import png from '../../assets/gray-user-profile-icon-png-fP8Q1P.png';
-import { RiLogoutBoxRLine, RiShoppingCartLine, RiInboxArchiveLine } from 'react-icons/ri';
-import { FaRegEdit, FaRegHeart } from "react-icons/fa";
+import { RiLogoutBoxRLine} from 'react-icons/ri';
+import { FaRegEdit } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 const UserNavbar = () => {
-  const [isFocus, setIsFocus] = useState(false);
   const [show, setShow] = useState(false);
   const [profile, setProfile] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
@@ -18,6 +15,9 @@ const UserNavbar = () => {
 
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
+
 
   const handleLogout = () => {
     logout();
@@ -87,14 +87,35 @@ const UserNavbar = () => {
           </div>
           {/* Navbar Items */}
           <nav>
-            <div>
-            <Link to="/user/home" className="mr-4">Home</Link>
-              <Link to="/user/books" className="mr-4">Books</Link>
-              <Link to="/user/profile" className="mr-4">Profile</Link>
-              <Link to="/user/about" className="mr-4">About Us</Link>
-              <Link to="/user/services" className="mr-4">Our Services</Link>
-            </div>
-          </nav>
+  <div className="flex space-x-4 font-medium">
+  <Link
+  to="/user/home"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Home
+</Link>
+<Link
+  to="/user/books"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Books
+</Link>
+<Link
+  to="/user/about"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  About Us
+</Link>
+<Link
+  to="/user/services"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Our Services
+</Link>
+
+  </div>
+    </nav>
+
           <div>
             {user && (
               <div className='flex gap-4'>
@@ -107,17 +128,11 @@ const UserNavbar = () => {
                     }}
                   >
                     <img 
-                      src={png} 
+                      src={user.profile_picture_url || png} 
                       alt="profile"
                       className='h-full w-full object-cover'
                     />
                   </div>
-                </div>
-                <div 
-                  className='border border-gray-400 h-12 w-12 rounded-full flex items-center justify-center cursor-pointer'
-                  onClick={() => { setShow(!show); setProfile(false); }}
-                >
-                  <TfiAlignRight size={22}/>
                 </div>
               </div>
             )}
@@ -146,42 +161,57 @@ const UserNavbar = () => {
               <span className='text-2xl -mt-3'>e-library</span>
             </div>
           </div>
-          <div className='border border-black'>
+          <div className='w-56'>
             logo
           </div>
           {/* Navbar Items */}
-          <nav>
-            <div>
-              <Link to="/user/home" className="mr-4">Home</Link>
-              <Link to="/user/books" className="mr-4">Books</Link>
-              <Link to="/user/profile" className="mr-4">Profile</Link>
-              <Link to="/user/about" className="mr-4">About Us</Link>
-              <Link to="/user/services" className="mr-4">Our Services</Link>
-            </div>
-          </nav>
+          <nav className="">
+<div className="flex space-x-4 p-4 font-medium">
+  <Link
+  to="/user/home"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Home
+</Link>
+<Link
+  to="/user/books"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Books
+</Link>
+<Link
+  to="/user/about"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  About Us
+</Link>
+<Link
+  to="/user/services"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+>
+  Our Services
+</Link>
+  </div>
+</nav>
+
+
           <div>
             {user && (
               <div className='flex gap-4'>
                 <div className='h-12 w-12 rounded-full cursor-pointer overflow-hidden'>
                   <div
-                    className='h-12 w-12 rounded-full bg-gray-300'
+                    className='h-18 w-18 rounded-full bg-gray-300'
                     onClick={() => {
                       setProfile(!profile);
                       setShow(false);
                     }}
                   >
                     <img 
-                      src={png} 
+                      src={user.profile_picture_url || png} 
                       alt="profile"
-                      className='h-full w-full object-cover'
+                      className='h-12 w-12 object-cover'
                     />
                   </div>
-                </div>
-                <div 
-                  className='border border-gray-400 h-12 w-12 rounded-full flex items-center justify-center cursor-pointer'
-                  onClick={() => { setShow(!show); setProfile(false); }}
-                >
-                  <TfiAlignRight size={22}/>
                 </div>
               </div>
             )}
@@ -197,40 +227,9 @@ const UserNavbar = () => {
               <RiLogoutBoxRLine color='white' size={24}/>
               <span className='text-white uppercase text-xs font-bold'>Log Out</span>
             </div>
-            <div className='border h-1/2 w-full rounded-lg flex items-center justify-center gap-4 cursor-pointer' onClick={() => { navigate('/user/profile'); setProfile(false); }}>
+            <div className='border h-1/2 w-full rounded-lg flex items-center justify-center gap-4 cursor-pointer' onClick={() => { navigate('/user/dashboard'); setProfile(false); }}>
               <FaRegEdit color='white' size={24}/>
-              <span className='text-white uppercase text-xs font-bold'>My Profile</span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Menu Items */}
-      {user && (
-        <div className={`h-fit fixed w-56 right-0 top-[115px] bg-black rounded-lg opacity-75 blur-1 z-10 flex justify-center items-center p-5 ${show ? 'block' : 'hidden'}`} ref={menuRef}>
-          <div className='h-full w-full flex flex-col items-center justify-center gap-4'>
-            <div className='h-7 w-full flex justify-center items-center cursor-pointer border-b border-gray-400 rounded-lg'>
-              <input 
-                type="text" 
-                placeholder={isFocus ? '' : 'search categories'} 
-                className={`w-full border-none h-full bg-transparent text-white outline-none ${!isFocus ? 'text-center' : 'text-left p-2'}`}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-              />
-            </div>
-            <div className='grid grid-cols-2 w-full gap-2'>
-              <div className='border h-12 cursor-pointer w-full rounded-lg flex items-center justify-center gap-2 text-white capitalize text-xs'>
-                <FaRegHeart size={22}/> 
-                <span>Favorites</span>
-              </div>
-              <div className='border h-12 cursor-pointer w-full rounded-lg flex items-center justify-center gap-2 text-white capitalize text-xs'>
-                <RiShoppingCartLine size={22}/> 
-                <span>Cart</span>
-              </div>
-              <div className='border h-12 cursor-pointer w-full rounded-lg flex items-center justify-center gap-2 text-white capitalize text-xs'>
-                <RiInboxArchiveLine size={22}/> 
-                <span>Orders</span>
-              </div>
+              <span className='text-white uppercase text-xs font-bold'>My Dashboard</span>
             </div>
           </div>
         </div>

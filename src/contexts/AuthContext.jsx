@@ -29,10 +29,12 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setLoading(false);
       }
-    };
 
-    fetchUser();
-  }, []);
+  };
+
+  fetchUser();
+}, []);
+
 
   const login = async (email, password) => {
     try {
@@ -56,13 +58,14 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true });
     setUser(null);
-    Cookies.remove('user');
-    // Let the component using logout handle navigation
+    Cookies.remove("user");
   };
+  
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user,setUser, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

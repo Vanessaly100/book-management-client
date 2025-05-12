@@ -6,7 +6,6 @@ import Login from "../pages/public/Login";
 import Register from "../pages/public/Register";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/navbar/Footer";
-
 const PublicLayout = () => {
   return (
     <>

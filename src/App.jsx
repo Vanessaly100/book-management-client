@@ -18,7 +18,10 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
             <Route path="/user/*" element={<UserRoutes />} />
           </Route>
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage 
+          route = "/"
+          page = "Page Not Found"
+      />} />
         </Routes>
       </AuthProvider>
     </Router>
