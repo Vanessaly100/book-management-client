@@ -3,7 +3,6 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Shield, User,PencilIcon, TrashIcon } from "lucide-react";
 import debounce from "lodash.debounce";
-
 import  { useEffect, useState } from "react";
 import { getAllUsers, deleteUser, updateUserByAdmin } from "../../../api/users";
 import {flexRender,getCoreRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from "@tanstack/react-table";
@@ -20,6 +19,8 @@ import {DropdownMenu,DropdownMenuTrigger,DropdownMenuContent,
 import { ChevronDown, EyeOff, Eye, Filter, ArrowUp, ArrowDown, X,LayoutGrid } from "lucide-react";
 import {useCallback} from "react";
 import UserEditForm from './UserEditForm';
+import UserDetailsModal from './UserDetialModal';
+
 
 
 const UserPage = () => {
@@ -28,9 +29,13 @@ const UserPage = () => {
   const [sorting, setSorting] = useState([]);
   const [filter, setFilter] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
-
   const [showModal, setShowModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [totalPages, setTotalPages] = useState(1);
+  //user details modal state
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
   const handleFilterChange = debounce((value) => {
     const searchValue = value.toLowerCase();
@@ -43,12 +48,13 @@ const UserPage = () => {
     const order = sorting[0]?.desc ? "desc" : "asc";
     const result = await getAllUsers({
       page: pageIndex,
-      limit: 10,
+      limit: 5,
       sort,
       order,
       filter,
     });
     setData(result.users || []);
+     setTotalPages(result.pagination?.totalPages || 1);
   }, [sorting, filter, pageIndex]);
 
   useEffect(() => {
@@ -74,6 +80,27 @@ const UserPage = () => {
     await deleteUser(id);
     fetchUsers();
   };
+
+ const handleViewUser = async (userId) => {
+  try {
+    const res = await fetch(`http://localhost:4000/api/user/${userId}/details`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    if (!res.ok) {
+      console.error("Failed to fetch user details:", res.statusText);
+      return;
+    }
+
+    const data = await res.json();
+    setSelectedUser(data); 
+    setIsModalOpen(true);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+  }
+};
+
 
   const columns = [
     {
@@ -358,15 +385,24 @@ const UserPage = () => {
   accessorKey: "actions",
   header: "Actions",
   cell: ({ row }) => {
-    const user = row.original; // Access the user data for the current row
+    const user = row.original; 
 
     return (
       <div className="flex space-x-2">
+        <Button
+          size="sm"
+          onClick={() => handleViewUser(user.user_id)}
+          className=' !text-black !bg-Gold !hover:bg-tealGreenish cursor-pointer'
+        >
+          <Eye size={16} />
+          View
+        </Button>
         {/* Edit Button */}
         <Button
           variant="outline"
           size="sm"
           onClick={() => handleEdit(user)}
+          className='cursor-pointer'
         >
           <PencilIcon size={16} />
           Edit
@@ -376,7 +412,7 @@ const UserPage = () => {
         <Button
           variant="outline"
           size="sm"
-          className="text-red-500"
+          className="text-red-500 cursor-pointer"
           onClick={() => handleDelete(user.user_id)}
         >
           <TrashIcon size={16} />
@@ -473,11 +509,18 @@ const UserPage = () => {
           size="sm"
           onClick={() => setPageIndex((p) => Math.max(p - 1, 1))}
           disabled={pageIndex === 1}
+            className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
         >
           Previous
         </Button>
-        <span className="text-sm">Page {pageIndex}</span>
-        <Button variant="outline" size="sm" onClick={() => setPageIndex(pageIndex + 1)}>
+        <span className="text-sm text-white">Page {pageIndex} of {totalPages}</span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setPageIndex((p) => p + 1)}
+          disabled={pageIndex >= totalPages}
+          className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
+        >
           Next
         </Button>
       </div>
@@ -485,7 +528,7 @@ const UserPage = () => {
       {/* Modal for Adding & Editing user */}
 {showModal && editingUser && (
   <UserEditForm
-    initialValues={editingUser} // 👈 Now correct user data is passed
+    initialValues={editingUser} 
     onClose={() => {
       setShowModal(false);
       setEditingUser(null);
@@ -495,6 +538,11 @@ const UserPage = () => {
   />
 )}
 
+ <UserDetailsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        user={selectedUser}
+      />
     </div>
   );
 }

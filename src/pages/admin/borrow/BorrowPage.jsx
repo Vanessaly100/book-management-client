@@ -1,6 +1,8 @@
+
 import React from "react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
+import { PencilIcon, TrashIcon } from "lucide-react";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import {
@@ -18,7 +20,9 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
+
 import { motion } from "framer-motion";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -30,6 +34,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
+
 import {
   ChevronDown,
   EyeOff,
@@ -38,81 +43,173 @@ import {
   ArrowUp,
   ArrowDown,
   X,
-  LayoutGrid,PencilIcon, TrashIcon,
+  LayoutGrid,
 } from "lucide-react";
 import { useCallback } from "react";
+// import AuthorEditForm from "./AuthorEditForm";
 import {
-  getAllCategories,
-  updateCategory,
-  deleteCategory,
-} from "../../../api/category";
-import CategoryEditForm from "./CategoryEditForm";
+  getAllBorrows,
+  updateBorrow,
+  deleteBorrow,
+} from "../../../api/borrow";
+import BorrowEditForm from "./BorrowEditForm";
 
-const CategoriesPage = () => {
+const BorrowPage = () => {
   const [data, setData] = useState([]);
   const [sorting, setSorting] = useState([]);
   const [filter, setFilter] = useState("");
   const [pageIndex, setPageIndex] = useState(1);
   const [showModal, setShowModal] = useState(false);
-  const [editingCategories, setEditingCategories] = useState(null);
-    const [totalPages, setTotalPages] = useState(1);
+  const [editingBorrows, setEditingBorrows] = useState(null);
+  const [search, setSearch] = useState("");
+  const [status, setStatus] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
+
 
   const handleFilterChange = debounce((value) => {
-    const searchValue = value.toLowerCase();
-    setFilter(searchValue);
-    setPageIndex(1);
-  }, 300);
+      const searchValue = value.toLowerCase();
+      setSearch(searchValue);
+      setPageIndex(1);
+    }, 300);
+  
+    // Update filter state
+    const onFilterChange = (e) => {
+      setFilter(e.target.value);
+      handleFilterChange(e.target.value);
+    };
 
-  const fetchCategories = useCallback(async () => {
-    const sort = sorting[0]?.id;
-    const order = sorting[0]?.desc ? "desc" : "asc";
-    const result = await getAllCategories({
-      page: pageIndex,
-      limit: 7,
-      sort,
-      order,
-      filter,
-    });
-    console.log("Fetched categories:", result.categories);
-    setData(result.categories || []);
-     setTotalPages(result.pagination?.totalPages || 1);
-  }, [sorting, filter, pageIndex]);
+  const fetchBorrows = useCallback(async () => {
+  const sort = sorting[0]?.id;
+  const order = sorting[0]?.desc ? "desc" : "asc";
+  const result = await getAllBorrows({
+    page: pageIndex,
+    limit: 10,
+    sort,
+    order,
+    filter,
+    search,
+    status, 
+  });
+  console.log(result);
+  setData(result.borrows || []);
+  setTotalPages(result.pagination?.totalPages || 1);
+}, [sorting, filter, search, status, pageIndex]); 
+
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    fetchBorrows();
+  }, [fetchBorrows]);
 
-  const handleEdit = (category) => {
-    setEditingCategories({ ...category });
+  const handleEdit = (borrow) => {
+    setEditingBorrows({ ...borrow });
     setShowModal(true);
   };
 
-  const handleSaveCategory = async (updatedData) => {
-    if (editingCategories) {
-      await updateCategory(editingCategories.category_id, updatedData);
+  const handleSaveBorrow = async (updatedData) => {
+    if (editingBorrows) {
+      await updateBorrow(editingBorrows.borrow_id, updatedData);
     }
     setShowModal(false);
-    setEditingCategories(null);
-    fetchCategories();
+    setEditingBorrows(null);
+    fetchBorrows();
   };
 
-  const handleDelete = async (category_id) => {
-    await deleteCategory(category_id);
-    fetchCategories();
+  const handleDelete = async (id) => {
+    await deleteBorrow(id);
+    fetchBorrows();
   };
 
   const columns = [
     {
-      accessorKey: "category_id",
-      header: "Category ID",
+      accessorKey: "borrow_id",
+      header: "Author ID",
     },
     {
-      accessorKey: "name",
+      accessorKey: "user.first_name",
+      header: "First Name",
+    },
+   
+    {
+      accessorKey: "user.email",
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
-              <span>Name</span>
+              <span className="text-center">Email</span>
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent
+            align="start"
+            className="text-white bg-tealGreenish "
+          >
+            {/* Sorting */}
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(false)}
+              className="hover:!bg-darkTealGreenish hover:!text-white"
+            >
+              <ArrowUp className="mr-2 h-4 w-4" /> Sort Asc
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => column.toggleSorting(true)}
+              className="hover:!bg-darkTealGreenish hover:!text-white"
+            >
+              <ArrowDown className="mr-2 h-4 w-4" /> Sort Desc
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => column.clearSorting()}
+              className="hover:!bg-darkTealGreenish hover:!text-white"
+            >
+              <X className="mr-2 h-4 w-4" /> Unsort
+            </DropdownMenuItem>
+
+            {/* Submenu for column visibility */}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="flex items-center data-[state=open]:!bg-darkTealGreenish data-[highlighted]:!bg-darkTealGreenish data-[highlighted]:!text-white">
+                <LayoutGrid className="mr-2 h-4 w-4 hover:!bg-darkTealGreenish hover:!text-white" />{" "}
+                Show Columns
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent asChild>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="origin-top-left bg-tealGreenish"
+                >
+                  {table
+                    .getAllColumns()
+                    .filter((col) => col.getCanHide() && col.id !== "_")
+                    .map((col) => (
+                      <DropdownMenuCheckboxItem
+                        key={col.id}
+                        checked={col.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          col.toggleVisibility(!!value)
+                        }
+                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                      >
+                        {col.columnDef.header instanceof Function
+                          ? col.id
+                          : col.columnDef.header}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                </motion.div>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+
+    {
+      accessorKey: "book.title",
+      header: ({ column, table }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+              <span>Book Name</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -205,14 +302,13 @@ const CategoriesPage = () => {
         </DropdownMenu>
       ),
     },
-
     {
-      accessorKey: "description",
+      accessorKey: "borrow_date",
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
-              <span>Description</span>
+              <span>Borrow Date</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -305,7 +401,18 @@ const CategoriesPage = () => {
         </DropdownMenu>
       ),
     },
-
+    {
+      accessorKey: "return_date",
+      header: "Return Date",
+    },
+    {
+      accessorKey: "due_date",
+      header: "Due Date",
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+    },
     {
       accessorKey: "createdAt",
       header: "Created At",
@@ -319,7 +426,7 @@ const CategoriesPage = () => {
       accessorKey: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const category = row.original;
+        const author = row.original;
 
         return (
           <div className="flex space-x-2">
@@ -327,7 +434,8 @@ const CategoriesPage = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handleEdit(category)}
+              onClick={() => handleEdit(author)}
+              className="cursor-pointer"
             >
               <PencilIcon size={16} />
               Edit
@@ -337,12 +445,8 @@ const CategoriesPage = () => {
             <Button
               variant="outline"
               size="sm"
-              className="text-red-500"
-              // onClick={() => handleDelete(category.id)}
-              onClick={() => {
-  console.log('Category object:', category);
-  handleDelete(category.category_id);
-}}
+              className="text-red-500 cursor-pointer"
+              onClick={() => handleDelete(author.borrow_id)}
             >
               <TrashIcon size={16} />
               Delete
@@ -367,13 +471,47 @@ const CategoriesPage = () => {
 
   return (
     <div>
-      <div className="flex items-center py-4 ">
-        <Input
-          type="text"
-          placeholder="Search by name, email, etc."
-          className="max-w-sm input-inside"
-          onChange={(e) => handleFilterChange(e.target.value)}
-        />
+      <div className="flex items-center py-4 justify-between ">
+        <div className="">
+         <Input
+                  type="text"
+                  value={filter}
+                  onChange={onFilterChange}
+                  placeholder="Search by Title, userName, genre, or Email"
+                  className="input-inside"
+                />
+</div>
+                <div className="items-center input-inside bg-transparent border-none">
+  <label htmlFor="status" className="font-medium">
+    Filter by Status:
+  </label>
+  <select
+    id="status"
+    value={status}
+    onChange={(e) => setStatus(e.target.value)}
+    className="border rounded-md px-3 py-1"
+  >
+    <option value="">All</option>
+    <option value="borrowed">Borrowed</option>
+    <option value="overdue">Overdue</option>
+    <option value="returned">Returned</option>
+  </select>
+</div>
+{/* <select
+  value={status}
+  onChange={(e) => {
+    setStatus(e.target.value);
+    setPageIndex(1); // reset to first page when filtering
+  }}
+  className="border rounded-md px-3 py-1"
+>
+  <option value="">All</option>
+  <option value="borrowed">Borrowed</option>
+  <option value="overdue">Overdue</option>
+  <option value="returned">Returned</option>
+</select>
+ */}
+
       </div>
       <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
         <TableHeader>
@@ -408,34 +546,41 @@ const CategoriesPage = () => {
           size="sm"
           onClick={() => setPageIndex((p) => Math.max(p - 1, 1))}
           disabled={pageIndex === 1}
-            className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
+          className="!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer"
         >
           Previous
         </Button>
-        <span className="text-sm text-white">Page {pageIndex} of {totalPages}</span>
+        <span className="text-sm text-white">
+          Page {pageIndex} of {totalPages}
+        </span>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setPageIndex((p) => p + 1)}
           disabled={pageIndex >= totalPages}
-          className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
+          className="!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer"
         >
           Next
         </Button>
       </div>
 
-      {showModal && editingCategories && (
-        <CategoryEditForm
-          initialValues={editingCategories}
+      {/* Modal for Adding & Editing author */}
+      {showModal && editingBorrows && (
+        <BorrowEditForm
+          initialValues={editingBorrows} 
           onClose={() => {
             setShowModal(false);
-            setEditingCategories(null);
+            setEditingBorrows(null);
           }}
-          onSave={handleSaveCategory}
+          onSave={handleSaveBorrow}
         />
       )}
     </div>
   );
 };
 
-export default CategoriesPage;
+export default BorrowPage;
+
+
+
+

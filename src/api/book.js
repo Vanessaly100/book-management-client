@@ -11,8 +11,8 @@ const API_URL_reservation = "http://localhost:4000/api/reservations";
 //  Get all books
 export const getAllBooks = async ( {page = 1,
   limit = 10,
-  sort = "createdAt", // Default safe sort field
-  order = "asc", //  Default order
+  sort = "createdAt", 
+  order = "asc", 
   filter = "",
 } ={}) => {
   try {
@@ -56,6 +56,7 @@ export const updateBook = async (bookId, formData) => {
 
 //  Delete a book
 export const deleteBook = async (id) => {
+  console.log("Deleting book with ID:", id);
   return await API.delete(`/books/${id}`, {
     withCredentials: true,
   });

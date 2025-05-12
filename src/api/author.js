@@ -12,12 +12,12 @@ export default API;
 
 export const getAllAuthors = async ({
   page = 1,
-  limit = 10,
-  sort = "createdAt", // Default safe sort field
-  order = "asc", //  Default order
+  limit = 5,
+  sort = "createdAt",
+  order = "asc", 
   filter = "",
 } = {}) => {
-  const response = await API.get(`/authors/all?page=${page}&limit=${limit}`, {
+  const response = await API.get(`/authors/?page=${page}&limit=${limit}`, {
     params: {
       page,
       limit,

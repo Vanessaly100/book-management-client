@@ -1,4 +1,4 @@
-import { ChartColumn, Home, NotepadText, Package, PackagePlus, Settings, ShoppingBag, UserCheck, UserPlus, Users } from "lucide-react";
+import { ChartColumn, Home, NotepadText, Package, PackagePlus, Settings, ShoppingBag, UserCheck, UserPlus, Users, Bell, Book} from "lucide-react";
  
 import ProfileImage from "../assets/profile-image.jpg";
 import ProductImage from "../assets/product-image.jpg";
@@ -50,24 +50,45 @@ export const navbarLinks = [
         links: [
             {
                 label: "Books",
-                icon: Package,
+                icon: Book,
                 path: "/bookPage",
             },
             {
-                label: "New book",
+                label: "Book Borrowed",
                 icon: PackagePlus,
-                path: "/new-book",
+                path: "/borrowPage",
             },
             {
-                label: "Profile",
-                icon: ShoppingBag,
-                path: "/adminProfile",
+                label: " Borrowed Summary",
+                icon: PackagePlus,
+                path: "/borrowPageSum",
+            },
+            
+            
+        ],
+    },
+    {title: "Notifications",
+        links: [
+            {
+                label: "NotificationForm",
+                icon: Bell,
+                path: "/notificationForm",
+            },
+            {
+                label: "Notifications",
+                icon: Bell,
+                path: "/notifiPage",
             },
         ],
     },
     {
         title: "Settings",
         links: [
+            {
+                label: "Profile",
+                icon: ShoppingBag,
+                path: "/adminProfile",
+            },
             {
                 label: "Settings",
                 icon: Settings,

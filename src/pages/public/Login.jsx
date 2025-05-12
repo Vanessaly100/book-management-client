@@ -10,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
-  const navigate = useNavigate(); // ✅ Use it inside the component
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +20,8 @@ const Login = () => {
     try {
       const userData = await login(email, password);
       
-      // ✅ Now navigate after successful login
+      
+      // Now navigate after successful login
       if (userData.role === "admin") {
         navigate("/admin");
       } else {

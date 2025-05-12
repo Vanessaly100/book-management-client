@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Button } from "../../../components/ui/button";
 import * as Yup from "yup";
+
 import CategorySelect from "@/components/form/CategorySelect";
 
 const CategoryEditForm = ({ initialValues, onSave, onClose }) => {
@@ -9,7 +10,7 @@ const CategoryEditForm = ({ initialValues, onSave, onClose }) => {
     description: Yup.string().required("Description is required"),
   });
 
-  const fixedInitialValues = {
+  const fixedInitialValues = { 
     name: initialValues?.name || "",
     description: initialValues?.description || "",
   };
@@ -44,7 +45,7 @@ const CategoryEditForm = ({ initialValues, onSave, onClose }) => {
                     <CategorySelect
                       value={field.value}
                       onChange={(val) => form.setFieldValue(field.name, val)}
-                      placeholder="Select-Category"
+                      placeholder="Select Category"
                     />
                   )}
                 </Field>
