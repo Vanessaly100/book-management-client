@@ -79,8 +79,15 @@ export const navbarLinks = [
                 icon: Bell,
                 path: "/notifiPage",
             },
+             {
+        label: "Reservation",
+        icon: Bell,
+        path: "reservation"
+    },
         ],
     },
+
+   
     {
         title: "Settings",
         links: [

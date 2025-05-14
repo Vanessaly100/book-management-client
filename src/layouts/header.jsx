@@ -29,17 +29,35 @@ export const Header = ({ collapsed, setCollapsed }) => {
 
     fetchUnread();
 
-    // Connect and listen to new notifications
-    socket.emit("join", user.user_id);
-    socket.on("newNotification", () => {
-      setUnreadCount((prev) => prev + 1);
-    });
+  //   // Connect and listen to new notifications
+  //   socket.emit("join", user.user_id);
+  //   socket.on("newNotification", () => {
+  //     setUnreadCount((prev) => prev + 1);
+  //   });
 
-    return () => {
-      socket.off("newNotification");
-      socket.emit("leave", user.user_id); 
-    };
-  }, [user]); 
+  //   return () => {
+  //     socket.off("newNotification");
+  //     socket.emit("leave", user.user_id); 
+  //   };
+  // }, [user]); 
+   if (!user || !socket) return;
+
+  socket.emit("register", {
+    user_id: user.user_id, // or user.id
+    role: user.role,
+  });
+
+  socket.emit("join", user.user_id); // optional, for rooms
+
+  socket.on("newNotification", () => {
+    setUnreadCount((prev) => prev + 1);
+  });
+
+  return () => {
+    socket.off("newNotification");
+    socket.emit("leave", user.user_id);
+  };
+}, [user]);
 
   useEffect(() => {
     const fetchProfile = async () => {

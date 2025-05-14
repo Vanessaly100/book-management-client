@@ -21,33 +21,33 @@ export const getAllBorrows = async ({
   return response.data;
 };
 
-// Get category by ID
-export const getCategoryById = async (borrow_id) => {
-  try {
-    const response = await API.get(`/borrowing/${borrow_id}`);
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error fetching borrow:",
-      error.response?.data || error.message
-    );
-    return null;
-  }
-};
+// // Get category by ID
+// export const getCategoryById = async (borrow_id) => {
+//   try {
+//     const response = await API.get(`/borrowing/${borrow_id}`);
+//     return response.data;
+//   } catch (error) {
+//     console.error(
+//       "Error fetching borrow:",
+//       error.response?.data || error.message
+//     );
+//     return null;
+//   }
+// };
 
-// Create a new category (Admin only)
-export const createCategory = async (borrowData) => {
-  try {
-    const response = await API.post("/borrowing", borrowData);
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error creating borrow:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
-};
+
+// export const createCategory = async (borrowData) => {
+//   try {
+//     const response = await API.post("/borrowing", borrowData);
+//     return response.data;
+//   } catch (error) {
+//     console.error(
+//       "Error creating borrow:",
+//       error.response?.data || error.message
+//     );
+//     throw error;
+//   }
+// };
 
 // Update a category (Admin only)
 export const updateBorrow = async (borrowId, updatedData) => {
@@ -96,5 +96,103 @@ export const getData = async (endpoint, filters) => {
   } catch (err) {
     console.error("Error fetching data:", err);
     return { rows: [], count: 0 };
+  }
+};
+
+
+// 1. Borrow books
+export const borrowBooks = async (borrowData) => {
+  try {
+    const res = await API.post("/borrow", borrowData);
+    return res.data;
+  } catch (error) {
+    console.error("Error borrowing books:", error);
+    throw error?.response?.data || { message: "Failed to borrow books" };
+  }
+};
+
+// 3. Return borrowed books
+export const returnBooks = async (returnData) => {
+  try {
+    const res = await API.put("/borrowing/return", returnData);
+    return res.data;
+  } catch (error) {
+    console.error("Error returning books:", error);
+    throw error?.response?.data || { message: "Failed to return books" };
+  }
+};
+
+// 4. Get active borrows for a user
+export const getActiveBorrows = async () => {
+  try {
+    const res = await API.get("/borrowing/borrows/active");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching active borrows:", error);
+    throw (
+      error?.response?.data || { message: "Failed to fetch active borrows" }
+    );
+  }
+};
+
+// 5. Get overdue borrows for a user
+export const getOverdueBorrows = async () => {
+  try {
+    const res = await API.get("/borrowing/borrows/overdue");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching overdue borrows:", error);
+    throw (
+      error?.response?.data || { message: "Failed to fetch overdue borrows" }
+    );
+  }
+};
+
+// 6. Get return history
+export const getReturnHistory = async () => {
+  try {
+    const res = await API.get("/borrowing/returns");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching return history:", error);
+    throw (
+      error?.response?.data || { message: "Failed to fetch return history" }
+    );
+  }
+};
+
+// 7. Get borrow by ID
+export const getBorrowById = async (borrowId) => {
+  try {
+    const res = await API.get(`/borrowing/${borrowId}`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching borrow by ID:", error);
+    throw error?.response?.data || { message: "Failed to fetch borrow record" };
+  }
+};
+
+// 8. Update borrow (admin only)
+export const updateBorrow = async (id, updatedData) => {
+  try {
+    const res = await API.put(`/borrowing/${id}`, updatedData);
+    return res.data;
+  } catch (error) {
+    console.error("Error updating borrow:", error);
+    throw (
+      error?.response?.data || { message: "Failed to update borrow record" }
+    );
+  }
+};
+
+
+// 10. Check book availability
+export const checkBookAvailability = async (bookId) => {
+  try {
+    const res = await API.get(`/borrowing/books/${bookId}/availability`);
+    return res.data;
+  } catch (error) {
+    console.error("Error checking book availability:", error);
+    throw error?.response?.data || { message: "Failed to check availability" };
   }
 };

@@ -6,7 +6,7 @@ const API = axios.create({
 });
 
 export default API;
-const API_URL_reservation = "http://localhost:4000/api/reservations";
+
 
 //  Get all books
 export const getAllBooks = async ( {page = 1,
@@ -62,17 +62,3 @@ export const deleteBook = async (id) => {
   });
 };
 
-//  Reserve a book
-export const reserveBook = async (bookId) => {
-  try {
-    const response = await axios.post(
-      `${API_URL_reservation}/${bookId}/reserve`,
-      {},
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(" Error reserving book:", error);
-    throw error;
-  }
-};
