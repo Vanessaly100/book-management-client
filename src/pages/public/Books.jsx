@@ -312,6 +312,16 @@ const Books = () => {
     }
   }, []);
 
+  const mergedBooks = books.map((book) => {
+    const borrowedEntry = borrowedBooks.find((b) => b.book_id === book.id);
+    return {
+      ...book,
+      status: borrowedEntry?.status || (book.available_copies === 0 ? "unavailable" : "available")
+    };
+  });
+  
+  
+
   const fetchUserBorrowedBooks = useCallback(async () => {
     try {
       const res =  await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});

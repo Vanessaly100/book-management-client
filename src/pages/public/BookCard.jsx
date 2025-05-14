@@ -10,14 +10,10 @@ const BookCard = ({ book, borrowedBooks, onUpdate }) => {
   const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
-    if (borrowedBooks.includes(book.id)) {
-      setStatus("borrowed");
-    } else if (book.available_copies === 0) {
-      setStatus("unavailable");
-    } else {
-      setStatus("available");
-    }
-  }, [borrowedBooks, book]);
+    setStatus(book.status || "available");
+    console.log("Book status:", book.status);
+  }, [book]);
+  
 
   const handleBorrow = async () => {
     if (!book || !book.id) {
