@@ -8,9 +8,18 @@ import AdminProfile from "../pages/admin/profile/AdminProfile";
 import AuthorPage from "@/pages/admin/author/AuthorPage";
 import CategoriesPage from "@/pages/admin/categories/CategoriesPage";
 import BookPage from "@/pages/admin/book/BookPage";
+import BorrowPage from "@/pages/admin/borrow/BorrowPage";
+import NotifiPage from "@/pages/admin/notification/NotifiPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NotificationAddForm from "@/pages/admin/notification/NotificationAddForm";
+import BorrowSummaryPage from "@/pages/admin/borrow/BorrowSummaryPage";
+
+const queryClient = new QueryClient();
+
 
 const AdminRoutes = () => {
   return (
+     <QueryClientProvider client={queryClient}>
     <ThemeProvider storageKey="theme">
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -21,15 +30,17 @@ const AdminRoutes = () => {
           <Route path="authors" element={<AuthorPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="bookPage" element={<BookPage />} />
-          <Route path="verified-customers" element={<h1 className="title">Verified Customers</h1>} />
-          <Route path="products" element={<h1 className="title">Products</h1>} />
-          <Route path="new-product" element={<h1 className="title">New Product</h1>} />
+          <Route path="borrowPage" element={<BorrowPage />} />
+          <Route path="borrowPageSum" element={<BorrowSummaryPage />} />
+          <Route path="notifiPage" element={<NotifiPage />} />
+          <Route path="notificationForm" element={<NotificationAddForm />} />
           <Route path="adminProfile" element={<AdminProfile/>} />
           <Route path="settings" element={<h1 className="title">Settings</h1>} />
           <Route path="*" element={<h1>404 - Not Found</h1>} />
         </Route>
       </Routes>
     </ThemeProvider>
+      </QueryClientProvider>
   );
 };
 

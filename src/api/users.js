@@ -11,7 +11,7 @@ export default API;
 // Get all users with optional params for pagination, sorting, etc.
 export const getAllUsers = async ({
   page = 1,
-  limit = 10,
+  limit = 5,
   sort,
   order,
   filter,
@@ -20,9 +20,9 @@ export const getAllUsers = async ({
     params: {
       page,
       limit,
-      sort, // e.g. "name", "email", "user_id"
-      order, // "asc" or "desc"
-      filter, // optional: filter by keyword (like name/email contains something)
+      sort, 
+      order, 
+      filter,
     },
   });
 
@@ -68,6 +68,19 @@ export const updateUserByAdmin = async (userId, formData) => {
     throw error; 
   }
 };
+
+export const handleViewUser = async (userId) => {
+  try {
+    const response = await API.get(`/user/${userId}/details`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch user details: ",
+      error.response ? error.response.data : error.message
+    );
+    throw error; 
+  }
+}
 
 
 export const deleteUser = async (userId) => {

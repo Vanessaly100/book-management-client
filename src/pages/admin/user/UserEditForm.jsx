@@ -40,7 +40,7 @@ const UserEditForm = ({ initialValues, onSave, onClose }) => {
     reading_preferences: Array.isArray(initialValues?.reading_preferences)
       ? initialValues.reading_preferences
       : [],
-    role: initialValues?.role || "user", // <=== add missing fields safely
+    role: initialValues?.role || "user", 
   };
 
   return (
@@ -218,7 +218,7 @@ const UserEditForm = ({ initialValues, onSave, onClose }) => {
                     <Select
                       value={field.value}
                       onValueChange={(value) => {
-                        form.setFieldValue(field.name, value); // ✅ Tell Formik properly
+                        form.setFieldValue(field.name, value); 
                       }}
                     >
                       <SelectTrigger className="w-full p-2 border-none rounded-lg bg-gray-300">

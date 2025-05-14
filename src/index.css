@@ -177,3 +177,21 @@
     background-color: rgba(255, 255, 255, 0);
   }
 
+  /* swiper-overrides.css */
+
+.swiper-pagination {
+    bottom: -5px !important; /* move pagination down */
+  }
+  
+  .swiper-pagination-bullet {
+    background-color: #9ca3af !important; /* Tailwind gray-400 */
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: #16a34a !important; /* Tailwind green-600 */
+  }
+  
+

@@ -9,7 +9,7 @@ const API = axios.create({
 // Get all categories with pagination, sorting, filtering
 export const getAllCategories = async ({
   page = 1,
-  limit = 10,
+  limit = 7,
   sort = "createdAt",
   order = "asc",
   filter = "",
@@ -49,9 +49,9 @@ export const createCategory = async (categoryData) => {
 };
 
 // Update a category (Admin only)
-export const updateCategory = async (category_id, updatedData) => {
+export const updateCategory = async (categoryId, updatedData) => {
   try {
-    const response = await API.put(`/categories/${category_id}`, updatedData);
+    const response = await API.put(`/categories/${categoryId}`, updatedData);
     return response.data;
   } catch (error) {
     console.error(
@@ -63,9 +63,10 @@ export const updateCategory = async (category_id, updatedData) => {
 };
 
 // Delete a category (Admin only)
-export const deleteCategory = async (category_id) => {
+export const deleteCategory = async (categoryId) => {
   try {
-    await API.delete(`/categories/${category_id}`);
+  console.log("Deleting book with ID:", categoryId);
+    await API.delete(`/categories/${categoryId}`);
     return { success: true };
   } catch (error) {
     console.error(

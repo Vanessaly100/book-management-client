@@ -1,6 +1,8 @@
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import socket from "../utils/socket";
 
 const AuthContext = createContext(null);
 
@@ -48,12 +50,15 @@ export const AuthProvider = ({ children }) => {
         const userData = response.data;
         setUser(userData);
         Cookies.set('user', JSON.stringify(userData), { expires: 7 });
+socket.emit("register", {
+      user_id: user.user_id,
+      role: user.role,
+    });
 
         return userData;
       }
     } catch (error) {
-      console.error('Login error:', error);
-      throw new Error('Invalid email or password');
+      console.error('Login error:', error);      throw new Error('Invalid email or password');
     }
   };
 

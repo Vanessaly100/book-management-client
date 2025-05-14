@@ -46,11 +46,10 @@ const Login = () => {
       } catch (error) {
         console.error(error);
         setError("Something went wrong during login");
-      }
     
       setLoading(false);
+      }
     },
-    
   });
 
 

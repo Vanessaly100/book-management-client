@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-// import { useAuth } from "../../Utilities/Auth/AuthContext"; // Import AuthContext
+import socket from "../../utils/socket";
 import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -38,6 +38,13 @@ const Register = () => {
         setSuccess("Registration successful! Redirecting...");
         resetForm();
         // Redirect after 2 seconds
+    const user = response.data.user; 
+    console.log(user.user_id, user.role);
+    socket.emit("register", {
+      user_id: user.user_id,
+      role: user.role
+    });
+
         setTimeout(() => {
           navigate("/login");
         }, 2000);

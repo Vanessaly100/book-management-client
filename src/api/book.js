@@ -13,6 +13,7 @@ export const getAllBooks = async ( {page = 1,
   limit = 12,
   sort = "createdAt", // Default safe sort field
   order = "asc", //  Default order
+
   filter = "",
 } ={}) => {
   try {
@@ -56,6 +57,7 @@ export const updateBook = async (bookId, formData) => {
 
 //  Delete a book
 export const deleteBook = async (id) => {
+  console.log("Deleting book with ID:", id);
   return await API.delete(`/books/${id}`, {
     withCredentials: true,
   });
