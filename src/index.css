@@ -1,8 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@custom-variant dark (&:is(.dark *));
-/* @plugin "daisyui"; */
-@tailwind utilities;
 
 
 
@@ -19,11 +16,11 @@
 }
 
 
-/* @layer base {
+@layer base {
     body {
         @apply [scrollbar-color:_#cbd5e1_transparent] dark:[scrollbar-color:_#334155_transparent] bg-[#e0fde3];
     }
-} */
+}
 
 @layer components {
     .sidebar-group {
@@ -65,12 +62,12 @@
     .input-field {
   @apply w-full px-3 py-2 border rounded-md text-black dark:text-white bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-900 dark:border-slate-700;
 }
-/* .btn-primary {
+ .btn-primary {
   @apply bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700;
 }
 .btn-secondary {
   @apply bg-gray-600 text-black px-4 py-2 rounded hover:bg-gray-700;
-} */
+}
 
 
     .card {
@@ -120,7 +117,7 @@
 
 .recharts-tooltip-item {
     @apply text-base font-medium !text-Gold dark:!text-Gold;
-}
+} */
 
 
 
@@ -153,20 +150,13 @@
 /* @tailwind components; */
 /* @tailwind utilities; */
 
-@layer components {
-  .sp-bf {
-    @apply relative w-fit;
-  }
-
-  .sp-bf::before {
-    content: "";
-    @apply absolute left-0 bottom-0 h-[3px] w-full bg-green-600 rounded-[10px];
-  }
-
-  .bg-two {
-    @apply relative bg-center bg-no-repeat bg-cover;
-    background-image: url('./assets/images/image2.png');
-  }
+.bg-two{
+  background-image: url('./assets/image2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
 
   .logo {
     @apply rounded-tr-[80px];
@@ -186,4 +176,22 @@
     backdrop-filter: blur(5px);
     background-color: rgba(255, 255, 255, 0);
   }
-}
+
+  /* swiper-overrides.css */
+
+.swiper-pagination {
+    bottom: -5px !important; /* move pagination down */
+  }
+  
+  .swiper-pagination-bullet {
+    background-color: #9ca3af !important; /* Tailwind gray-400 */
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background-color: #16a34a !important; /* Tailwind green-600 */
+  }
+  
+

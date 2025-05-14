@@ -10,9 +10,10 @@ export default API;
 
 //  Get all books
 export const getAllBooks = async ( {page = 1,
-  limit = 10,
-  sort = "createdAt", 
-  order = "asc", 
+  limit = 12,
+  sort = "createdAt", // Default safe sort field
+  order = "asc", //  Default order
+
   filter = "",
 } ={}) => {
   try {

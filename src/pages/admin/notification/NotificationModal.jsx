@@ -15,6 +15,7 @@ export default function NotificationModal({ userId, onClose }) {
   const fetchNotifications = async () => {
     try {
       const data = await getUserNotifications(userId);
+      console.log("Fetched notifications:", data);
       setNotifications(data);
     } catch (err) {
       console.error("Failed to load notifications:", err);

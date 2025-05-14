@@ -21,50 +21,66 @@ export const getAllBorrows = async ({
   return response.data;
 };
 
-// // Get category by ID
-// export const getCategoryById = async (borrow_id) => {
+// get all borrows by user 
+export const getUserBorrowedBooks = async (userId) => {
+  try {
+    const response = await API.get(`/borrowing/user/${userId}`);
+    return response.data; // assume it returns { borrowedBookIds: [1, 2, 3] }
+  } catch (error) {
+    console.error("Error fetching user's borrowed books:", error.response?.data || error.message);
+    return { borrowedBookIds: [] };
+  }
+};
+
+// return borrowed book 
+export const returnBook = async (userId, bookId) => {
+  try {
+    const response = await API.put(`/borrowing/return`, {
+      user_id: userId,
+      bookIds: [bookId],
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error returning book:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+
+export const borrowBook = async ({ user_id, bookId }) => {
+  try {
+    const response = await API.post("/borrowing", {
+      user_id,
+      bookIds: [bookId], // send single book ID inside an array
+    });
+    console.log("Borrow response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Borrow error:", error);
+    throw error.response?.data || { message: "Something went wrong" };
+  }
+};
+
+
+
+
+// Update a category (Admin only)
+// export const updateBorrow = async (borrowId, updatedData) => {
 //   try {
-//     const response = await API.get(`/borrowing/${borrow_id}`);
-//     return response.data;
-//   } catch (error) {
-//     console.error(
-//       "Error fetching borrow:",
-//       error.response?.data || error.message
+//     const response = await API.put(
+//       `/borrowing/${borrowId}`,
+//       updatedData
 //     );
-//     return null;
-//   }
-// };
-
-
-// export const createCategory = async (borrowData) => {
-//   try {
-//     const response = await API.post("/borrowing", borrowData);
 //     return response.data;
 //   } catch (error) {
 //     console.error(
-//       "Error creating borrow:",
+//       "Error updating borrow:",
 //       error.response?.data || error.message
 //     );
 //     throw error;
 //   }
 // };
-
-// Update a category (Admin only)
-export const updateBorrow = async (borrowId, updatedData) => {
-  try {
-    const response = await API.put(
-      `/borrowing/${borrowId}`,
-      updatedData
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error updating borrow:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
-};
 
 // Delete a category (Admin only)
 export const deleteBorrow = async (borrowId) => {

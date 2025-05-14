@@ -26,6 +26,7 @@ export const getAllNotifications = async ({
 export const getUserNotifications = async (userId) => {
   try {
     const response = await API.get(`/notifications/${userId}`);
+    console.log("Fetched user notifications:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user notifications:", error);
