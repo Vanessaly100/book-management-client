@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "../hooks/use-theme";
+// import { ThemeProviderContext } from "../contexts/theme-context";
 import { Bell, ChevronsLeft, Moon, Search, Sun } from "lucide-react";
 import PropTypes from "prop-types";
 import LogoutButton from "../components/buttons/LogoutButton";
@@ -10,6 +11,7 @@ import { useAuth } from "../contexts/AuthContext"
 import socket from "../utils/socket";
 
 export const Header = ({ collapsed, setCollapsed }) => {
+    // const { theme, setTheme } = useContext(ThemeProviderContext);
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
   const [profile, setProfile] = useState(null);
@@ -28,18 +30,6 @@ export const Header = ({ collapsed, setCollapsed }) => {
     };
 
     fetchUnread();
-
-  //   // Connect and listen to new notifications
-  //   socket.emit("join", user.user_id);
-  //   socket.on("newNotification", () => {
-  //     setUnreadCount((prev) => prev + 1);
-  //   });
-
-  //   return () => {
-  //     socket.off("newNotification");
-  //     socket.emit("leave", user.user_id); 
-  //   };
-  // }, [user]); 
    if (!user || !socket) return;
 
   socket.emit("register", {
@@ -72,10 +62,6 @@ export const Header = ({ collapsed, setCollapsed }) => {
 
     fetchProfile();
   }, []);
-
-  // const getButtonClasses = (isActive) =>
-  // `relative btn-ghost size-10 ${isActive ? "bg-white text-tealGreenish shadow" : ""}`;
-
   return (
     <header className="relative z-10 flex h-[60px] items-center justify-between bg-tealGreenish px-4 shadow-md transition-colors dark:bg-[#1E2727]">
       <div className="flex items-center gap-x-3">
@@ -102,13 +88,15 @@ export const Header = ({ collapsed, setCollapsed }) => {
       </div>
       <div className="flex items-center gap-x-3">
         <button
-          className="btn-ghost size-10"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          className="btn-ghost size-10 cursor-pointer"
+          onClick={() => {
+            setTheme(theme === "light" ? "dark" : "light");
+            console.log("theme button click");
+          }}
         >
           <Sun size={20} className="dark:hidden" />
           <Moon size={20} className="hidden dark:block" />
         </button>
-        
         <button
            className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
     showNotifications

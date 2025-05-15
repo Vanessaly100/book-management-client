@@ -312,13 +312,6 @@ const Books = () => {
     }
   }, []);
 
-  const mergedBooks = books.map((book) => {
-    const borrowedEntry = borrowedBooks.find((b) => b.book_id === book.id);
-    return {
-      ...book,
-      status: borrowedEntry?.status || (book.available_copies === 0 ? "unavailable" : "available")
-    };
-  });
   
   
 

@@ -21,7 +21,7 @@ const queryClient = new QueryClient();
 const AdminRoutes = () => {
   return (
      <QueryClientProvider client={queryClient}>
-    <ThemeProvider storageKey="theme">
+    {/* <ThemeProvider storageKey="theme"> */}
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<DashboardPage />} />
@@ -41,7 +41,7 @@ const AdminRoutes = () => {
           <Route path="*" element={<h1>404 - Not Found</h1>} />
         </Route>
       </Routes>
-    </ThemeProvider>
+    {/* </ThemeProvider> */}
       </QueryClientProvider>
   );
 };
