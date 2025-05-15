@@ -293,59 +293,119 @@
 // export default Books;
 
 
-import React, { useEffect, useState, useCallback } from "react";
-// import { getUserBorrowedBooks } from "@/api/borrow";
-import axios from "axios";
-import { getAllBooks } from "@/api/book";
-import BookCard from "./BookCard";
+// import React, { useEffect, useState, useCallback } from "react";
+// // import { getUserBorrowedBooks } from "@/api/borrow";
+// import axios from "axios";
+// import { getAllBooks } from "@/api/book";
+// import BookCard from "./BookCard";
+
+// const Books = () => {
+//   const [books, setBooks] = useState([]);
+//   const [borrowedBooks, setBorrowedBooks] = useState([]);
+
+//   const fetchBooks = useCallback(async () => {
+//     try {
+//       const res = await getAllBooks();
+//       setBooks(res.data); // Adjust if needed depending on API shape
+//     } catch (err) {
+//       console.error("Failed to fetch books", err);
+//     }
+//   }, []);
+
+//   const fetchUserBorrowedBooks = useCallback(async () => {
+//     try {
+//       const res =  await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});
+// ;
+//       console.log("borrowed", res.data)
+//       console.log('Borrowed books response:', res); 
+//       setBorrowedBooks(res?.data?.borrowedBooks || []); // Should be an array of book IDs
+//     } catch (err) {
+//       console.error("Failed to fetch borrowed books", err);
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     fetchBooks();
+//     fetchUserBorrowedBooks();
+//   }, [fetchBooks, fetchUserBorrowedBooks]);
+
+//   return (
+//     <div className="grid grid-cols-3 gap-4 p-4">
+//       {books.length === 0 ? (
+//         <p>No books available.</p>
+//       ) : (
+//         books.map((book) => (
+//           <BookCard
+//             key={book.id}
+//             book={book}
+//             borrowedBooks={borrowedBooks}
+//             onUpdate={() => {
+//               fetchBooks();
+//               fetchUserBorrowedBooks();
+//             }}
+//           />
+//         ))
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Books;
+
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
+import BookCard from './BookCard';
 
 const Books = () => {
+  // const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
-
-  const fetchBooks = useCallback(async () => {
-    try {
-      const res = await getAllBooks();
-      setBooks(res.data); // Adjust if needed depending on API shape
-    } catch (err) {
-      console.error("Failed to fetch books", err);
-    }
-  }, []);
-
-  const fetchUserBorrowedBooks = useCallback(async () => {
-    try {
-      const res =  await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});
-;
-      console.log("borrowed", res.data)
-      console.log('Borrowed books response:', res); 
-      setBorrowedBooks(res?.data?.borrowedBooks || []); // Should be an array of book IDs
-    } catch (err) {
-      console.error("Failed to fetch borrowed books", err);
-    }
-  }, []);
+  const { user } = useAuth();
 
   useEffect(() => {
-    fetchBooks();
-    fetchUserBorrowedBooks();
-  }, [fetchBooks, fetchUserBorrowedBooks]);
+    const fetchData = async () => {
+      try {
+        const booksRes = await axios.get('http://localhost:4000/api/books/all',{withCredentials: true});
+         console.log("Books API response:", booksRes.data);
+        setBooks(booksRes.data.data);
+
+        const borrowedRes = await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});
+        setBorrowedBooks(borrowedRes.data);
+      } catch (err) {
+        console.error('Fetch failed:', err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const refreshBorrowedBooks = async () => {
+    const borrowedRes = await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});
+    setBorrowedBooks(borrowedRes.data);
+  };
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4">
-      {books.length === 0 ? (
-        <p>No books available.</p>
-      ) : (
-        books.map((book) => (
-          <BookCard
-            key={book.id}
-            book={book}
-            borrowedBooks={borrowedBooks}
-            onUpdate={() => {
-              fetchBooks();
-              fetchUserBorrowedBooks();
-            }}
-          />
-        ))
-      )}
+    <div className="grid grid-cols-3 gap-4">
+      {Array.isArray(books) && books.map((book) => {
+  const userBorrow = borrowedBooks.find(
+    (b) => b.book_id === book.id && !b.returned
+  );
+
+  return (
+    <BookCard
+      key={book.id}
+      book={book}
+      isBorrowed={!!userBorrow}
+      availableCopies
+={book.availableCopies
+}
+      onActionComplete={refreshBorrowedBooks}
+    />
+  );
+})}
+
     </div>
   );
 };

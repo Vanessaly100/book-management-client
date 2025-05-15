@@ -43,7 +43,8 @@ export const Sidebar = forwardRef(({ collapsed }, ref) => {
                         {navbarLink.links.map((link) => (
                             <NavLink
                                 key={link.label}
-                                to={link.path}
+                                // to={link.path}
+                                 to={`/admin/${link.path}`}
                                 className={cn("sidebar-item", collapsed && "md:w-[45px]")}
                             >
                                 <link.icon

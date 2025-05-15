@@ -17,12 +17,12 @@ export const navbarLinks = [
             {
                 label: "Analytics",
                 icon: ChartColumn,
-                path: "/analytics",
+                path: "analytics",
             },
             {
                 label: "Reports",
                 icon: NotepadText,
-                path: "/reports",
+                path: "reports",
             },
         ],
     },
@@ -32,18 +32,18 @@ export const navbarLinks = [
             {
                 label: "Users",
                 icon: Users,
-                path: "/users",
+                path: "users",
             },
             
             {
                 label: "Authors",
                 icon: UserCheck,
-                path: "/authors",
+                path: "authors",
             },
             {
                 label: "Categories",
                 icon: UserCheck,
-                path: "/categories",
+                path: "categories",
             },
         ],
     },
@@ -53,17 +53,17 @@ export const navbarLinks = [
             {
                 label: "Books",
                 icon: Book,
-                path: "/bookPage",
+                path: "bookPage",
             },
             {
                 label: "Book Borrowed",
                 icon: PackagePlus,
-                path: "/borrowPage",
+                path: "borrowPage",
             },
             {
                 label: " Borrowed Summary",
                 icon: PackagePlus,
-                path: "/borrowPageSum",
+                path: "borrowPageSum",
             },
             
             
@@ -74,12 +74,12 @@ export const navbarLinks = [
             {
                 label: "NotificationForm",
                 icon: Bell,
-                path: "/notificationForm",
+                path: "notificationForm",
             },
             {
                 label: "Notifications",
                 icon: Bell,
-                path: "/notifiPage",
+                path: "notifiPage",
             },
              {
         label: "Reservation",
@@ -96,16 +96,19 @@ export const navbarLinks = [
             {
                 label: "Profile",
                 icon: ShoppingBag,
-                path: "/adminProfile",
+                path: "adminProfile",
             },
             {
                 label: "Settings",
                 icon: Settings,
-                path: "/settings",
+                path: "settings",
             },
         ],
     },
 ];
+
+
+
 export const navbarLinksFrontend = [
     {
         title: "Dashboard",
