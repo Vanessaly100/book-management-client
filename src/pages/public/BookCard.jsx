@@ -93,6 +93,7 @@ const BookCard = ({ book, borrowedBooks, onUpdate }) => {
   };
 
   return (
+    <>
     <div className="border p-4 rounded shadow-md">
       <h2 className="text-lg font-bold">{book.title}</h2>
       <p>By: {book.author_name}</p>
@@ -156,6 +157,7 @@ const BookCard = ({ book, borrowedBooks, onUpdate }) => {
         )}
       </div>
     </div>
+    </>
   );
 };
 
