@@ -293,62 +293,147 @@
 // export default Books;
 
 
-import React, { useEffect, useState, useCallback } from "react";
-// import { getUserBorrowedBooks } from "@/api/borrow";
-import axios from "axios";
-import { getAllBooks } from "@/api/book";
-import BookCard from "./BookCard";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../../contexts/AuthContext';
+import BookCard from './BookCard';
+import {getAllBooks} from "@/api/book";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const Books = () => {
+  const { user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [books, setBooks] = useState([]);
   const [borrowedBooks, setBorrowedBooks] = useState([]);
-
-  const fetchBooks = useCallback(async () => {
-    try {
-      const res = await getAllBooks();
-      setBooks(res.data); // Adjust if needed depending on API shape
-    } catch (err) {
-      console.error("Failed to fetch books", err);
-    }
-  }, []);
-
   
-  
-
-  const fetchUserBorrowedBooks = useCallback(async () => {
-    try {
-      const res =  await axios.get('http://localhost:4000/api/user/borrowed-books',{withCredentials: true});
-;
-      console.log("borrowed", res.data)
-      console.log('Borrowed books response:', res); 
-      setBorrowedBooks(res?.data?.borrowedBooks || []); // Should be an array of book IDs
-    } catch (err) {
-      console.error("Failed to fetch borrowed books", err);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchBooks();
-    fetchUserBorrowedBooks();
-  }, [fetchBooks, fetchUserBorrowedBooks]);
+    const fetchData = async () => {
+      try {
+        const booksRes = await getAllBooks({
+          page: currentPage,
+          limit: 12,
+          filter: searchTerm.trim(),
+        });
+  
+        setBooks(Array.isArray(booksRes.data) ? booksRes.data : []);
+        setTotalPages(booksRes.pagination?.totalPages || 1);
+  
+        const borrowedRes = await axios.get('http://localhost:4000/api/user/borrowed-books', {
+          withCredentials: true
+        });
+        setBorrowedBooks(borrowedRes.data);
+      } catch (err) {
+        console.error('Fetch failed:', err);
+        setError("Failed to fetch books.");
+      }
+    };
+  
+    fetchData();
+  }, [searchTerm, currentPage]);
+  
+  const refreshBorrowedBooks = () => {
+    axios
+      .get('http://localhost:4000/api/user/borrowed-books', {
+        withCredentials: true
+      })
+      .then(res => setBorrowedBooks(res.data))
+      .catch(err => console.error("Refresh failed:", err));
+  };
+
 
   return (
-    <div className="grid grid-cols-3 gap-4 p-4">
-      {books.length === 0 ? (
-        <p>No books available.</p>
-      ) : (
-        books.map((book) => (
-          <BookCard
-            key={book.id}
-            book={book}
-            borrowedBooks={borrowedBooks}
-            onUpdate={() => {
-              fetchBooks();
-              fetchUserBorrowedBooks();
-            }}
-          />
-        ))
-      )}
+    <div className="p-6 px-10">
+
+      {/* 🔎 Search */}
+      <div className="my-6">
+        <input
+          type="text"
+          placeholder="Search by title, category, or author..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1); // Reset to page 1 on new search
+          }}
+          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-0"
+        />
+      </div>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      {/* 📚 Book List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {books.length > 0 ? (
+          books.map((book) => {
+            const isBorrowed = borrowedBooks.some(
+              (b) => b.book_id === book.id && !b.returned
+            );
+
+            return (
+              <BookCard
+                key={book.id}
+                book={book}
+                isBorrowed={isBorrowed}
+                availableCopies={book.availableCopies}
+                onActionComplete={refreshBorrowedBooks}
+              />
+            );
+          })
+        ) : (
+          <p>No books found.</p>
+        )}
+      </div>
+
+      {/* 📄 Pagination */}
+      <div className="mt-10 flex justify-center">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  currentPage > 1 && setCurrentPage(currentPage - 1);
+                }}
+              />
+            </PaginationItem>
+
+            {[...Array(totalPages).keys()].map((_, idx) => (
+              <PaginationItem key={idx}>
+                <PaginationLink
+                  href="#"
+                  isActive={currentPage === idx + 1}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(idx + 1);
+                  }}
+                >
+                  {idx + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  currentPage < totalPages && setCurrentPage(currentPage + 1);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 };

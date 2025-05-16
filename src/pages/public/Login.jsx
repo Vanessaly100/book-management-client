@@ -54,7 +54,7 @@ const Login = () => {
 
 
   return (
-    <main className="min-h-screen w-screen bg">
+    <main className="min-h-screen bg">
       <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full lg:px-28 md:px-0 px-20'>
         <div className="md:w-1/3 sm:w-11/12 w-full bg-[#00000086] shadow-lg rounded-2xl p-6">
           <h2 className="text-2xl font-bold text-center mb-4 text-green-700">Login</h2>
@@ -71,7 +71,7 @@ const Login = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full p-2 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
               />
               {formik.touched.email && formik.errors.email ? (
                 <p className="text-red-500 text-sm">{formik.errors.email}</p>

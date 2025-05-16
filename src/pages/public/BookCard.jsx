@@ -177,9 +177,9 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
   const [comment, setComment] = useState(''); 
   const [showReviewModal, setShowReviewModal] = useState(false);
   
-   const [hovered, setHovered] = useState(0);
-  const [selected, setSelected] = useState(0);
-  const [avgRating, setAvgRating] = useState(book.avgRating || 0);
+  //  const [hovered, setHovered] = useState(0);
+  // const [selected, setSelected] = useState(0);
+  // const [avgRating, setAvgRating] = useState(book.avgRating || 0);
 
   const handleBorrow = async () => {
     try {
@@ -243,11 +243,11 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
 
   const renderActionButton = () => {
     if (isBorrowed) {
-      return <button onClick={handleReturn}>Return</button>;
+      return <button onClick={handleReturn} className='w-full bg-red-500 py-2 text-white rounded-md'>Return</button>;
     } else if (availableCopies === 0) {
-      return <button onClick={handleReserve}>Reserve</button>;
+      return <button onClick={handleReserve} className='w-full bg-green-900 py-2 text-white rounded-md'>Reserve</button>;
     } else {
-      return <button onClick={handleBorrow}>Borrow</button>;
+      return <button onClick={handleBorrow} className='w-full bg-green-900 py-2 text-white rounded-md'>Borrow</button>;
     }
   };
 
@@ -311,36 +311,31 @@ console.log("bookidddddd", res)
 //   };
 
   return (
-    <div className="p-4 border rounded shadow">
-      <h3 className="text-lg font-semibold">{book.title}</h3>
+    <>
+    <div className="p-4 rounded shadow bg-white">
+    {book.CoverImage && (
+                <img
+                  src={book.CoverImage}
+                  alt={book.title}
+                  className="w-full h-48 object-cover rounded-lg mb-2"
+                />
+              )}
+              <p className="text-gray-600">{book.author}</p>
+              <h3 className="text-lg font-semibold truncate w-full">{book.title}</h3>
+              <p className="text-gray-500">Published: {book.publishedYear}</p>
+              <p className="text-gray-500">{book.genres}</p>
 
       {/* ⭐ Show average rating if available */}
       <div className="flex items-center mb-2">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <span
-          key={star}
-          onMouseEnter={() => setHovered(star)}
-          onMouseLeave={() => setHovered(0)}
-          onClick={() => submitRating(star)}
-          className={`text-xl cursor-pointer transition-colors duration-200 ${
-            (hovered || selected || avgRating) >= star
-              ? "text-yellow-500"
-              : "text-gray-300"
-          }`}
-        >
-          ★
-        </span>
-      ))}
-      <span className="ml-2 text-sm text-gray-500">
-        ({avgRating?.toFixed(1) || "0.0"})
-      </span>
+      <RatingStars/>
     </div>
-      <p>{book.description}</p>
-      <p>Available: {availableCopies}</p>
-      {renderActionButton()}
+      {/* <p>{book.description}</p> */}
+      <div className='flex justify-between items-center mt-2'>
+      <div className='w-3/5'>{renderActionButton()}</div>
 
-      {/* Optional manual trigger */}
-      <button onClick={() => setShowReviewModal(true)} className="text-xl ml-2">⋮</button>
+{/* Optional manual trigger */}
+<button onClick={() => setShowReviewModal(true)} className="text-xl">⋮</button>
+      </div>
 
       {/* Review Modal */}
       <Dialog.Root open={showReviewModal} onOpenChange={setShowReviewModal}>
@@ -379,8 +374,32 @@ console.log("bookidddddd", res)
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
     </div>
+    </>
   );
 };
 
 export default BookCard;
+
+const RatingStars = ({ rating }) => {
+  return (
+    <div className="flex items-center mb-2">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          className={`text-xl transition-colors duration-200 ${
+            rating >= star ? "text-yellow-500" : "text-gray-300"
+          }`}
+        >
+          ★
+        </span>
+      ))}
+      <span className="ml-2 text-sm text-gray-500">
+        ({rating?.toFixed(1) || "0.0"})
+      </span>
+    </div>
+  );
+};
+
+

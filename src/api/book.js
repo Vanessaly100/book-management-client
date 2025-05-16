@@ -9,13 +9,13 @@ export default API;
 
 
 //  Get all books
-export const getAllBooks = async ( {page = 1,
+export const getAllBooks = async ({
+  page = 1,
   limit = 12,
-  sort = "createdAt", // Default safe sort field
-  order = "asc", //  Default order
-
-  filter = "",
-} ={}) => {
+  sort = "createdAt",
+  order = "asc",
+  filter = "", // this will be your search input
+} = {}) => {
   try {
     const res = await API.get("/books/all", {
       params: {
@@ -23,16 +23,16 @@ export const getAllBooks = async ( {page = 1,
         limit,
         sort,
         order,
-        filter,
+        filter, // make sure this matches what your backend expects
       },
     });
-    return res.data
-    
+    return res.data;
   } catch (error) {
-    console.error(" Error fetching books:", error);
+    console.error("Error fetching books:", error);
     throw error;
   }
 };
+
 
 //  Add a new book
 export const addBook = async (formData) => {
