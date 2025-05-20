@@ -38,7 +38,9 @@ import {
   ArrowUp,
   ArrowDown,
   X,
-  LayoutGrid,PencilIcon, TrashIcon,
+  LayoutGrid,
+  PencilIcon,
+  TrashIcon,
 } from "lucide-react";
 import { useCallback } from "react";
 import {
@@ -47,6 +49,7 @@ import {
   deleteCategory,
 } from "../../../api/category";
 import CategoryEditForm from "./CategoryEditForm";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const CategoriesPage = () => {
   const [data, setData] = useState([]);
@@ -55,7 +58,7 @@ const CategoriesPage = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [editingCategories, setEditingCategories] = useState(null);
-    const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleFilterChange = debounce((value) => {
     const searchValue = value.toLowerCase();
@@ -75,7 +78,7 @@ const CategoriesPage = () => {
     });
     console.log("Fetched categories:", result.categories);
     setData(result.categories || []);
-     setTotalPages(result.pagination?.totalPages || 1);
+    setTotalPages(result.pagination?.totalPages || 1);
   }, [sorting, filter, pageIndex]);
 
   useEffect(() => {
@@ -119,7 +122,7 @@ const CategoriesPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -191,7 +194,7 @@ const CategoriesPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -211,7 +214,10 @@ const CategoriesPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button
+              className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>Description</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -219,7 +225,7 @@ const CategoriesPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -291,7 +297,7 @@ const CategoriesPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -333,20 +339,21 @@ const CategoriesPage = () => {
               Edit
             </Button>
 
-            {/* Delete Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500"
-              // onClick={() => handleDelete(category.id)}
-              onClick={() => {
-  console.log('Category object:', category);
-  handleDelete(category.category_id);
-}}
-            >
-              <TrashIcon size={16} />
-              Delete
-            </Button>
+            <ConfirmDeleteModal
+              title="Delete Book"
+              message="Are you sure you want to delete this book?"
+              onConfirm={() => handleDelete(category.category_id)}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-500 cursor-pointer"
+                >
+                  <TrashIcon size={16} />
+                  Delete
+                </Button>
+              }
+            />
           </div>
         );
       },
@@ -367,15 +374,18 @@ const CategoriesPage = () => {
 
   return (
     <div>
+      <h1 className="text-ActionPurple font-bold text-3xl pb-5">
+        Category Table
+      </h1>
       <div className="flex items-center py-4 ">
         <Input
           type="text"
           placeholder="Search by name, email, etc."
-          className="max-w-sm input-inside"
+          className="input-inside m-0border-black dark:border-white dark:text-white text-black placeholder:text-slate-500 dark:placeholder:text-slate-400"
           onChange={(e) => handleFilterChange(e.target.value)}
         />
       </div>
-      <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
+      <Table className="bg-white !text-center !px-3 rounded-2xl !border border-slate-300 p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg dark:text-white text-black overflow-x-scroll">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -408,17 +418,19 @@ const CategoriesPage = () => {
           size="sm"
           onClick={() => setPageIndex((p) => Math.max(p - 1, 1))}
           disabled={pageIndex === 1}
-            className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
+          className="!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer"
         >
           Previous
         </Button>
-        <span className="text-sm text-white">Page {pageIndex} of {totalPages}</span>
+        <span className="text-sm dark:text-white text-black">
+          Page {pageIndex} of {totalPages}
+        </span>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setPageIndex((p) => p + 1)}
           disabled={pageIndex >= totalPages}
-          className='!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer'
+          className="!bg-tealGreenish !text-white !hover:bg-tealGreenish cursor-pointer"
         >
           Next
         </Button>

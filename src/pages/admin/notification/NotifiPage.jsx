@@ -31,15 +31,25 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ArrowUp, ArrowDown, X, PencilIcon, TrashIcon, LayoutGrid } from "lucide-react";
+import { ChevronDown, ArrowUp, ArrowDown, X, PencilIcon, TrashIcon, LayoutGrid,PlusIcon, } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import NotificationEditForm from "./NotificationEditForm";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   getAllNotifications,
   updateNotification,
   deleteNotification,
 } from "../../../api/notification";
+// import NotificationAddForm from "./NotificationAddForm";
+import NotifySingleForm from "./NotifySingleForm";
+import NotifyAllForm from "./NotifyAllForm";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const columnHelper = createColumnHelper();
 
@@ -99,11 +109,7 @@ const NotifiPage = () => {
     fetchNotifications();
   };
 
-  // const handleSearch = debounce((value) => {
-  //   setPageIndex(1);
-  //   setSearch(value.toLowerCase());
-  // }, 300);
-
+  
   const columns = [
     columnHelper.accessor("notification_id", {
       header: "Notification ID",
@@ -113,24 +119,25 @@ const NotifiPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white">
               <span className="text-center">Email</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="text-white bg-tealGreenish">
-            <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+          <DropdownMenuContent align="start" className="text-white bg-ActionMiniPurple">
+            <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="hover:!bg-darkTealGreenish hover:!text-white">
               <ArrowUp className="mr-2 h-4 w-4" /> Sort Asc
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+            <DropdownMenuItem onClick={() => column.toggleSorting(true)} className="hover:!bg-darkTealGreenish hover:!text-white">
               <ArrowDown className="mr-2 h-4 w-4" /> Sort Desc
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => column.clearSorting()}>
+            <DropdownMenuItem onClick={() => column.clearSorting()} className="hover:!bg-darkTealGreenish hover:!text-white">
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <LayoutGrid className="mr-2 h-4 w-4" /> Show Columns
+                <LayoutGrid className="mr-2 h-4 w-4 hover:!bg-darkTealGreenish hover:!text-white" /> Show Columns
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent asChild>
                 <motion.div className="origin-top-left bg-tealGreenish">
@@ -142,6 +149,7 @@ const NotifiPage = () => {
                         key={col.id}
                         checked={col.getIsVisible()}
                         onCheckedChange={(value) => col.toggleVisibility(!!value)}
+                        className=" hover:bg-ActionMiniPurple text-white"
                       >
                         {typeof col.columnDef.header === "function" ? col.id : col.columnDef.header}
                       </DropdownMenuCheckboxItem>
@@ -196,15 +204,21 @@ columnHelper.accessor((row) => row.book?.title, {
               <PencilIcon size={16} />
               Edit
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500 cursor-pointer"
-              onClick={() => handleDelete(notification.notification_id)}
-            >
-              <TrashIcon size={16} />
-              Delete
-            </Button>
+             <ConfirmDeleteModal
+                          title="Delete Book"
+                          message="Are you sure you want to delete this book?"
+                          onConfirm={() => handleDelete(notification.notification_id)}
+                          trigger={
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-500 cursor-pointer"
+                            >
+                              <TrashIcon size={16} />
+                              Delete
+                            </Button>
+                          }
+                        />
           </div>
         );
       },
@@ -232,17 +246,73 @@ columnHelper.accessor((row) => row.book?.title, {
 
   return (
     <div>
-      <div className="flex items-center py-4">
+       <h1 className="text-ActionPurple font-bold text-3xl pb-5">Notification Table</h1>
+       <div className="flex justify-between gap-4 items-center py-6">
+       <div className="flex items-center py-4 w-[60%]  m-0 ">
          <Input
                   type="text"
                   placeholder="Search by name, email, etc."
-                  className="max-w-sm input-inside"
+                  className="input-inside m-0 border-black dark:border-white dark:text-white text-black placeholder:text-slate-500 dark:placeholder:text-slate-400"
                   onChange={(e) => handleFilterChange(e.target.value)}
                 />
-        
+        </div>
+         <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="bg-primary bg-ActionPurple text-white cursor-pointer">
+                            <PlusIcon className="mr-2" />
+                            Notify User
+                          </Button>
+                        </DialogTrigger>
+              
+                        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-2xl shadow-lg">
+                          <DialogTitle className="text-xl font-semibold mb-4">
+                            Add Notification for Single User
+                          </DialogTitle>
+              
+                          {/* Wrap the form in a scrollable container if it's too long */}
+                          <div className="space-y-4 overflow-y-auto">
+                            <NotifySingleForm
+                              onSuccess={(handleAuthorSuccess) => {
+                                fetchNotifications(); 
+                                toast.success(
+                                  `${handleAuthorSuccess.title} added successfully`
+                                );
+                              }}
+                             
+                            />
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+         <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className="bg-primary bg-ActionPurple text-white cursor-pointer">
+                            <PlusIcon className="mr-2" />
+                            Notify All User
+                          </Button>
+                        </DialogTrigger>
+              
+                        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-2xl shadow-lg">
+                          <DialogTitle className="text-xl font-semibold mb-4">
+                            Add Notification for All User
+                          </DialogTitle>
+              
+                          {/* Wrap the form in a scrollable container if it's too long */}
+                          <div className="space-y-4 overflow-y-auto">
+                            <NotifyAllForm
+                              onSuccess={(handleAuthorSuccess) => {
+                                fetchNotifications(); 
+                                toast.success(
+                                  `${handleAuthorSuccess.title} added successfully`
+                                );
+                              }}
+                             
+                            />
+                          </div>
+                        </DialogContent>
+                      </Dialog>
       </div>
 
-      <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
+      <Table className="bg-white !text-center !px-3 rounded-2xl !border border-slate-300 p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg dark:text-white text-black overflow-x-scroll">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -286,7 +356,7 @@ columnHelper.accessor((row) => row.book?.title, {
         >
           Previous
         </Button>
-        <span className="text-sm text-white">
+        <span className="text-sm dark:text-white text-black">
           Page {pageIndex} of {totalPages}
         </span>
         <Button

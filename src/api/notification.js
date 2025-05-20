@@ -83,33 +83,33 @@ export const deleteNotification = async (notificationId) => {
   }
 };
 
-export const createNotification = async (
-  firstName,
-  email,
-  bookTitle,
-  message,
-  notificationType
-) => {
-  try {
-    const response = await API.post(
-      `/notifications`,
-      {
-        first_name: firstName,
-        email,
-        book_title: bookTitle,
-        message,
-        type: notificationType,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error creating notification:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
-};
+// export const createNotification = async (
+//   firstName,
+//   email,
+//   bookTitle,
+//   message,
+//   notificationType
+// ) => {
+//   try {
+//     const response = await API.post(
+//       `/notifications`,
+//       {
+//         first_name: firstName,
+//         email,
+//         book_title: bookTitle,
+//         message,
+//         type: notificationType,
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error(
+//       "Error creating notification:",
+//       error.response?.data || error.message
+//     );
+//     throw error;
+//   }
+// };
 
 // Create an overdue notification
 export const createOverdueNotification = async (
@@ -194,3 +194,14 @@ export const sendOverdueReminder = async (borrowId) => {
     throw error;
   }
 };
+
+
+
+
+export const create = async (endpoint, data) => {
+  const response = await API.post(`/notifications/${endpoint}`, data, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+

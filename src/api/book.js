@@ -11,8 +11,8 @@ export default API;
 //  Get all books
 export const getAllBooks = async ( {page = 1,
   limit = 12,
-  sort = "createdAt", // Default safe sort field
-  order = "asc", //  Default order
+  sort = "createdAt", 
+  order = "asc", 
 
   filter = "",
 } ={}) => {
@@ -34,12 +34,17 @@ export const getAllBooks = async ( {page = 1,
   }
 };
 
-//  Add a new book
-export const addBook = async (formData) => {
-  return await API.post("/books", formData, {
-    headers: { "Content-Type": "application/json" },
-    withCredentials: true,
-  });
+
+export  const createBook = async (formData) => {
+  try {
+    const response =  await API.post("/books", formData, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error adding book:", error);
+    throw error;
+  }
 };
 
 // Update a book

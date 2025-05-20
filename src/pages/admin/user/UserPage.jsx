@@ -112,13 +112,14 @@ const UserPage = () => {
   header: ({ column, table }) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+        <Button className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white">
           <span>FirstName</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className='text-white bg-tealGreenish '>
+      <DropdownMenuContent align="start" className='text-white bg-ActionMiniPurple '>
         {/* Sorting */}
         <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="hover:!bg-darkTealGreenish hover:!text-white">
           <ArrowUp className="mr-2 h-4 w-4" /> Sort Asc
@@ -129,26 +130,6 @@ const UserPage = () => {
         <DropdownMenuItem onClick={() => column.clearSorting()} className="hover:!bg-darkTealGreenish hover:!text-white">
           <X className="mr-2 h-4 w-4" /> Unsort
         </DropdownMenuItem>
-
-        {/* Filter */}
-        <DropdownMenuItem onClick={() => alert("Add filter logic here")} className="hover:!bg-darkTealGreenish hover:!text-white">
-          <Filter className="mr-2 h-4 w-4" /> Filter
-        </DropdownMenuItem>
-
-        {/* Toggle this column */}
-        <DropdownMenuItem onClick={() => column.toggleVisibility()} className="hover:!bg-darkTealGreenish hover:!text-white">
-          {column.getIsVisible() ? (
-            <>
-              <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-            </>
-          ) : (
-            <>
-              <Eye className="mr-2 h-4 w-4" /> Show Column
-            </>
-          )}
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
 
         {/* Submenu for column visibility */}
         <DropdownMenuSub>
@@ -173,7 +154,7 @@ const UserPage = () => {
                     onCheckedChange={(value) =>
                       col.toggleVisibility(!!value)
                     }
-                    className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                    className="capitalize  hover:!bg-ActionMiniPurple !text-white"
                   >
                     {col.columnDef.header instanceof Function
                       ? col.id
@@ -194,13 +175,14 @@ const UserPage = () => {
   header: ({ column, table }) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+        <Button className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white">
           <span>LastName</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className='text-white bg-tealGreenish '>
+      <DropdownMenuContent align="start" className='text-white bg-ActionMiniPurple '>
         {/* Sorting */}
         <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="hover:!bg-darkTealGreenish hover:!text-white">
           <ArrowUp className="mr-2 h-4 w-4" /> Sort Asc
@@ -211,26 +193,6 @@ const UserPage = () => {
         <DropdownMenuItem onClick={() => column.clearSorting()} className="hover:!bg-darkTealGreenish hover:!text-white">
           <X className="mr-2 h-4 w-4" /> Unsort
         </DropdownMenuItem>
-
-        {/* Filter */}
-        <DropdownMenuItem onClick={() => alert("Add filter logic here")} className="hover:!bg-darkTealGreenish hover:!text-white">
-          <Filter className="mr-2 h-4 w-4" /> Filter
-        </DropdownMenuItem>
-
-        {/* Toggle this column */}
-        <DropdownMenuItem onClick={() => column.toggleVisibility()} className="hover:!bg-darkTealGreenish hover:!text-white">
-          {column.getIsVisible() ? (
-            <>
-              <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-            </>
-          ) : (
-            <>
-              <Eye className="mr-2 h-4 w-4" /> Show Column
-            </>
-          )}
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
 
         {/* Submenu for column visibility */}
         <DropdownMenuSub>
@@ -255,7 +217,7 @@ const UserPage = () => {
                     onCheckedChange={(value) =>
                       col.toggleVisibility(!!value)
                     }
-                    className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                    className="capitalize hover:!bg-ActionMiniPurple !text-white"
                   >
                     {col.columnDef.header instanceof Function
                       ? col.id
@@ -275,13 +237,14 @@ const UserPage = () => {
   header: ({ column, table }) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+        <Button className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white">
           <span>Email</span>
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className='text-white bg-tealGreenish '>
+      <DropdownMenuContent align="start" className='text-white bg-ActionMiniPurple'>
         {/* Sorting */}
         <DropdownMenuItem onClick={() => column.toggleSorting(false)} className="hover:!bg-darkTealGreenish hover:!text-white">
           <ArrowUp className="mr-2 h-4 w-4" /> Sort Asc
@@ -292,26 +255,6 @@ const UserPage = () => {
         <DropdownMenuItem onClick={() => column.clearSorting()} className="hover:!bg-darkTealGreenish hover:!text-white">
           <X className="mr-2 h-4 w-4" /> Unsort
         </DropdownMenuItem>
-
-        {/* Filter */}
-        <DropdownMenuItem onClick={() => alert("Add filter logic here")} className="hover:!bg-darkTealGreenish hover:!text-white">
-          <Filter className="mr-2 h-4 w-4" /> Filter
-        </DropdownMenuItem>
-
-        {/* Toggle this column */}
-        <DropdownMenuItem onClick={() => column.toggleVisibility()} className="hover:!bg-darkTealGreenish hover:!text-white">
-          {column.getIsVisible() ? (
-            <>
-              <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-            </>
-          ) : (
-            <>
-              <Eye className="mr-2 h-4 w-4" /> Show Column
-            </>
-          )}
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
 
         {/* Submenu for column visibility */}
         <DropdownMenuSub>
@@ -336,7 +279,7 @@ const UserPage = () => {
                     onCheckedChange={(value) =>
                       col.toggleVisibility(!!value)
                     }
-                    className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                    className="capitalize hover:!bg-ActionMiniPurple !text-white"
                   >
                     {col.columnDef.header instanceof Function
                       ? col.id
@@ -470,16 +413,17 @@ const UserPage = () => {
 
   return (
     <div>
-      <div className="flex items-center py-4 ">
+       <h1 className="text-ActionPurple font-bold text-3xl pb-5">User Table</h1>
+      <div className="flex items-center py-6 mb-8 w-[60%]">
 <Input
   type="text"
   placeholder="Search by name, email, etc."
-  className="max-w-sm input-inside"
+  className="input-inside m-0 border-black dark:border-white dark:text-white text-black placeholder:text-slate-900 dark:placeholder:text-white"
   onChange={(e) => handleFilterChange(e.target.value)}
 />
 
       </div>
-      <Table className='bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll'>
+      <Table className='!text-center !px-3  dark:text-white text-black overflow-x-scroll  !border border-slate-300 bg-white p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg'>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -513,7 +457,7 @@ const UserPage = () => {
         >
           Previous
         </Button>
-        <span className="text-sm text-white">Page {pageIndex} of {totalPages}</span>
+        <span className="text-sm dark:text-white text-black">Page {pageIndex} of {totalPages}</span>
         <Button
           variant="outline"
           size="sm"

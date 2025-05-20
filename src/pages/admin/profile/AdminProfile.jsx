@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { updateUserProfile } from "../../../api/users"; 
 import { Pencil } from "lucide-react"; 
 import avatarPlaceholder from "../../../assets/gray-user-profile-icon-png-fP8Q1P.png"; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
  const AdminProfile =() => {
   const { user, setUser } = useAuth();
@@ -27,34 +29,39 @@ import avatarPlaceholder from "../../../assets/gray-user-profile-icon-png-fP8Q1P
       location: Yup.string().required("Location is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
     }),
-onSubmit: async (values) => {
-  const formData = new FormData();
-  for (const key in values) {
-    formData.append(key, values[key]);
-  }
-  if (selectedImage) {
-    formData.append("profilePicture", selectedImage);
-  }
-
-  try {
-    const updated = await updateUserProfile(formData);
-
-    console.log("Update Response:", updated); // DEBUG
-
-    if (updated && updated.user) {
-     setUser(prevUser => ({
-        ...prevUser,
-        ...updated.user,
-      }));     // Update user context
-      setEditing(false);         // Exit editing mode
-      alert('Profile updated successfully');
-    } else {
-      console.error('Profile update failed:', updated.message || "No user returned");
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      for (const key in values) {
+        formData.append(key, values[key]);
+      }
+    
+      if (selectedImage) {
+        formData.append("profilePicture", selectedImage);
+      }
+    
+      try {
+        const updated = await updateUserProfile(formData);
+    
+        console.log("Update Response:", updated); // DEBUG
+    
+        if (updated && updated.user) {
+          setUser(prevUser => ({
+            ...prevUser,
+            ...updated.user,
+          })); 
+          setEditing(false); 
+    
+          toast.success("Profile updated successfully!");
+        } else {
+          console.error('Profile update failed:', updated.message || "No user returned");
+          toast.error("Failed to update profile.");
+        }
+      } catch (error) {
+        console.error("Failed to update profile:", error);
+        toast.error("🚨 An error occurred while updating your profile.");
+      }
     }
-  } catch (error) {
-    console.error("Failed to update profile:", error);
-  }
-},
+    
 
   });
 
@@ -63,7 +70,7 @@ onSubmit: async (values) => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-[#f5f6f7] rounded-xl shadow-md dark:bg-[#354343]">
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-lightMainCardBg text-black dark:bg-darkMainCardBg dark:text-white border border-gray-400 card rounded-xl shadow-md">
       <div className="flex flex-col items-center mb-6 relative">
         <img
           src={
@@ -78,7 +85,7 @@ onSubmit: async (values) => {
           <>
             <label
               htmlFor="profile-picture"
-              className="absolute bottom-2 right-2 bg-blue-500 p-2 rounded-full text-white cursor-pointer"
+              className="absolute bottom-2 right-2 bg-ActionMiniPurple p-2 rounded-full text-white cursor-pointer"
             >
               <Pencil size={16} />
             </label>
@@ -94,7 +101,7 @@ onSubmit: async (values) => {
       </div>
 
       {editing ? (
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-4 text-black dark:text-white">
           <div>
             <input
               name="first_name"
@@ -149,7 +156,7 @@ onSubmit: async (values) => {
           <div className="flex gap-4">
             <button
               type="submit"
-              className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600"
+              className="flex-1 bg-ActionMiniPurple text-white py-2 rounded hover:bg-ActionPurple-600"
             >
               Save
             </button>
@@ -163,14 +170,14 @@ onSubmit: async (values) => {
           </div>
         </form>
       ) : (
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 text-black dark:text-gray-300">
           <h2 className="text-2xl font-bold">Welcome, {user?.first_name}</h2>
-          <p className="text-gray-600">Email: {user?.email}</p>
-          <p className="text-gray-600">Phone: {user?.phone_number}</p>
-          <p className="text-gray-600">Location: {user?.location}</p>
+          <p>Email: {user?.email}</p>
+          <p>Phone: {user?.phone_number}</p>
+          <p>Location: {user?.location}</p>
           <button
             onClick={() => setEditing(true)}
-            className="mt-4 bg-blue-500 text-white py-2 px-6 rounded hover:bg-blue-600"
+            className="mt-4 bg-ActionMiniPurple text-white py-2 px-6 rounded hover:bg-ActionPurple cursor-pointer"
           >
             Edit Profile
           </button>

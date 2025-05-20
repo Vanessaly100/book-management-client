@@ -10,6 +10,16 @@ const API = axios.create({
 export default API;
 
 
+export const getAllAuthorsNoFilter = async () => {
+  try {
+    const response = await API.get("/authors/no-filter-all");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all authors:", error);
+    throw error;
+  }
+};
+
 export const getAllAuthors = async ({
   page = 1,
   limit = 5,
@@ -44,7 +54,7 @@ export const getAuthorByName = async (name) => {
 };
 
 // Admin Services (manage authors)
-export const addAuthor = async (authorData) => {
+export const createAuthor = async (authorData) => {
   try {
     const response = await axios.post(`${API_URL}/authors`, authorData, {
       withCredentials: true,

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
@@ -47,12 +46,9 @@ import {
 } from "lucide-react";
 import { useCallback } from "react";
 // import AuthorEditForm from "./AuthorEditForm";
-import {
-  getAllBorrows,
-  updateBorrow,
-  deleteBorrow,
-} from "../../../api/borrow";
+import { getAllBorrows, updateBorrow, deleteBorrow } from "../../../api/borrow";
 import BorrowEditForm from "./BorrowEditForm";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const BorrowPage = () => {
   const [data, setData] = useState([]);
@@ -65,36 +61,34 @@ const BorrowPage = () => {
   const [status, setStatus] = useState("");
   const [totalPages, setTotalPages] = useState(1);
 
-
   const handleFilterChange = debounce((value) => {
-      const searchValue = value.toLowerCase();
-      setSearch(searchValue);
-      setPageIndex(1);
-    }, 300);
-  
-    // Update filter state
-    const onFilterChange = (e) => {
-      setFilter(e.target.value);
-      handleFilterChange(e.target.value);
-    };
+    const searchValue = value.toLowerCase();
+    setSearch(searchValue);
+    setPageIndex(1);
+  }, 300);
+
+  // Update filter state
+  const onFilterChange = (e) => {
+    setFilter(e.target.value);
+    handleFilterChange(e.target.value);
+  };
 
   const fetchBorrows = useCallback(async () => {
-  const sort = sorting[0]?.id;
-  const order = sorting[0]?.desc ? "desc" : "asc";
-  const result = await getAllBorrows({
-    page: pageIndex,
-    limit: 10,
-    sort,
-    order,
-    filter,
-    search,
-    status, 
-  });
-  console.log(result);
-  setData(result.borrows || []);
-  setTotalPages(result.pagination?.totalPages || 1);
-}, [sorting, filter, search, status, pageIndex]); 
-
+    const sort = sorting[0]?.id;
+    const order = sorting[0]?.desc ? "desc" : "asc";
+    const result = await getAllBorrows({
+      page: pageIndex,
+      limit: 10,
+      sort,
+      order,
+      filter,
+      search,
+      status,
+    });
+    console.log(result);
+    setData(result.borrows || []);
+    setTotalPages(result.pagination?.totalPages || 1);
+  }, [sorting, filter, search, status, pageIndex]);
 
   useEffect(() => {
     fetchBorrows();
@@ -128,7 +122,7 @@ const BorrowPage = () => {
       accessorKey: "user.first_name",
       header: "First Name",
     },
-   
+
     {
       accessorKey: "user.email",
       header: ({ column, table }) => (
@@ -142,7 +136,7 @@ const BorrowPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -188,7 +182,7 @@ const BorrowPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -216,7 +210,7 @@ const BorrowPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple"
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -288,7 +282,7 @@ const BorrowPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -307,7 +301,10 @@ const BorrowPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button
+              className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>Borrow Date</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -315,7 +312,7 @@ const BorrowPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -387,7 +384,7 @@ const BorrowPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -440,17 +437,21 @@ const BorrowPage = () => {
               <PencilIcon size={16} />
               Edit
             </Button>
-
-            {/* Delete Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500 cursor-pointer"
-              onClick={() => handleDelete(author.borrow_id)}
-            >
-              <TrashIcon size={16} />
-              Delete
-            </Button>
+            <ConfirmDeleteModal
+              title="Delete Book"
+              message="Are you sure you want to delete this book?"
+              onConfirm={() => handleDelete(author.borrow_id)}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-500 cursor-pointer"
+                >
+                  <TrashIcon size={16} />
+                  Delete
+                </Button>
+              }
+            />
           </div>
         );
       },
@@ -471,49 +472,55 @@ const BorrowPage = () => {
 
   return (
     <div>
+      <h1 className="text-ActionPurple font-bold text-3xl pb-5">Borrow Table</h1>
       <div className="flex items-center py-4 justify-between ">
-        <div className="">
-         <Input
-                  type="text"
-                  value={filter}
-                  onChange={onFilterChange}
-                  placeholder="Search by Title, userName, genre, or Email"
-                  className="input-inside"
-                />
-</div>
-                <div className="items-center input-inside bg-transparent border-none">
-  <label htmlFor="status" className="font-medium">
-    Filter by Status:
-  </label>
-  <select
-    id="status"
-    value={status}
-    onChange={(e) => setStatus(e.target.value)}
-    className="border rounded-md px-3 py-1"
-  >
-    <option value="">All</option>
-    <option value="borrowed">Borrowed</option>
-    <option value="overdue">Overdue</option>
-    <option value="returned">Returned</option>
-  </select>
-</div>
-{/* <select
+        
+        <div className="w-[60%]">
+          <Input
+            type="text"
+            value={filter}
+            onChange={onFilterChange}
+            placeholder="Search by Title, userName, genre, or Email"
+            className="input-inside m-0border-black dark:border-white dark:text-white text-black placeholder:text-slate-500 dark:placeholder:text-slate-400"
+          />
+        </div>
+        <div className="items-center input-inside bg-transparent border-none">
+          <label htmlFor="status" className="font-medium">
+            Filter by Status:
+          </label>
+          <select
+  id="status"
   value={status}
-  onChange={(e) => {
-    setStatus(e.target.value);
-    setPageIndex(1); // reset to first page when filtering
-  }}
-  className="border rounded-md px-3 py-1"
+  onChange={(e) => setStatus(e.target.value)}
+  className="
+     w-full p-2 rounded-lg border border-gray-300 
+  bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200
+  focus:outline-none focus:ring-2 focus:ring-ActionMiniPurple
+  transition-colors duration-200
+  "
 >
-  <option value="">All</option>
-  <option value="borrowed">Borrowed</option>
-  <option value="overdue">Overdue</option>
-  <option value="returned">Returned</option>
+<option value="">All</option>
+  <option 
+    value="borrowed" 
+    className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-ActionMiniPurple hover:text-white">
+    Borrowed
+  </option>
+  <option 
+    value="overdue" 
+    className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-red-500 hover:text-white">
+    Overdue
+  </option>
+  <option 
+    value="returned" 
+    className="bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-200 hover:bg-green-500 hover:text-white">
+    Returned
+  </option>
 </select>
- */}
 
+        </div>
+        
       </div>
-      <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
+      <Table className="bg-white !text-center !px-3 rounded-2xl !border border-slate-300 p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg dark:text-white text-black overflow-x-scroll">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -550,7 +557,7 @@ const BorrowPage = () => {
         >
           Previous
         </Button>
-        <span className="text-sm text-white">
+        <span className="text-sm dark:text-white text-black">
           Page {pageIndex} of {totalPages}
         </span>
         <Button
@@ -567,7 +574,7 @@ const BorrowPage = () => {
       {/* Modal for Adding & Editing author */}
       {showModal && editingBorrows && (
         <BorrowEditForm
-          initialValues={editingBorrows} 
+          initialValues={editingBorrows}
           onClose={() => {
             setShowModal(false);
             setEditingBorrows(null);
@@ -580,7 +587,3 @@ const BorrowPage = () => {
 };
 
 export default BorrowPage;
-
-
-
-

@@ -26,7 +26,7 @@ const Layout = () => {
     });
 
     return (
-        <div className="min-h-screen bg-slate-100 transition-colors dark:bg-slate-950">
+        <div className="min-h-screen bg-lightMainCardBg transition-colors dark:bg-darkMainBg">
             <div
                 className={cn(
                     "pointer-events-none fixed inset-0 -z-10 bg-black opacity-0 transition-opacity",
@@ -42,7 +42,7 @@ const Layout = () => {
                     collapsed={collapsed}
                     setCollapsed={setCollapsed}
                 />
-                <div className="h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden p-6 bg-[#B3C7C6] dark:bg-[#020617]">
+                <div className="h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden p-6 bg-lightMainBg dark:bg-darkMainBg">
                     <Outlet />
                 </div>
             </div>

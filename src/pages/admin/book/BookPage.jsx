@@ -3,6 +3,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import debounce from "lodash.debounce";
+import { toast } from "react-toastify";
 
 import { useEffect, useState } from "react";
 import {
@@ -44,11 +45,20 @@ import {
   ArrowDown,
   X,
   LayoutGrid,
+  PlusIcon,
 } from "lucide-react";
 import BookEditForm from "./BookEditForm";
 import { getAllBooks, deleteBook, updateBook } from "../../../api/book";
 import { getAllAuthors } from "../../../api/author";
 import { getAllCategories } from "../../../api/category";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import BookAddForm from "./BookAddForm";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const BookPage = () => {
   const [data, setData] = useState([]);
@@ -145,7 +155,10 @@ const BookPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button
+              className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>Title</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -153,7 +166,7 @@ const BookPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -174,32 +187,6 @@ const BookPage = () => {
             >
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
-
-            {/* Filter */}
-            <DropdownMenuItem
-              onClick={() => alert("Add filter logic here")}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </DropdownMenuItem>
-
-            {/* Toggle this column */}
-            <DropdownMenuItem
-              onClick={() => column.toggleVisibility()}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              {column.getIsVisible() ? (
-                <>
-                  <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-                </>
-              ) : (
-                <>
-                  <Eye className="mr-2 h-4 w-4" /> Show Column
-                </>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
 
             {/* Submenu for column visibility */}
             <DropdownMenuSub>
@@ -225,7 +212,7 @@ const BookPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -253,7 +240,7 @@ const BookPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -274,33 +261,6 @@ const BookPage = () => {
             >
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
-
-            {/* Filter */}
-            <DropdownMenuItem
-              onClick={() => alert("Add filter logic here")}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </DropdownMenuItem>
-
-            {/* Toggle this column */}
-            <DropdownMenuItem
-              onClick={() => column.toggleVisibility()}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              {column.getIsVisible() ? (
-                <>
-                  <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-                </>
-              ) : (
-                <>
-                  <Eye className="mr-2 h-4 w-4" /> Show Column
-                </>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
             {/* Submenu for column visibility */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="flex items-center data-[state=open]:!bg-darkTealGreenish data-[highlighted]:!bg-darkTealGreenish data-[highlighted]:!text-white">
@@ -325,7 +285,7 @@ const BookPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -352,7 +312,7 @@ const BookPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple"
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -424,7 +384,7 @@ const BookPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -446,14 +406,13 @@ const BookPage = () => {
 
         return (
           <img
-            src={url}
+            src={
+              url && url.trim() !== ""
+                ? url
+                : "https://cdn.pixabay.com/photo/2014/09/08/05/06/book-438935_1280.png"
+            }
             alt="Cover"
             className="w-16 h-20 object-cover rounded"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src =
-                "https://cdn.pixabay.com/photo/2014/09/08/05/06/book-438935_1280.png";
-            }}
           />
         );
       },
@@ -487,7 +446,6 @@ const BookPage = () => {
       header: "Actions",
       cell: ({ row }) => {
         const book = row.original; // Access the book data for the current row
-
         return (
           <div className="flex space-x-2">
             {/* Edit Button */}
@@ -501,19 +459,21 @@ const BookPage = () => {
             </Button>
 
             {/* Delete Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500"
-              // onClick={() =>  handleDelete(book.book_id)}
-              onClick={() => {
-                console.log("Book object:", book);
-                handleDelete(book.id);
-              }}
-            >
-              <TrashIcon size={16} />
-              Delete
-            </Button>
+            <ConfirmDeleteModal
+              title="Delete Book"
+              message="Are you sure you want to delete this book?"
+              onConfirm={() => handleDelete(book.id)}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-500 cursor-pointer"
+                >
+                  <TrashIcon size={16} />
+                  Delete
+                </Button>
+              }
+            />
           </div>
         );
       },
@@ -532,16 +492,48 @@ const BookPage = () => {
 
   return (
     <div>
-      <div className="flex items-center py-4 ">
-        <Input
-          type="text"
-          value={filter}
-          onChange={onFilterChange}
-          placeholder="Search by title, author, genre, or year"
-          className="input-inside"
-        />
+      <h1 className="text-ActionPurple font-bold text-3xl pb-5">Books Table</h1>
+      <div className="flex justify-between items-center py-6">
+        <div className="flex items-center  w-[50%]">
+          <Input
+            type="text"
+            value={filter}
+            onChange={onFilterChange}
+            placeholder="Search by title, author, genre, or year"
+            className="input-inside m-0 border-black dark:border-white dark:text-white text-black placeholder:text-slate-500 dark:placeholder:text-slate-400"
+          />
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="bg-primary bg-ActionPurple text-white cursor-pointer">
+              <PlusIcon className="mr-2" />
+              Add Book
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-2xl shadow-lg">
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Add New Book
+            </DialogTitle>
+
+            {/* Wrap the form in a scrollable container if it's too long */}
+            <div className="space-y-4 overflow-y-auto">
+              <BookAddForm
+                onSuccess={(handleBookSuccess) => {
+                  fetchBooks(); // refresh book list
+                  // setOpen(false); // close dialog
+                  toast.success(
+                    `${handleBookSuccess.title} added successfully`
+                  );
+                }}
+                // setError={(err) => toast.error("Failed to add book")}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
-      <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
+
+      <Table className="bg-white !text-center !px-3 rounded-2xl dark:text-white text-black overflow-x-scroll !border border-slate-300 p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -578,7 +570,7 @@ const BookPage = () => {
         >
           Previous
         </Button>
-        <span className="text-sm text-white">
+        <span className="text-sm dark:text-white text-black">
           Page {pageIndex} of {totalPages}
         </span>
         <Button

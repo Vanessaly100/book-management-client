@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
-import { useTheme } from "../hooks/use-theme";
-// import { ThemeProviderContext } from "../contexts/theme-context";
+import { useState, useEffect,useContext } from "react";
+import { ThemeContext } from "../contexts/theme-context";
 import { Bell, ChevronsLeft, Moon, Search, Sun } from "lucide-react";
 import PropTypes from "prop-types";
 import LogoutButton from "../components/buttons/LogoutButton";
-import { getUser } from "../api/users";
 import NotificationModal from "../pages/admin/notification/NotificationModal";
 import { getUnreadNotificationCount } from "../api/notification";
 import { useAuth } from "../contexts/AuthContext"
 import socket from "../utils/socket";
+import { getUser } from "../api/users";
 
 export const Header = ({ collapsed, setCollapsed }) => {
-    // const { theme, setTheme } = useContext(ThemeProviderContext);
   const { user } = useAuth();
-  const { theme, setTheme } = useTheme();
-  const [profile, setProfile] = useState(null);
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [profile, setProfile] = useState(null);
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+  const { toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (!user?.user_id) return;
@@ -33,11 +34,11 @@ export const Header = ({ collapsed, setCollapsed }) => {
    if (!user || !socket) return;
 
   socket.emit("register", {
-    user_id: user.user_id, // or user.id
+    user_id: user.user_id, 
     role: user.role,
   });
 
-  socket.emit("join", user.user_id); // optional, for rooms
+  socket.emit("join", user.user_id); 
 
   socket.on("newNotification", () => {
     setUnreadCount((prev) => prev + 1);
@@ -49,59 +50,64 @@ export const Header = ({ collapsed, setCollapsed }) => {
   };
 }, [user]);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const userData = await getUser(); 
-                setProfile(userData);
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const userData = await getUser(); 
+              setProfile(userData);
 ;
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    };
+    } catch (error) {
+      console.error("Failed to fetch user profile:", error);
+    }
+  };
 
-    fetchProfile();
-  }, []);
+  fetchProfile();
+}, []);
+
+  if (!mounted) return null
   return (
-    <header className="relative z-10 flex h-[60px] items-center justify-between bg-tealGreenish px-4 shadow-md transition-colors dark:bg-[#1E2727]">
+    <header className="relative z-10 flex h-[60px] items-center justify-between bg-lightMainCardBg px-4 shadow-md transition-colors dark:bg-darkTealGreenish">
       <div className="flex items-center gap-x-3">
         <button
            className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
     collapsed
-      ? "bg-offWhite text-Gold shadow dark:bg-gray-700 dark:text-Gold"
-      : "hover:bg-gray-200 dark:hover:bg-gray-600"
+      ? "btn-ghost"
+      : "btn-ghost"
   }`}
           onClick={() => setCollapsed(!collapsed)}
         >
           <ChevronsLeft className={collapsed && "rotate-180"} />
         </button>
-        <div className="input bg-[#B3C7C6]">
-          <Search size={20} className="text-slate-900" />
+        <div className="input bg-transparent border border-gray-400 text-black dark:text-white">
+          <Search size={20} className="text-slate-900 dark:text-white" />
           <input
             type="text"
             name="search"
             id="search"
             placeholder="Search..."
-            className="w-full bg-transparent text-slate-900 outline-0 placeholder:text-slate-900 dark:text-slate-50"
+            className="w-full bg-transparent text-slate-900 outline-0 placeholder:text-slate-900 dark:placeholder:text-white dark:text-slate-50"
           />
         </div>
       </div>
       <div className="flex items-center gap-x-3">
-        <button
-          className="btn-ghost size-10 cursor-pointer"
-          onClick={() => {
-            setTheme(theme === "light" ? "dark" : "light");
-            console.log("theme button click");
-          }}
-        >
-          <Sun size={20} className="dark:hidden" />
-          <Moon size={20} className="hidden dark:block" />
-        </button>
+      <button
+                    className="btn-ghost size-10"
+                    onClick={toggleTheme}
+                >
+                    <Sun
+                        size={20}
+                        className="dark:hidden"
+                    />
+                    <Moon
+                        size={20}
+                        className="hidden dark:block"
+                    />
+                </button>
         <button
            className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
     showNotifications
-      ? "bg-offWhite text-Gold shadow dark:bg-gray-700 dark:text-Gold"
-      : "hover:bg-gray-200 dark:hover:bg-gray-600"
+      ? "btn-ghost shadow"
+      : "btn-ghost"
   }`}
           onClick={() => setShowNotifications(!showNotifications)}
         >
@@ -112,7 +118,6 @@ export const Header = ({ collapsed, setCollapsed }) => {
             </span>
           )}
         </button>
-
         {profile ? (
           <>
             <img

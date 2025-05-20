@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
+import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
 
@@ -36,22 +37,23 @@ import {
 
 import {
   ChevronDown,
-  EyeOff,
-  Eye,
-  Filter,
   ArrowUp,
   ArrowDown,
   X,
   LayoutGrid,
+  PlusIcon,
 } from "lucide-react";
 import { useCallback } from "react";
 import AuthorEditForm from "./AuthorEditForm";
+import { getAllAuthors, updateAuthor, deleteAuthor } from "../../../api/author";
 import {
-  getAllAuthors,
-  addAuthor,
-  updateAuthor,
-  deleteAuthor,
-} from "../../../api/author";
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import AuthorForm from "./AuthorAddForm";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const AuthorPage = () => {
   const [data, setData] = useState([]);
@@ -116,7 +118,10 @@ const AuthorPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button
+              className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>Name</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -124,7 +129,7 @@ const AuthorPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -145,32 +150,6 @@ const AuthorPage = () => {
             >
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
-
-            {/* Filter */}
-            <DropdownMenuItem
-              onClick={() => alert("Add filter logic here")}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </DropdownMenuItem>
-
-            {/* Toggle this column */}
-            <DropdownMenuItem
-              onClick={() => column.toggleVisibility()}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              {column.getIsVisible() ? (
-                <>
-                  <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-                </>
-              ) : (
-                <>
-                  <Eye className="mr-2 h-4 w-4" /> Show Column
-                </>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
 
             {/* Submenu for column visibility */}
             <DropdownMenuSub>
@@ -196,7 +175,7 @@ const AuthorPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -215,8 +194,11 @@ const AuthorPage = () => {
       accessorKey: "bio",
       header: ({ column, table }) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+          <DropdownMenuTrigger asChild className="!text-center">
+            <Button
+              className="flex !items-center !text-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>BIO</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -224,7 +206,7 @@ const AuthorPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -245,33 +227,6 @@ const AuthorPage = () => {
             >
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
-
-            {/* Filter */}
-            <DropdownMenuItem
-              onClick={() => alert("Add filter logic here")}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </DropdownMenuItem>
-
-            {/* Toggle this column */}
-            <DropdownMenuItem
-              onClick={() => column.toggleVisibility()}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              {column.getIsVisible() ? (
-                <>
-                  <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-                </>
-              ) : (
-                <>
-                  <Eye className="mr-2 h-4 w-4" /> Show Column
-                </>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
             {/* Submenu for column visibility */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="flex items-center data-[state=open]:!bg-darkTealGreenish data-[highlighted]:!bg-darkTealGreenish data-[highlighted]:!text-white">
@@ -296,7 +251,7 @@ const AuthorPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -315,7 +270,10 @@ const AuthorPage = () => {
       header: ({ column, table }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="flex items-center space-x-2 bg-transparent hover:bg-tealGreenish active:bg-gray-700 hover:text-white dark:hover:text-white">
+            <Button
+              className="flex items-center space-x-2 bg-transparent hover:bg-ActionPurple active:!bg-ActionPurple hover:text-white dark:hover:text-white  
+             data-[state=open]:bg-ActionMiniPurple data-[state=open]:text-white"
+            >
               <span>Social Media</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
@@ -323,7 +281,7 @@ const AuthorPage = () => {
 
           <DropdownMenuContent
             align="start"
-            className="text-white bg-tealGreenish "
+            className="text-white bg-ActionMiniPurple "
           >
             {/* Sorting */}
             <DropdownMenuItem
@@ -345,36 +303,10 @@ const AuthorPage = () => {
               <X className="mr-2 h-4 w-4" /> Unsort
             </DropdownMenuItem>
 
-            {/* Filter */}
-            <DropdownMenuItem
-              onClick={() => alert("Add filter logic here")}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              <Filter className="mr-2 h-4 w-4" /> Filter
-            </DropdownMenuItem>
-
-            {/* Toggle this column */}
-            <DropdownMenuItem
-              onClick={() => column.toggleVisibility()}
-              className="hover:!bg-darkTealGreenish hover:!text-white"
-            >
-              {column.getIsVisible() ? (
-                <>
-                  <EyeOff className="mr-2 h-4 w-4" /> Hide Column
-                </>
-              ) : (
-                <>
-                  <Eye className="mr-2 h-4 w-4" /> Show Column
-                </>
-              )}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
             {/* Submenu for column visibility */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="flex items-center data-[state=open]:!bg-darkTealGreenish data-[highlighted]:!bg-darkTealGreenish data-[highlighted]:!text-white">
-                <LayoutGrid className="mr-2 h-4 w-4 hover:!bg-darkTealGreenish hover:!text-white" />{" "}
+                <LayoutGrid className="mr-2 h-4 w-4 hover:!bg-ActionMiniPurple hover:!text-white" />{" "}
                 Show Columns
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent asChild>
@@ -395,7 +327,7 @@ const AuthorPage = () => {
                         onCheckedChange={(value) =>
                           col.toggleVisibility(!!value)
                         }
-                        className="capitalize hover:!bg-darkTealGreenish hover:!text-white"
+                        className="capitalize hover:!bg-ActionMiniPurple hover:!text-white"
                       >
                         {col.columnDef.header instanceof Function
                           ? col.id
@@ -446,15 +378,21 @@ const AuthorPage = () => {
             </Button>
 
             {/* Delete Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500 cursor-pointer"
-              onClick={() => handleDelete(author.author_id)}
-            >
-              <TrashIcon size={16} />
-              Delete
-            </Button>
+            <ConfirmDeleteModal
+              title="Delete Author"
+              message="Are you sure you want to delete this author?"
+              onConfirm={() => handleDelete(author.author_id)}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-500 cursor-pointer"
+                >
+                  <TrashIcon size={16} />
+                  Delete
+                </Button>
+              }
+            />
           </div>
         );
       },
@@ -475,15 +413,42 @@ const AuthorPage = () => {
 
   return (
     <div>
-      <div className="flex items-center py-4 ">
-        <Input
-          type="text"
-          placeholder="Search by name, email, etc."
-          className="max-w-sm input-inside"
-          onChange={(e) => handleFilterChange(e.target.value)}
-        />
+      <h1 className="text-ActionPurple font-bold text-3xl pb-5">
+        Author Table
+      </h1>
+      <div className="flex justify-between items-center py-6">
+        <div className="flex items-center py-4 w-[60%] m-0 ">
+          <Input
+            type="text"
+            placeholder="Search by name, email, etc."
+            className="max-w-sm input-inside  border-black dark:border-white dark:text-white text-black placeholder:text-slate-500 dark:placeholder:text-slate-400"
+            onChange={(e) => handleFilterChange(e.target.value)}
+          />
+        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="bg-primary bg-ActionPurple text-white cursor-pointer">
+              <PlusIcon className="mr-2" />
+              Add Author
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-white p-6 rounded-2xl shadow-lg">
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Add New Author
+            </DialogTitle>
+            <div className="space-y-4 overflow-y-auto">
+              <AuthorForm
+                onSuccess={() => {
+                  fetchAuthors();
+                }}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
-      <Table className="bg-white !text-center !px-3 rounded-2xl dark:bg-darkTealGreenish dark:text-white text-black overflow-x-scroll">
+
+      <Table className="bg-white !text-center !px-3 rounded-2xl !border border-slate-300 p-4 transition-colors dark:border-slate-700 dark:bg-darkMainCardBg dark:text-white text-black overflow-x-scroll">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -520,7 +485,7 @@ const AuthorPage = () => {
         >
           Previous
         </Button>
-        <span className="text-sm text-white">
+        <span className="text-sm dark:text-white text-black">
           Page {pageIndex} of {totalPages}
         </span>
         <Button

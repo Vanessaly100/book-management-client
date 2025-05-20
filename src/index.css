@@ -1,5 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@tailwind utilities;
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 
 
 
@@ -8,12 +15,25 @@
 
   --color-Gold:  #FFB400 ; 
   --color-tealGreenish: #3B5552; /* gold #D7A30F */
-  --color-darkTealGreenish:  #1E2727;
+  --color-tealGreenish: #081027; /* gold #D7A30F */
+  /* --color-darkTealGreenish:  #1E2727; */
+  --color-darkTealGreenish:  #081028;
   --color-offWhite: #B3C7C6;
   --color-darkOffWhite: #B3C7C6;
   --color-Red: #FF6B6B;
   --color-hoverGold: #8B8000;
+  --color-ActionPurple: #962CFC;
+  --color-ActionMiniPurple: #676DF3;
+  --color-darkMainBg: #081027;
+  /* --color-darkMainCardBg:  #0B1739; */
+  --color-darkMainCardBg:  #0F172B;
+  --color-lightMainBg:  #DEE5F5;
+  --color-lightMainCardBg: #FFFFFF;
+  --color-lightInput: #D1D5DC;
+/* 314158 */
 }
+
+
 
 
 @layer base {
@@ -22,9 +42,11 @@
     }
 }
 
+
+
 @layer components {
     .sidebar-group {
-        @apply flex w-full flex-col gap-y-2;
+        @apply flex w-full flex-col gap-y-2 ;
     }
 
     .sidebar-group-title {
@@ -32,19 +54,19 @@
     }
 
     .sidebar-item {
-        @apply flex h-[40px] w-full flex-shrink-0 items-center gap-x-3 rounded-lg p-3 text-base font-medium  transition-colors hover:bg-hoverGold dark:hover:bg-hoverGold 
+        @apply flex h-[40px] w-full flex-shrink-0 items-center gap-x-3 rounded-lg p-3 text-base font-medium  transition-colors hover:bg-darkMainCardBg dark:hover:bg-darkMainCardBg hover:text-lightMainCardBg
        
     }
 
     .sidebar-item.active {
-  @apply bg-darkTealGreenish text-offWhite dark:bg-tealGreenish dark:text-white;
+  @apply bg-darkMainCardBg text-offWhite dark:bg-darkMainCardBg dark:text-white border-l-4 border-l-ActionPurple;
 }
     .title {
         @apply text-3xl font-semibold text-slate-900 transition-colors dark:text-slate-50;
     }
 
     .btn-ghost {
-        @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-Gold transition-colors hover:bg-offWhite hover:text-slate-500 dark:hover:bg-offWhite dark:hover:text-black;
+        @apply flex h-10 flex-shrink-0 items-center justify-center gap-x-2 rounded-lg p-2 text-ActionPurple transition-colors hover:bg-darkMainCardBg hover:text-lightMainCardBg  dark:hover:text-ActionPurple dark:hover:bg-lightMainCardBg;
     }
 
     .link {
@@ -52,7 +74,7 @@
     }
 
     .input {
-        @apply hidden h-10 flex-shrink-0 items-center gap-x-2 rounded-lg border border-darkTealGreenish px-2 text-base  transition-colors has-[input:focus]:border-blue-500 md:flex md:w-auto lg:w-80 dark:border-slate-700 dark:text-slate-50 dark:focus:border-Gold;
+        @apply hidden h-10 flex-shrink-0 items-center gap-x-2 rounded-lg border border-darkTealGreenish px-2 text-base  transition-colors has-[input:focus]:border-blue-500 md:flex md:w-auto lg:w-80 dark:border-slate-700 dark:text-slate-50 dark:focus:border-ActionPurple;
     }
 
     .input-inside{
