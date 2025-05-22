@@ -60,27 +60,8 @@ const About = () => {
                 alt="Background Image"
                 className="w-full h-full transition-transform duration-300 transform hover:translate-y-[-10px] hover:scale-105  cursor-pointer"
               />
-              <div className="">
-              {/* <Countup /> */}
-            </div>
+              
         </div>
-          {/* <div className=" w-full h-[300px]">
-            <div className="">
-              <img
-                src={AboutUsimg4}
-                alt="Background Image"
-                className="w-full h-full transition-transform duration-300 transform hover:translate-y-[-10px] hover:scale-105  cursor-pointer"
-              />
-            </div> */}
-            {/* <div className="absolute -top-20 right-0 group"> */}
-              {/* <img
-                src={AboutUsimg3}
-                alt="Foreground Image"
-                className="w-full"
-              /> */}
-            {/* </div> */}
-           
-          {/* </div> */}
           <div className="">
             <div
               data-aos="zoom-in"
