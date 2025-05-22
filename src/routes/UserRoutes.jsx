@@ -4,7 +4,7 @@ import Reservations from "../pages/user/userProfile/Reservations";
 import Home from "@/pages/user/Home";
 import Books from "@/pages/public/Books";
 import BorrowedBooks from "../pages/user/userProfile/BorrowedBooks";
-import About from "@/pages/public/About";
+import About from "@/pages/public/About/About";
 import Services from "@/pages/public/Services";
 import Navbar from "@/components/navbar/Navbar";
 import Reviews from "@/pages/user/userProfile/Reviews";
@@ -14,6 +14,7 @@ import Layout from "@/pages/user/main/layout";
 import Dashboard from "@/pages/user/userProfile/Dashboard";
 import Notification from "@/pages/user/userProfile/Notification";
 import ErrorPage from "@/pages/public/ErrorPage";
+import Contacts from "@/pages/public/Contact/Contacts";
 
 const UserLayout = () => {
   return (
@@ -33,6 +34,7 @@ const UserRoutes = () => {
           <Route path="books" element={<Books />} />
           <Route path="about" element={<About />} />
           <Route path="services" element={<Services />} />
+          <Route path="contact" element={<Contacts/>} />
         </Route>
         {/* Nested under profile */}
         <Route path="/" element={<Layout/>}>

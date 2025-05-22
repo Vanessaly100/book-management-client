@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { History } from 'lucide-react';
 
 const BorrowedBooks = () => {
-  const [borrowedBooks, setBorrowedBooks] = useState([]); // Ensure it's always an array
+  const [borrowedBooks, setBorrowedBooks] = useState([]); 
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const { user } = useAuth();
   const userId = user?.user_id;
@@ -12,12 +12,12 @@ const BorrowedBooks = () => {
   // Fetch borrowed books on component mount
   useEffect(() => {
     const fetchBorrowedBooks = async () => {
-      if (!userId) return; // Check if userId is available
+      if (!userId) return; 
       try {
         const data = await getUserBorrowedBooks(userId);
         console.log("API response data:", data);
-        // console.log("First borrowed book:", data[0]); // Log first book for debugging
-        setBorrowedBooks(data || []);  // Directly set the array
+        
+        setBorrowedBooks(data || []);  
       } catch (error) {
         console.error("Error fetching borrowed books:", error);
       }
@@ -28,26 +28,19 @@ const BorrowedBooks = () => {
 
   const handleReturn = async (bookId) => {
     try {
-      // Call API to return the book
       const res = await returnBook(userId, bookId);
   
-      // Check if the response is successful
       if (res?.message === 'Books returned successfully.') {
-        alert("✅ Book returned!");
-  
-        // Immediately remove the returned book from the state
+        alert(" Book returned!");
         setBorrowedBooks((prev) => prev.filter((book) => book.book_id !== bookId));
-  
-        // Refetch the updated list of borrowed books after returning
         const updatedBooks = await getUserBorrowedBooks(userId);
         setBorrowedBooks(updatedBooks || []);
       } else {
-        // If something went wrong, throw an error
         throw new Error("Failed to return the book.");
       }
     } catch (err) {
       console.error("Failed to return book:", err);
-      alert("❌ Failed to return the book.");
+      alert(" Failed to return the book.");
     }
   };
   
@@ -61,7 +54,7 @@ const BorrowedBooks = () => {
       <div>
       <button
   onClick={() => setShowHistoryModal(true)}
-  className="hover:text-green-700 transition duration-300"
+  className="hover:text-ActionMiniPurple transition duration-300"
   aria-label="View Borrow History"
 >
   <History size={32} />
@@ -97,7 +90,7 @@ const BorrowedBooks = () => {
               <img
                 src={book.book.cover_url}
                 alt={book.book.title}
-                className="w-12 h-16 object-cover rounded"
+                className="w-12 h- object-cover rounded"
               />
             </div>
           ))

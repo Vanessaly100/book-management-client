@@ -1,245 +1,308 @@
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-import { useTheme } from "../../../hooks/use-theme";
-
-import { overviewData, recentSalesData, topProducts } from "../../../constants";
-
+import { useEffect, useState } from "react";
 import { Footer } from "../../../layouts/footer";
+import DashboardCharts from '../../admin/dashboard/DashboardCharts';
 
-import { CreditCard, DollarSign, Package, PencilLine, Star, Trash, TrendingUp, Users } from "lucide-react";
+import {
+  CreditCard,
+  DollarSign,
+  Package,
+  Trash,
+  TrendingUp,
+  Users,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import api from "../../admin/api";
+import {  deleteBook } from "../../../api/book";
+import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
 const DashboardPage = () => {
-    const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [overview, setOverview] = useState(null);
+  const [popularBooks, setPopularBooks] = useState([]);
+  const [lowStockBooks, setLowStockBooks] = useState([]);
+  const [recentActivity, setRecentActivity] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    data: {
+      recentActivity: [],
+    }
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    return (
-        <div className="flex flex-col gap-y-4">
-            <h1 className="title">Dashboard</h1>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                <div className="card">
-                    <div className="card-header">
-                        <div className="w-fit rounded-lg bg-Gold/20 p-2 text-Gold transition-colors dark:bg-Gold/20 dark:text-Gold">
-                            <Package size={26} />
-                        </div>
-                        <p className="card-title">Total Products</p>
-                    </div>
-                    <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
-                        <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">25,154</p>
-                        <span className="flex w-fit items-center gap-x-2 rounded-full border border-Gold px-2 py-1 font-medium text-Gold dark:border-Gold dark:text-Gold">
-                            <TrendingUp size={18} />
-                            25%
-                        </span>
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="card-header">
-                        <div className="rounded-lg bg-Gold/20 p-2 text-Gold transition-colors dark:bg-Gold/20 dark:text-Gold">
-                            <DollarSign size={26} />
-                        </div>
-                        <p className="card-title">Total Paid Orders</p>
-                    </div>
-                    <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
-                        <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">$16,000</p>
-                        <span className="flex w-fit items-center gap-x-2 rounded-full border border-Gold px-2 py-1 font-medium text-Gold dark:border-Gold dark:text-Gold">
-                            <TrendingUp size={18} />
-                            12%
-                        </span>
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="card-header">
-                        <div className="rounded-lg bg-Gold/20 p-2 text-Gold transition-colors dark:bg-Gold/20 dark:text-Gold">
-                            <Users size={26} />
-                        </div>
-                        <p className="card-title">Total Customers</p>
-                    </div>
-                    <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
-                        <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">15,400k</p>
-                        <span className="flex w-fit items-center gap-x-2 rounded-full border border-Gold px-2 py-1 font-medium text-Gold dark:border-Gold dark:text-Gold">
-                            <TrendingUp size={18} />
-                            15%
-                        </span>
-                    </div>
-                </div>
-                <div className="card">
-                    <div className="card-header">
-                        <div className="rounded-lg bg-Gold/20 p-2 text-Gold transition-colors dark:bg-Gold/20 dark:text-Gold">
-                            <CreditCard size={26} />
-                        </div>
-                        <p className="card-title">Sales</p>
-                    </div>
-                    <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
-                        <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">12,340</p>
-                        <span className="flex w-fit items-center gap-x-2 rounded-full border border-Gold px-2 py-1 font-medium text-Gold dark:border-Gold dark:text-Gold">
-                            <TrendingUp size={18} />
-                            19%
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <div className="card col-span-1 md:col-span-2 lg:col-span-4">
-                    <div className="card-header">
-                        <p className="card-title">Overview</p>
-                    </div>
-                    <div className="card-body p-0">
-                        <ResponsiveContainer
-                            width="100%"
-                            height={300}
-                        >
-                            <AreaChart
-                                data={overviewData}
-                                margin={{
-                                    top: 0,
-                                    right: 0,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient
-                                        id="colorTotal"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor=" #FFB400"
-                                            stopOpacity={0.8}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor=" #FFB400"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-                                </defs>
-                                <Tooltip
-                                    cursor={false}
-                                    formatter={(value) => `$${value}`}
-                                />
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-                                <XAxis
-                                    dataKey="name"
-                                    strokeWidth={0}
-                                    stroke={theme === "light" ? "#475569" : "#94a3b8"}
-                                    tickMargin={6}
-                                />
-                                <YAxis
-                                    dataKey="total"
-                                    strokeWidth={0}
-                                    stroke={theme === "light" ? "#475569" : "#94a3b8"}
-                                    tickFormatter={(value) => `$${value}`}
-                                    tickMargin={6}
-                                />
+  const fetchDashboard = async () => {
+    try {
+      const [
+        overviewRes,
+        popularBooksRes,
+        lowStockBooksRes,
+        recentActivityRes,
+      ] = await Promise.all([
+        api.get("/overview"),
+        api.get("/popular-books"),
+        api.get("/low-stock-books"),
+        api.get("/recent-activity"),
+      ]);
 
-                                <Area
-                                    type="monotone"
-                                    dataKey="total"
-                                    stroke=" #FFB400"
-                                    fillOpacity={1}
-                                    fill="url(#colorTotal)"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-                <div className="card col-span-1 md:col-span-2 lg:col-span-3">
-                    <div className="card-header">
-                        <p className="card-title">Recent Sales</p>
-                    </div>
-                    <div className="card-body h-[300px] overflow-auto p-0">
-                        {recentSalesData.map((sale) => (
-                            <div
-                                key={sale.id}
-                                className="flex items-center justify-between gap-x-4 py-2 pr-2"
-                            >
-                                <div className="flex items-center gap-x-4">
-                                    <img
-                                        src={sale.image}
-                                        alt={sale.name}
-                                        className="size-10 flex-shrink-0 rounded-full object-cover"
-                                    />
-                                    <div className="flex flex-col gap-y-2">
-                                        <p className="font-medium text-slate-900 dark:text-slate-50">{sale.name}</p>
-                                        <p className="text-sm text-slate-600 dark:text-slate-400">{sale.email}</p>
-                                    </div>
-                                </div>
-                                <p className="font-medium text-slate-900 dark:text-slate-50">${sale.total}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+      setOverview(overviewRes.data.data);
+      setPopularBooks(popularBooksRes.data.data);
+      console.log("Popular", popularBooksRes.data.data);
+      setLowStockBooks(lowStockBooksRes.data.data);
+      setRecentActivity(recentActivityRes.data.data.activities);
+      console.log("Activity", recentActivityRes.data.data);
+    } catch (error) {
+      console.error("Error loading dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+useEffect(() => {
+  const fetchStats = async () => {
+      const response = await fetch('http://localhost:4000/api/dashboard/overview', { 
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("API response:", data);
+      
+      setStats({
+        data: {
+          ...data.data,
+          recentActivity: data.data?.recentActivity || [],
+          mostBorrowedBooks: data.data?.mostBorrowedBooks || [],
+          lowStockBooks: data.data?.lowStockBooks || [],
+        }
+      });
+      
+      setIsLoading(false);
+  };
+
+  fetchStats();
+}, []);
+
+if (loading) return <div className="p-8">Loading dashboard...</div>;
+
+if (isLoading) return (
+  <div className="p-6">
+    <div className="flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+    </div>
+  </div>
+);
+
+if (error) return (
+  <div className="p-6 text-red-500">
+    Error loading dashboard data: {error}
+    <button 
+      onClick={() => window.location.reload()}
+      className="ml-4 px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+    >
+      Retry
+    </button>
+  </div>
+);
+
+const handleDelete = async (book_id) => {
+    await deleteBook(book_id);
+    await fetchDashboard()
+  };
+if (!mounted) return null;
+
+  return (
+    <div className="flex flex-col gap-y-4">
+      <h1 className="title">Dashboard</h1>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="card">
+          <div className="card-header">
+            <div className="w-fit rounded-lg bg-ActionMiniPurple p-2 text-white transition-color">
+              <Package size={26} />
             </div>
-            <div className="card">
-                <div className="card-header">
-                    <p className="card-title">Top Orders</p>
-                </div>
-                <div className="card-body p-0">
-                    <div className="relative h-[500px] w-full flex-shrink-0 overflow-auto rounded-none [scrollbar-width:_thin]">
-                        <table className="table">
-                            <thead className="table-header">
-                                <tr className="table-row">
-                                    <th className="table-head">#</th>
-                                    <th className="table-head">Product</th>
-                                    <th className="table-head">Price</th>
-                                    <th className="table-head">Status</th>
-                                    <th className="table-head">Rating</th>
-                                    <th className="table-head">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="table-body">
-                                {topProducts.map((product) => (
-                                    <tr
-                                        key={product.number}
-                                        className="table-row"
-                                    >
-                                        <td className="table-cell">{product.number}</td>
-                                        <td className="table-cell">
-                                            <div className="flex w-max gap-x-4">
-                                                <img
-                                                    src={product.image}
-                                                    alt={product.name}
-                                                    className="size-14 rounded-lg object-cover"
-                                                />
-                                                <div className="flex flex-col">
-                                                    <p>{product.name}</p>
-                                                    <p className="font-normal text-slate-600 dark:text-slate-400">{product.description}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="table-cell">${product.price}</td>
-                                        <td className="table-cell">{product.status}</td>
-                                        <td className="table-cell">
-                                            <div className="flex items-center gap-x-2">
-                                                <Star
-                                                    size={18}
-                                                    className="fill-yellow-600 stroke-yellow-600"
-                                                />
-                                                {product.rating}
-                                            </div>
-                                        </td>
-                                        <td className="table-cell">
-                                            <div className="flex items-center gap-x-4">
-                                                <button className="text-Gold dark:text-Gold">
-                                                    <PencilLine size={20} />
-                                                </button>
-                                                <button className="text-red-500">
-                                                    <Trash size={20} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <Footer />
+            <p className="card-title">Total Books</p>
+          </div>
+          <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
+            <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">
+              {overview?.totalBooks}
+            </p>
+            <span className="flex w-fit items-center gap-x-2 rounded-full border border-ActionMiniPurple px-2 py-1 font-medium text-ActionMiniPurple">
+              <TrendingUp size={18} />
+              25%
+            </span>
+          </div>
         </div>
-    );
+        <div className="card">
+          <div className="card-header">
+            <div className="rounded-lg bg-ActionMiniPurple p-2 text-white transition-color">
+              <DollarSign size={26} />
+            </div>
+            <p className="card-title">Total Users</p>
+          </div>
+          <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
+            <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">
+              {overview?.totalUsers}
+            </p>
+            <span className="flex w-fit items-center gap-x-2 rounded-full border border-ActionMiniPurple px-2 py-1 font-medium text-ActionMiniPurple">
+              <TrendingUp size={18} />
+              12%
+            </span>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header">
+            <div className="rounded-lg bg-ActionMiniPurple p-2 text-white transition-color">
+              <Users size={26} />
+            </div>
+            <p className="card-title">Total Reservations</p>
+          </div>
+          <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
+            <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">
+              {overview?.totalReservations}
+            </p>
+            <span className="flex w-fit items-center gap-x-2 rounded-full border border-ActionMiniPurple px-2 py-1 font-medium text-ActionMiniPurple">
+              <TrendingUp size={18} />
+              15%
+            </span>
+          </div>
+        </div>
+        <div className="card">
+          <div className="card-header">
+            <div className="rounded-lg bg-ActionMiniPurple p-2 text-white transition-color">
+              <CreditCard size={26} />
+            </div>
+            <p className="card-title">Total Borrowed</p>
+          </div>
+          <div className="card-body bg-slate-100 transition-colors dark:bg-slate-950">
+            <p className="text-3xl font-bold text-slate-900 transition-colors dark:text-slate-50">
+              {overview?.totalBorrows}
+            </p>
+            <span className="flex w-fit items-center gap-x-2 rounded-full border border-ActionMiniPurple px-2 py-1 font-medium text-ActionMiniPurple">
+              <TrendingUp size={18} />
+              19%
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="card col-span-1 md:col-span-2 lg:col-span-4">
+          <div className="card-header">
+            <p className="card-title">Overview</p>
+          </div>
+          <div className="card-body p-0">
+          <DashboardCharts stats={stats.data} />
+          </div>
+        </div>
+        <div className="card col-span-1 md:col-span-2 lg:col-span-3">
+          <div className="card-header">
+            <p className="card-title">Popular Books</p>
+          </div>
+          <div className="card-body h-[300px] overflow-auto p-0 grid grid-cols-2 items-center ">
+            {popularBooks.length === 0 && (
+              <li className="p-4">No data found</li>
+            )}
+            {popularBooks.map((book) => (
+              <li
+                key={book.book_id}
+                className="p-4 text-black dark:text-white list-none"
+              >
+                <img
+                  src={book.cover_url}
+                  alt="book cover url"
+                  className="size-30 flex-shrink-0 object-cover"
+                />
+                <span>{book.title}</span>
+              </li>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="card">
+        <div className="card-header">
+          <p className="card-title">Recent Activity</p>
+        </div>
+        <div className="card-body p-0">
+          <div className="relative h-[500px] w-full flex-shrink-0 overflow-auto rounded-none [scrollbar-width:_thin]">
+            <table className="table">
+              <thead className="table-header">
+                <tr className="table-row">
+                  <th className="table-head">#</th>
+                  <th className="table-head">Books</th>
+                  <th className="table-head">User Email</th>
+                  <th className="table-head">Status</th>
+                  <th className="table-head">Date</th>
+                  <th className="table-head">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="table-body">
+              {recentActivity.length === 0 && <li className="p-4">No recent activity</li>}
+              {recentActivity.map((activity, index) => (
+                  <tr key={activity.index} className="table-row">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {index + 1}
+                </td>
+                    <td className="table-cell">
+                      <div className="flex w-max gap-x-4">
+                        <img
+                          src={activity.book.cover_url}
+                          alt="cover url"
+                          className="size-14 rounded-lg object-cover"
+                        />
+                        <div className="flex flex-col">
+                          <p>{activity.book.title}</p>
+                          <p className="font-normal text-slate-600 dark:text-slate-400">
+                            {activity.book.author.name}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="table-cell">{activity.user.email}</td>
+                    <td className="table-cell">{activity.status}</td>
+                    <td className="table-cell">
+                      <div className="flex items-center gap-x-2">
+                        <p>{new Date(activity.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </td>
+                    <td className="table-cell">
+                      <div className="flex items-center gap-x-4">
+                        <ConfirmDeleteModal
+              title="Delete Book"
+              message="Are you sure you want to delete this book?"
+              onConfirm={() => handleDelete(activity.book.book_id)}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-500 cursor-pointer"
+                >
+                  <Trash size={16} />
+                  Delete
+                </Button>
+              }
+            />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
 };
 
 export default DashboardPage;

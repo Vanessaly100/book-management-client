@@ -1,60 +1,35 @@
-import { createContext, useEffect, useState } from "react";
 
-import PropTypes from "prop-types";
+import React, { createContext, useState, useEffect } from "react";
 
-const initialState = {
-    theme: "system",
-    setTheme: () => null,
-};
+export const ThemeContext = createContext();
 
-export const ThemeProviderContext = createContext(initialState);
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState(() => {
+    // Check localStorage or default to light
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") || "light";
+    }
+    return "light";
+  });
 
-export function ThemeProvider({ children, defaultTheme = "system", storageKey = "vite-ui-theme", ...props }) {
-    const [theme, setTheme] = useState(() => localStorage.getItem(storageKey) || defaultTheme);
-    useEffect(() => {
-  const root = window.document.documentElement;
-  root.classList.remove("light", "dark");
+  useEffect(() => {
+    const root = window.document.documentElement;
 
-  let applied = theme;
+    // Remove old theme classes and add current theme class
+    root.classList.remove(theme === "dark" ? "light" : "dark");
+    root.classList.add(theme);
 
-  if (theme === "system") {
-    applied = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
+    // Save to localStorage
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
-  root.classList.add(applied);
-  console.log("📦 Theme applied:", applied);
-}, [theme]);
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === "dark" ? "light" : "dark"));
+  };
 
-
-    useEffect(() => {
-        const root = window.document.documentElement;
-        root.classList.remove("light", "dark");
-
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            root.classList.add(systemTheme);
-            return;
-        }
-
-        root.classList.add(theme);
-    }, [theme]);
-
-    const value = {
-        theme,
-        setTheme: (newTheme) => { // 💥 Fixed here!
-            localStorage.setItem(storageKey, newTheme);
-            setTheme(newTheme);
-        },
-    };
-
-    return (
-        <ThemeProviderContext.Provider {...props} value={value}>
-            {children}
-        </ThemeProviderContext.Provider>
-    );
-}
-ThemeProvider.propTypes = {
-    children: PropTypes.node,
-    defaultTheme: PropTypes.string,
-    storageKey: PropTypes.string,
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };

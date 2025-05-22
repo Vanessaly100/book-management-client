@@ -27,7 +27,7 @@ const BorrowSection = ({ title, endpoint }) => {
   }, [filters, page]);
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md border mb-6">
+    <div className="bg-white  dark:bg-darkMainCardBg dark:text-white p-6 rounded-2xl shadow-md border mb-6">
       <h2 className="text-xl font-bold mb-4">{title}</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
@@ -67,7 +67,7 @@ const BorrowSection = ({ title, endpoint }) => {
           <div className="overflow-x-auto">
             <table className="w-full border text-sm">
               <thead>
-                <tr className="bg-gray-100 text-left">
+                <tr className="bg-gray-100 text-left dark:bg-darkMainBg border border-gray-400 dark:text-white">
                   <th className="p-2">Title</th>
                   <th className="p-2">Borrow Date</th>
                   <th className="p-2">Due Date</th>

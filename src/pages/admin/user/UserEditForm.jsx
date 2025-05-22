@@ -237,12 +237,6 @@ const UserEditForm = ({ initialValues, onSave, onClose }) => {
                         >
                           Admin
                         </SelectItem>
-                        <SelectItem
-                          value="moderator"
-                          className="transition-all duration-200 hover:bg-tealGreenish hover:text-white focus:bg-tealGreenish focus:text-Gold"
-                        >
-                          Moderator
-                        </SelectItem>
                       </SelectContent>
                     </Select>
                   )}

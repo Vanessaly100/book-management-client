@@ -5,12 +5,16 @@ const AuthorEditForm = ({ initialValues, onSave, onClose }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
+    bio: Yup.string()
+       .required("Bio is required")
+       .min(10, "Bio must be at least 10 characters"),
     contact: Yup.string(),
   });
 
   const fixedInitialValues = {
     name: initialValues?.name || "",
     email: initialValues?.email || "",
+    bio: initialValues?.bio || "",
     contact: initialValues?.contact || "",
   };
 
@@ -60,6 +64,20 @@ const AuthorEditForm = ({ initialValues, onSave, onClose }) => {
                 />
                 <ErrorMessage
                   name="email"
+                  component="div"
+                  className="text-red-500 text-sm"
+                />
+              </div>
+              <div>
+                <label>Bio</label>
+                <Field
+                  name="bio"
+                  type="bio"
+                  placeholder="bio"
+                  className="w-full p-2 border-none rounded-lg bg-gray-300"
+                />
+                <ErrorMessage
+                  name="bio"
                   component="div"
                   className="text-red-500 text-sm"
                 />

@@ -1,5 +1,5 @@
 // src/pages/LoginPage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {  Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
@@ -8,11 +8,54 @@ import * as Yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-  const { login } = useAuth();
   const navigate = useNavigate(); 
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { auth, login } = useAuth(); 
+
+  // Redirect logged-in users away from login page
+  useEffect(() => {
+    if (auth?.user) {
+      const role = auth.role?.toLowerCase();
+      const currentPath = location.pathname;
+  
+      if (role === "admin" && !currentPath.startsWith("/admin")) {
+        navigate("/admin/");
+      } else if (role === "user" && !currentPath.startsWith("/user")) {
+        navigate("/user/home");
+      }
+    }
+  }, [auth?.user, auth?.role, location.pathname, navigate]);
+  
+
+  const onSubmit = async (values, { resetForm }) => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await login(values.email, values.password);
+
+      if (response.message !== "Login successful") {
+        setError(response.message || "Login failed");
+      } else {
+        resetForm();
+        const role = response.role?.toLowerCase();
+        if (role === "admin") {
+          navigate("/admin/");
+        } else if (role === "user") {
+          navigate("/user/home");
+        } else {
+          setError("Unknown role");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong during login");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -23,33 +66,7 @@ const Login = () => {
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string().required("Required").min(6, "Password too short"),
     }),
-    onSubmit: async (values, { resetForm }) => {
-      setError("");
-      setLoading(true);
-    
-      try {
-        const response = await login(values.email, values.password);
-    
-        if (response.message !== "Login successful") {
-          setError(response.message || "Login failed");
-        } else {
-          resetForm();
-          const role = response.role?.toLowerCase();
-          if (role === "admin") {
-            navigate("/admin");
-          } else if (role === "user") {
-            navigate("/user/home");
-          } else {
-            setError("Unknown role");
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        setError("Something went wrong during login");
-    
-      setLoading(false);
-      }
-    },
+    onSubmit,
   });
 
 

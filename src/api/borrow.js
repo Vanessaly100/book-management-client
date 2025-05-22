@@ -26,7 +26,7 @@ export const getUserBorrowedBooks = async () => {
   try {
     const response = await API.get(`/user/borrowed-books`);
     console.log("response", response)
-    return response.data; // assume it returns { borrowedBookIds: [1, 2, 3] }
+    return response.data; 
   } catch (error) {
     console.error("Error fetching user's borrowed books:", error.response?.data || error.message);
     return { borrowedBookIds: [] };

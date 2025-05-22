@@ -23,16 +23,23 @@ export const getAllNotifications = async ({
 
 
 // Fetch notifications for a specific user
-export const getUserNotifications = async (userId) => {
-  try {
-    const response = await API.get(`/notifications/${userId}`);
-    console.log("Fetched user notifications:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user notifications:", error);
-    throw error;
-  }
-};
+// export const getUserNotifications = async (userId) => {
+//   try {
+//     const response = await API.get(`/notifications/${userId}`);
+//     console.log("Fetched user notifications:", response);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching user notifications:", error);
+//     throw error;
+//   }
+// }; 
+
+export async function getUserNotifications(userId) {
+  const response = await API.get(`/notifications/${userId}`);
+  return response.data;
+}
+
+
 
 export const updateNotification = async (notificationId, updatedData) => {
   try {
@@ -83,33 +90,6 @@ export const deleteNotification = async (notificationId) => {
   }
 };
 
-export const createNotification = async (
-  firstName,
-  email,
-  bookTitle,
-  message,
-  notificationType
-) => {
-  try {
-    const response = await API.post(
-      `/notifications`,
-      {
-        first_name: firstName,
-        email,
-        book_title: bookTitle,
-        message,
-        type: notificationType,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error creating notification:",
-      error.response?.data || error.message
-    );
-    throw error;
-  }
-};
 
 // Create an overdue notification
 export const createOverdueNotification = async (
@@ -194,3 +174,14 @@ export const sendOverdueReminder = async (borrowId) => {
     throw error;
   }
 };
+
+
+
+
+export const create = async (endpoint, data) => {
+  const response = await API.post(`/notifications/${endpoint}`, data, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+

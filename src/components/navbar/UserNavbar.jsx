@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import logo from '../../assets/image_prev_ui.png';
+import logo from '../../assets/book_7629876-removebg-preview.png';
 import png from '../../assets/gray-user-profile-icon-png-fP8Q1P.png';
 import { RiLogoutBoxRLine} from 'react-icons/ri';
 import { FaRegEdit } from "react-icons/fa";
@@ -71,7 +71,7 @@ const UserNavbar = () => {
         </div>
         <header className={`my-bg w-full h-20 flex items-center justify-between px-8 relative`}>
           <div className='bg-white pr-2 absolute -top-16 left-0 z-20 h-32 w-56 logo'>
-            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-green-800'>
+            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple'>
               <div className='h-20 w-20'>
                 <img 
                   src={logo} 
@@ -79,7 +79,7 @@ const UserNavbar = () => {
                   className='w-full h-full object-cover' 
                 />
               </div>
-              <span className='text-2xl -mt-3'>e-library</span>
+              <span className='text-2xl -mt-3'>FinLib</span>
             </div>
           </div>
           <div className='w-56'>
@@ -90,27 +90,33 @@ const UserNavbar = () => {
   <div className="flex space-x-4 font-medium">
   <Link
   to="/user/home"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   Home
 </Link>
 <Link
   to="/user/books"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   Books
 </Link>
 <Link
   to="/user/about"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   About Us
 </Link>
 <Link
   to="/user/services"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
-  Our Services
+  Services
+</Link>
+<Link
+  to="/user/contact"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/contact" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>
+  Contact
 </Link>
 
   </div>
@@ -138,8 +144,8 @@ const UserNavbar = () => {
             )}
             {!user && (
               <div className='flex gap-4'>
-                <Link to="/login" className="text-sm text-green-700 font-semibold">Login</Link>
-                <Link to="/register" className="text-sm text-green-700 font-semibold">Register</Link>
+                <Link to="/login" className="text-sm text-ActionPurple font-semibold">Login</Link>
+                <Link to="/register" className="text-sm text-ActionPurple font-semibold">Register</Link>
               </div>
             )}
           </div>
@@ -147,10 +153,11 @@ const UserNavbar = () => {
       </div>
       
       {/* Sticky Header */}
-      <div className={`bg-white h-24 w-full flex justify-between items-center flex-col shadow z-20 fixed transition-all duration-500 ${showStickyHeader ? 'top-0' : '-top-24'}`}>
-        <header className={`my-bg w-full h-full flex items-center justify-between px-8 relative`}>
+      <div className={`bg-white h-24 w-full flex justify-between items-center flex-col shadow z-50 fixed transition-all duration-500 ${showStickyHeader ? 'top-0' : '-top-24'}`}>
+        <header className={`my-bg w-full h-full flex items-center justify-between px-8 relative z-50`}>
+
           <div className='bg-white pr-2 absolute -top-4 left-0 z-20 h-28 w-56 logo'>
-            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-green-800'>
+            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple'>
               <div className='h-20 w-20'>
                 <img 
                   src={logo} 
@@ -158,7 +165,7 @@ const UserNavbar = () => {
                   className='w-full h-full object-cover' 
                 />
               </div>
-              <span className='text-2xl -mt-3'>e-library</span>
+              <span className='text-2xl -mt-3'>FinLib</span>
             </div>
           </div>
           <div className='w-56'>
@@ -169,27 +176,32 @@ const UserNavbar = () => {
 <div className="flex space-x-4 p-4 font-medium">
   <Link
   to="/user/home"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   Home
 </Link>
 <Link
   to="/user/books"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   Books
 </Link>
 <Link
   to="/user/about"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   About Us
 </Link>
 <Link
   to="/user/services"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
-  Our Services
+  Services
+</Link>
+<Link
+  to="/user/services"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/contact" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>Contact
 </Link>
   </div>
 </nav>

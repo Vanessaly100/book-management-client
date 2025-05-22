@@ -5,14 +5,13 @@ import AdminRoutes from "./routes/AdminRoutes";
 import UserRoutes from "./routes/UserRoutes";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
-import { ThemeProvider } from "./contexts/theme-context";
 import ErrorPage from "./pages/public/ErrorPage";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   return (
-    <ThemeProvider storageKey="theme">
     <Router>
         
-        {/* <ThemeProvider storageKey="vite-ui-theme"> */}
       <AuthProvider>
         <Routes>
           <Route path="/*" element={<PublicRoutes />} />
@@ -28,9 +27,8 @@ function App() {
       />} />
         </Routes>
       </AuthProvider>
-      
+      <ToastContainer />
     </Router>
-    </ThemeProvider>
   );
 }
 

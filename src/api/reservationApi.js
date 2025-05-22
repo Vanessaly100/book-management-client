@@ -25,7 +25,7 @@ export const getMyReservations = async () => {
   } catch (error) {
     throw error.response?.data || error;
   }
-};
+}; 
 
 // Admin: Get all reservations (with optional filters)
 export const getAllReservations = async ({
