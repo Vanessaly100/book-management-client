@@ -1,4 +1,6 @@
 import { Routes, Route, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Preloader from "../Preloader";
 // import Home from "../pages/public/Home";
 // import About from "../pages/public/About";
 // import Services from "../pages/public/Services";
@@ -18,7 +20,21 @@ const PublicLayout = () => {
 }
 
 const PublicRoutes = () => {
+   //  PRELOADER
+    const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoading(false); // Hide the preloader after 2 seconds
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }, []);
   return (
+    <div>
+    {loading ? (
+      <Preloader/> // Show preloader until the loading state is false
+    ) : (
     <Routes>
       <Route element={<PublicLayout />}>
       <Route path="/" element={<Home />} />
@@ -28,6 +44,9 @@ const PublicRoutes = () => {
       <Route path="/register" element={<Register />} />
       </Route>
     </Routes>
+      )}
+
+      </div>
   );
 };
 

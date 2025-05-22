@@ -1,4 +1,7 @@
 import { Routes, Route, Outlet } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import Preloader from "../Preloader";
 // import Profile from "../pages/user/userProfile/Profile";
 import Reservations from "../pages/user/userProfile/Reservations";
 import Home from "@/pages/user/Home";
@@ -27,7 +30,24 @@ const UserLayout = () => {
 };
 
 const UserRoutes = () => {
+  //  PRELOADER
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); // Hide the preloader after 2 seconds
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+
   return (
+    <div>
+    {loading ? (
+      <Preloader/> // Show preloader until the loading state is false
+    ) : (
+
     <Routes>
         <Route element={<UserLayout />}>
           <Route path="home" element={<Home />} />
@@ -50,6 +70,9 @@ const UserRoutes = () => {
       page = "User Page Not Found"
       />} />
     </Routes>
+       )}
+
+    </div>
   );
 };
 
