@@ -17,30 +17,30 @@ const Profile = () => {
         <h2 className="text-2xl font-bold mb-6">My Profile</h2>
         <nav className="flex flex-col space-y-2">
           <div className=" text-white cursor-pointer flex gap-2 items-center" onClick={() => navigate("/user/home")}>
-            < FiHome size={20} className="text-Gold" />
+            < FiHome size={20} className="text-ActionPurple" />
             <span>Home</span>
           </div>
           <NavLink 
             to="reviews"
-            className={({ isActive }) => isActive ? "text-Gold" : "text-white"}
+            className={({ isActive }) => isActive ? "text-ActionPurple" : "text-white"}
           >
             Reviews
           </NavLink>
           <NavLink 
             to="reservations"
-            className={({ isActive }) => isActive ? "text-Gold" : "text-white"}
+            className={({ isActive }) => isActive ? "text-ActionPurple" : "text-white"}
           >
             Reservations
           </NavLink>
           <NavLink 
             to="borrowed"
-            className={({ isActive }) => isActive ? "text-Gold" : "text-white"}
+            className={({ isActive }) => isActive ? "text-ActionPurple" : "text-white"}
           >
             Borrowed Books
           </NavLink>
           <NavLink 
             to="edit"
-            className={({ isActive }) => isActive ? "text-Gold" : "text-white"}
+            className={({ isActive }) => isActive ? "text-ActionPurple" : "text-white"}
           >
             Edit Profile
           </NavLink>

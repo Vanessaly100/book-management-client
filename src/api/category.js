@@ -6,6 +6,17 @@ const API = axios.create({
   withCredentials: true,
 });
 
+
+export const getAllCategoryNoFilter = async () => {
+  try {
+    const response = await API.get("/categories/no-filter-all");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching all authors:", error);
+    throw error;
+  }
+};
+
 // Get all categories with pagination, sorting, filtering
 export const getAllCategories = async ({
   page = 1,

@@ -3,6 +3,11 @@
 @tailwind utilities;
 @custom-variant dark (&:where(.dark, .dark *));
 
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+
+
 html {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -59,7 +64,7 @@ html {
     }
 
     .sidebar-item.active {
-  @apply bg-darkMainCardBg text-offWhite dark:bg-darkMainCardBg dark:text-white border-l-4 border-l-ActionPurple;
+  @apply bg-darkMainCardBg text-ActionPurple dark:bg-darkMainCardBg dark:text-white border-l-4 border-l-ActionPurple;
 }
     .title {
         @apply text-3xl font-semibold text-slate-900 transition-colors dark:text-slate-50;

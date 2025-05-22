@@ -9,9 +9,9 @@ import { toast } from 'react-toastify';
 import { bookValidationSchema } from '../validations/bookSchema';
 import CreatableSelect from 'react-select/creatable';
 import { getAllAuthorsNoFilter} from "../../../api/author";
-import { getAllCategories} from "../../../api/category";
+import { getAllCategoryNoFilter} from "../../../api/category";
   
-
+ 
 const BookAddForm = ({ onSuccess = () => {}, setError = () => {}, initialValues = {} }) => {
     const [authorOptions, setAuthorOptions] = useState([]);
     const [categoryOptions, setCategoryOptions] = useState([]);
@@ -38,7 +38,7 @@ const BookAddForm = ({ onSuccess = () => {}, setError = () => {}, initialValues 
     useEffect(() => {
       const fetchCategories = async () => {
         try {
-          const response = await getAllCategories("categories?limit=1000"); // your backend route
+          const response = await getAllCategoryNoFilter() // your backend route
           console.log("Categories responsesss:", response);
           const options = response.categories.map((category) => ({
             
@@ -77,20 +77,6 @@ const BookAddForm = ({ onSuccess = () => {}, setError = () => {}, initialValues 
   
       onSubmit: async (values, { setSubmitting, resetForm }) => {
         const payload = {
-          // title: values.title,
-          // author: values.author,
-          // category: values.category,
-          // description: values.description,
-          // CoverImage: values.CoverImage,
-          // publishedYear: parseInt(values.publishedYear),
-          // totalCopies: parseInt(values.totalCopies),
-          // availableCopies: parseInt(values.availableCopies),
-          // genres: Array.isArray(values.genres)
-          //   ? values.genres
-          //   : values.genres
-          //       ?.split(',')
-          //       .map((g) => g.trim())
-          //       .filter((g) => g.length > 0),
           title: values.title,
   author: values.author,
   category: values.category,

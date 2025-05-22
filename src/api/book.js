@@ -14,7 +14,8 @@ export const getAllBooks = async ({
   limit = 12,
   sort = "createdAt",
   order = "asc",
-  filter = "", // this will be your search input
+  filter = "",
+  category = "" // this will be your search input
 } = {}) => {
   try {
     const res = await API.get("/books/all", {
@@ -23,7 +24,8 @@ export const getAllBooks = async ({
         limit,
         sort,
         order,
-        filter, // make sure this matches what your backend expects
+        filter,
+        category, // make sure this matches what your backend expects
       },
     });
     return res.data;

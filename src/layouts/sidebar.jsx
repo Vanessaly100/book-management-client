@@ -4,7 +4,6 @@ import { navbarLinks } from "../constants";
 import logo from "../assets/book_7629876.png";
 import { cn } from "../lib/utils";
 import PropTypes from "prop-types";
-import { ChevronDown, ChevronRight } from "lucide-react";
 
 export const Sidebar = forwardRef(({ collapsed }, ref) => {
 

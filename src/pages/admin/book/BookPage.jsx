@@ -520,13 +520,12 @@ const BookPage = () => {
             <div className="space-y-4 overflow-y-auto">
               <BookAddForm
                 onSuccess={(handleBookSuccess) => {
-                  fetchBooks(); // refresh book list
-                  // setOpen(false); // close dialog
+                  fetchBooks(); 
                   toast.success(
                     `${handleBookSuccess.title} added successfully`
                   );
                 }}
-                // setError={(err) => toast.error("Failed to add book")}
+                
               />
             </div>
           </DialogContent>

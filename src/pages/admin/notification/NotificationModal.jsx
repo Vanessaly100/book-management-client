@@ -7,16 +7,15 @@ import {
   markAllNotificationsAsRead,
   deleteNotification,
 } from "../../../api/notification";
-import ConfirmDeleteModal from "../../../components/ConfirmDeleteModal";
 
 export default function NotificationModal({ userId, onClose }) {
   const [notifications, setNotifications] = useState([]);
   const [selectedNotification, setSelectedNotification] = useState(null);
-  const [deletingId, setDeletingId] = useState(null); // Track which notification is deleting
 
   const fetchNotifications = async () => {
     try {
       const data = await getUserNotifications(userId);
+      console.log("Fetched notifications:", data);
       setNotifications(data);
     } catch (err) {
       console.error("Failed to load notifications:", err);
@@ -28,10 +27,6 @@ export default function NotificationModal({ userId, onClose }) {
   }, [userId]);
 
   const handleMarkAsRead = async (id) => {
-    // Only mark as read if notification still exists and is unread
-    const notification = notifications.find((n) => n.notification_id === id);
-    if (!notification || notification.is_read) return;
-
     try {
       await markAsRead(id);
       setNotifications((prev) =>
@@ -53,30 +48,26 @@ export default function NotificationModal({ userId, onClose }) {
     }
   };
 
-  const confirmDeleteHandler = async (id) => {
-    setDeletingId(id); // start deleting (disable clicks or show loader if needed)
+  const handleDelete = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this notification?"
+    );
+    if (!confirm) return;
+
     try {
       await deleteNotification(id);
       setNotifications((prev) =>
         prev.filter((n) => n.notification_id !== id)
       );
-      // If deleted notification is currently selected, close its modal
-      if (selectedNotification?.notification_id === id) {
-        setSelectedNotification(null);
-      }
     } catch (err) {
       console.error("Failed to delete notification:", err);
-    } finally {
-      setDeletingId(null);
     }
   };
 
   return (
-    <div className="absolute right-4 top-14 z-50 w-80 max-h-96 overflow-y-auto rounded-md border bg-lightMainBg p-4 shadow-lg dark:bg-ActionMiniPurple">
+    <div className="absolute right-4 top-14 z-50 w-80 max-h-96 overflow-y-auto rounded-md border bg-white p-4 shadow-lg dark:bg-gray-800">
       <div className="flex gap-2 items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-white">
-          Notifications
-        </h2>
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white">Notifications</h2>
         <Button
           type="button"
           onClick={handleMarkAllAsRead}
@@ -86,68 +77,50 @@ export default function NotificationModal({ userId, onClose }) {
         </Button>
       </div>
 
-      {notifications.length === 0 ? (
-        <p className="text-sm text-gray-600 dark:text-gray-300">No notifications</p>
-      ) : (
-        <ul className="space-y-2">
-          {notifications.map((n) => (
-            <li
-              key={n.notification_id}
-              className={`relative flex items-start gap-2 p-2 rounded cursor-pointer w-full max-w-full overflow-hidden ${
-                n.is_read ? "bg-gray-100 text-black" : "bg-teal-100 text-black"
-              }`}
-              onClick={() => {
-                // Prevent opening notification if currently deleting
-                if (deletingId === n.notification_id) return;
-
-                handleMarkAsRead(n.notification_id);
-                setSelectedNotification(n);
-              }}
-            >
-              <img
-                src={n.user?.profile_picture_url || "/default-avatar.png"}
-                alt="User"
-                className="w-8 h-8 rounded-full object-cover"
-              />
-
-              <div className="flex-1 overflow-hidden">
-                <p
-                  className={`text-sm text-gray-900 ${
-                    n.is_read === "Unread" ? "font-bold" : "font-normal"
-                  }`}
-                >
-                  {n?.user?.first_name || "Unknown User"}
-                </p>
-                <p
-                  className={`
-                    text-sm text-gray-700 dark:text-black 
-                    break-words line-clamp-2 
-                    ${n.is_read === "Unread" ? "font-bold" : "font-normal"}
-                  `}
-                >
-                  {n.message}
-                </p>
-              </div>
-
-              <ConfirmDeleteModal
-                trigger={
-                  <button
-                    className="text-red-500 hover:text-gold bg-darkOffWhite rounded-full p-2 cursor-pointer"
-                    onClick={(e) => e.stopPropagation()} 
-                    title="Delete"
-                    disabled={deletingId === n.notification_id} 
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                }
-                title="Delete Notification"
-                message="Are you sure you want to delete this notification?"
-                onConfirm={() => confirmDeleteHandler(n.notification_id)}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+     {notifications.length === 0 ? (
+  <p className="text-sm text-gray-600 dark:text-gray-300">
+    No notifications
+  </p>
+) : (
+  <ul className="space-y-2">
+    {notifications.map((n) => (
+      <li
+        key={n.notification_id}
+        className={`relative flex items-start gap-2 p-2 rounded cursor-pointer ${
+          n.is_read ? "bg-gray-100" : "bg-teal-100"
+        }`}
+        onClick={() => {
+          handleMarkAsRead(n.notification_id);
+          setSelectedNotification(n);
+        }}
+      >
+        <img
+          src={n.user?.profile_picture_url || "/default-avatar.png"}
+          alt="User"
+          className="w-8 h-8 rounded-full object-cover"
+        />
+        <div className="flex-1">
+          <p className={`font-medium text-sm text-gray-900 ${n.is_read === "Unread" ? "font-bold" : "font-normal"}`}>
+            {n?.user?.first_name || "Unknown User"}
+          </p>
+          <p className={`text-sm text-gray-700 line-clamp-2 ${n.is_read === "Unread" ? "font-bold" : "font-normal"}`}>
+            {n.message}
+          </p>
+        </div>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete(n.notification_id);
+          }}
+          className="text-red-500 hover:text-gold cursor-pointer bg-darkOffWhite rounded-full p-2"
+          title="Delete"
+        >
+          <Trash2 size={16} />
+        </button>
+      </li>
+    ))}
+  </ul>
+)}
 
       {selectedNotification && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
@@ -155,8 +128,7 @@ export default function NotificationModal({ userId, onClose }) {
             <div className="flex items-center mb-4">
               <img
                 src={
-                  selectedNotification.user?.profile_picture_url ||
-                  "/default-avatar.png"
+                  selectedNotification.user?.profile_picture_url || "/default-avatar.png"
                 }
                 alt="User"
                 className="w-10 h-10 rounded-full mr-2 object-cover"
@@ -170,14 +142,11 @@ export default function NotificationModal({ userId, onClose }) {
                 </p>
               </div>
             </div>
-            <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap break-words">
+            <p className="text-gray-800 dark:text-gray-200">
               {selectedNotification.message}
             </p>
             <div className="mt-4 text-right">
-              <Button
-                onClick={() => setSelectedNotification(null)}
-                className="bg-ActionMiniPurple hover:bg-ActionPurple px-4 py-2 rounded cursor-pointer text-white"
-              >
+              <Button onClick={() => setSelectedNotification(null)}  className="bg-Gold hover:bg-amber-500 px-4 py-2 rounded cursor-pointer text-white">
                 Close
               </Button>
             </div>
@@ -186,7 +155,7 @@ export default function NotificationModal({ userId, onClose }) {
       )}
 
       <button
-        className="mt-3 w-full rounded bg-darkMainCardBg px-4 py-2 text-white hover:bg-darkMainBg cursor-pointer"
+        className="mt-3 w-full rounded bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
         onClick={onClose}
       >
         Close
