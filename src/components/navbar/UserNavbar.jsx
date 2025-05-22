@@ -61,9 +61,9 @@ const UserNavbar = () => {
 
   return (
     <>
-    <div className=''>
+    <div className='hidden'>
       {/* Main Header */}
-      <div className='bg-white text-black h-28 pt-4 w-full flex justify-between items-center flex-col shadow z-10' id='main-header'>
+      <div className='bg-white text-black h-28 pt-4 w-full flex justify-between items-center flex-col shadow z-20' id='main-header'>
         <div className='h-10 w-full flex justify-center items-center bg-tealGreenish/95 text-white relative overflow-hidden'>
           <span className='moving-tex absolute flex justify-center items-center'>
             {`😊 welcome back! ${user ? user.first_name : 'Guest'}`}
@@ -147,7 +147,7 @@ const UserNavbar = () => {
       </div>
       
       {/* Sticky Header */}
-      <div className={`bg-white h-24 w-full flex justify-between items-center flex-col shadow z-10 fixed transition-all duration-500 ${showStickyHeader ? 'top-0' : '-top-24'}`}>
+      <div className={`bg-white h-24 w-full flex justify-between items-center flex-col shadow z-20 fixed transition-all duration-500 ${showStickyHeader ? 'top-0' : '-top-24'}`}>
         <header className={`my-bg w-full h-full flex items-center justify-between px-8 relative`}>
           <div className='bg-white pr-2 absolute -top-4 left-0 z-20 h-28 w-56 logo'>
             <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-green-800'>
@@ -235,6 +235,7 @@ const UserNavbar = () => {
         </div>
       )}
     </div>
+
     </>
   );
 };

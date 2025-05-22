@@ -1,3 +1,4 @@
+import ScrollToTopButton from '@/pages/user/userProfile/ToTop';
 import React from 'react';
 import { useState } from 'react';
 import { RiArrowRightFill, RiFacebookFill, RiInstagramFill, RiTwitterFill } from "react-icons/ri";
@@ -62,7 +63,7 @@ const Footer = () => {
                 </div>
             </div>
             
-
+          <ScrollToTopButton/>
         </div>
         </div>
       </div>

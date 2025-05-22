@@ -334,7 +334,7 @@ const Books = () => {
         setBorrowedBooks(borrowedRes.data);
       } catch (err) {
         console.error('Fetch failed:', err);
-        setError("Failed to fetch books.");
+        // setError("Failed to fetch books.");
       }
     };
   
