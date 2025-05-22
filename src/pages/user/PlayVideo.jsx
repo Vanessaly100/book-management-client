@@ -20,12 +20,12 @@ const PlayVideo = () => {
           <span
   key={i}
   ref={(el) => (wavesRef.current[i] = el)}
-  className="absolute w-full h-full rounded-full border-2 border-green-700 ping-custom"
+  className="absolute w-full h-full rounded-full border-2 border-ActionPurple ping-custom"
 ></span>
 
         ))}
 
-        <div className="z-10 w-16 h-16 bg-green-700 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-800 transition">
+        <div className="z-10 w-16 h-16 bg-ActionPurple text-white rounded-full flex items-center justify-center shadow-lg hover:bg-ActionMiniPurple transition">
           <svg className="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20">
             <path d="M6 4l12 6-12 6V4z" />
           </svg>

@@ -62,7 +62,6 @@ const About = () => {
               />
               
         </div>
-         
           <div className="">
             <div
               data-aos="zoom-in"
