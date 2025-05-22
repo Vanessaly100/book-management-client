@@ -124,11 +124,6 @@ export const navbarLinksFrontend = [
                 path: "/user/borrowed",
             },
 
-            {
-                label: "Reviews",
-                icon: Users,
-                path: "/user/reviews",
-            },
             
             {
                 label: "Notifications",

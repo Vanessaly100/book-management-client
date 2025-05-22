@@ -1,5 +1,6 @@
 
 
+import ScrollToTopButton from "@/pages/user/userProfile/ToTop";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
@@ -147,6 +148,7 @@ const Footer = () => {
           </div>
         </section>
       </div>
+      <ScrollToTopButton/>
     </div>
   );
 }

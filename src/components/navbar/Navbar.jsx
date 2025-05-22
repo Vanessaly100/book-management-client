@@ -102,14 +102,14 @@ const Navbar = () => {
       <nav className="hidden md:block">
         {/* Main public header */}
         <div className="bg-white text-black h-28 pt-4 w-full flex justify-between items-center flex-col shadow z-10" id="main-header">
-          <div className="h-10 w-full flex justify-center items-center bg-ActionPurple text-white relative overflow-hidden">
+          <div className="h-10 w-full flex justify-center items-center bg-darkMainBg text-white relative overflow-hidden">
             <span className="moving-tex absolute flex justify-center items-center">
             Big stories. Small effort. FinLib makes reading easy.
             </span>
           </div>
           <header className="my-bg w-full h-20 flex items-center justify-between px-16 relative">
             <div className="bg-white pr-2 absolute -top-16 left-0 z-20 h-32 w-56 logo">
-              <div className="flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple">
+              <div className="flex flex-col text-white items-center justify-center h-full w-full logo bg-darkMainCardBg">
                 <div className="h-20 w-20">
                   <img src={logo} alt="logo" className="w-full h-full object-cover" />
                 </div>
@@ -139,14 +139,14 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
@@ -163,7 +163,7 @@ const Navbar = () => {
         <div className={`bg-white text-black h-24 w-full flex justify-between items-center flex-col shadow z-20 fixed transition-all duration-500 ${showStickyHeader ? 'top-0' : '-top-24'}`}>
           <header className="my-bg w-[100vw] h-20 flex items-center justify-between px-16 relative">
             <div className="bg-white pr-2 absolute -top-8 left-0 z-20 h-32 w-56 logo">
-              <div className="flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple">
+              <div className="flex flex-col text-white items-center justify-center h-full w-full logo bg-darkMainBg">
                 <div className="h-20 w-20">
                   <img src={logo} alt="logo" className="w-full h-full object-cover" />
                 </div>
@@ -189,14 +189,14 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
@@ -236,7 +236,7 @@ const Navbar = () => {
       }
     }}
     className={`px-2 transition-all duration-300 ease-in-out ${
-      currentPath === "/" && !activeSection ? "font-bold text-lg text-green-700" : "text-gray-700"
+      currentPath === "/" && !activeSection ? "font-bold text-lg text-ActionPurple" : "text-gray-700"
     }`}
   >
     Home
@@ -244,18 +244,18 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-green-700" : "text-gray-700"}`}
+    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
-  <button className="bg-green-700 p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
+  <button className="bg-ActionPurple p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
                 Register
               </button>
             </div>

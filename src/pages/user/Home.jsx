@@ -260,9 +260,9 @@ const Home = () => {
   return (
     <main className=''>
       <RegisterPromptModal isOpen={showModal} onClose={() => setShowModal(false)} />
-      <div className='relative flex flex-col items-center justify-center min-h-[90vh] p-6 overflow-hidden'>
+      <div className='relative flex flex-col items-center justify-center min-h-[90vh] p-6 overflow-hidden bg-lightMainBg'>
         {/* semi circle */}
-            <div className='border border-green-600 absolute h-[500px] md:h-[700px] w-[500px] md:w-[700px] rounded-full -top-[300px] md:-top-[450px] right-10 p-6'>
+            <div className='border border-ActionPurple absolute h-[500px] md:h-[700px] w-[500px] md:w-[700px] rounded-full -top-[300px] md:-top-[450px] right-10 p-6'>
               <div className='bg-white h-full w-full rounded-full'>
                 <img src={heroPng} alt="hero section png" className='rounded-full h-full w-full' />
               </div>
@@ -311,11 +311,11 @@ const Home = () => {
             </div>
       </div>
       {/* second section  */}
-      <div className='bg-white p-20'>
-        <div className='bg-[#e0fde3] rounded-md p-6 gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+      <div className='bg-darkMainBg p-20'>
+        <div className='bg-lightMainBg rounded-md p-6 gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
           {describe.map((des, index)=>(
             <div key={index} className='flex gap-4 items-center'>
-              <div className='bg-green-800 h-20 w-20 rounded-2xl flex justify-center items-center text-white'>
+              <div className='bg-ActionPurple h-20 w-20 rounded-2xl flex justify-center items-center text-white'>
                 {des.icons}
               </div>
               <div>
@@ -329,7 +329,7 @@ const Home = () => {
       </div>
 
       {/* section three || featured books  */}
-      <div className='bg-white px-20 pb-20'>
+      <div className='bg-lightMainBg px-20 p-20'>
         <div className='flex justify-between'>
           <h1 className='text-4xl font-bold'>Featured Books</h1>
           <button className='border p-3 rounded-2xl flex gap-2 justify-center items-center' onClick={handleAccessBooks}><span>Explore more</span> <ArrowRight/></button>
@@ -394,10 +394,10 @@ const Home = () => {
         </div>
       </div>
       {/* fourth section || top category */}
-      <div className='p-20'>
-      <div className='border-2 border-green-700 p-6 rounded-3xl min-h-[60vh] grid'>
-        <div className='w-fit m-auto p-2 -mt-14 bg-[#e0fde3]  '>
-          <span className='text-3xl font-bold'>Top Categories Book</span>
+      <div className='bg-darkMainBg text-white p-20'>
+      <div className='border-2 border-ActionPurple p-6 rounded-3xl min-h-[60vh] grid'>
+        <div className='w-fit m-auto p-2 -mt-14 bg-darkMainBg '>
+          <span className='text-3xl font-bold '>Top Categories Book</span>
           </div>
           <div className='grid lg:grid-cols-3 xl:grid-cols-4 grid-cols-1 md:grid-cols-2 flex-wrap gap-4 '>
             {category.map((cate, index) =>(
@@ -413,8 +413,8 @@ const Home = () => {
       </div>
       </div>
       {/* a break || ads  */}
-      <div className='bg-white p-20'> 
-        <div className='bg-[#e0fde3] rounded-3xl h-[60vh] relative overflow-hidden'>
+      <div className='bg-lightMainBg p-20'> 
+        <div className='bg-ActionMiniPurple text-white rounded-3xl h-[60vh] relative overflow-hidden'>
           <div className='w-full h-full relative overflow-hidden'>
             <img src={book2} alt="" className='absolute -left-25 top-0 h-full' />
             <img src={girl} alt="" className='absolute -right-10 top-0 h-full' />
@@ -429,7 +429,7 @@ const Home = () => {
 
       {/* about our Library sections  */}
 
-      <div className=' w-full px-20 py-10 bg-white'>
+      <div className=' w-full px-20 py-10 bg-darkMainBg text-white'>
             <div className='flex md:flex-row flex-col-reverse gap-6'>
               {/* video section  */}
               <div className='md:w-1/2 w-full relative'>
@@ -447,7 +447,7 @@ const Home = () => {
             </div>
       </div>
       {/* review sections  */}
-      <div className='py-10 bg-gray-50'>
+      <div className='py-10 bg-lightMainBg'>
         <div className='mb-10 text-center'>
         <h1 className='text-4xl font-bold capitalize'>users feedback</h1>
         <p className='mt-2'>Trusted by Book Lovers. Reviewed by Readers Like You.</p>
@@ -502,7 +502,7 @@ const Home = () => {
         </div>
       </div>
       {/* featured authors section  */}
-      <div className='px-20 py-10 bg-gray-50'>
+      <div className='px-20 py-10 bg-lightMainBg'>
         <div className='text-center'>
           <h1 className='text-4xl font-bold capitalize'>
           Featured Author
@@ -534,7 +534,7 @@ const Home = () => {
             >
               {authors.map((author, index)=>(
                 <SwiperSlide key={index}>
-                <div className='bg-white shadow rounded-2xl h-full gap-4 flex flex-col justify-center items-center'>
+                <div className='bg-darkMainBg shadow rounded-2xl h-full gap-4 flex flex-col justify-center items-center'>
                   <div className='h-32 w-32 relative flex justify-center items-center'>
                     <img src="https://gramentheme.com/html/bookle/assets/img/team/shape-img.png" alt="" className='absolute top-3' />
                     <div className='h-24 w-24 rounded-full'>
@@ -542,7 +542,7 @@ const Home = () => {
                     </div>
                   </div>
                   {/* text section  */}
-                  <div className='rounded-lg bg-gray-100 w-10/12 h-28 flex flex-col items-center'>
+                  <div className='rounded-lg bg-lightMainBg w-10/12 h-28 flex flex-col items-center'>
                     <p className='font-bold'>{author.name}</p>
                     <span>{author.booksPublished} Books Published</span>
                     <div>

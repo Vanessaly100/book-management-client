@@ -5,8 +5,10 @@ import { RiLogoutBoxRLine} from 'react-icons/ri';
 import { FaRegEdit } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Menu } from 'lucide-react';
 
 const UserNavbar = () => {
+  const [hamburger, setHamburger] =useState(true)
   const [show, setShow] = useState(false);
   const [profile, setProfile] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
@@ -61,7 +63,8 @@ const UserNavbar = () => {
 
   return (
     <>
-    <div className='hidden'>
+    <div>
+    <div className='hidden md:block'>
       {/* Main Header */}
       <div className='bg-white text-black h-28 pt-4 w-full flex justify-between items-center flex-col shadow z-20' id='main-header'>
         <div className='h-10 w-full flex justify-center items-center bg-tealGreenish/95 text-white relative overflow-hidden'>
@@ -71,7 +74,7 @@ const UserNavbar = () => {
         </div>
         <header className={`my-bg w-full h-20 flex items-center justify-between px-8 relative`}>
           <div className='bg-white pr-2 absolute -top-16 left-0 z-20 h-32 w-56 logo'>
-            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple'>
+            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-darkMainCardBg'>
               <div className='h-20 w-20'>
                 <img 
                   src={logo} 
@@ -106,12 +109,12 @@ const UserNavbar = () => {
 >
   About Us
 </Link>
-<Link
+{/* <Link
   to="/user/services"
   className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
 >
   Services
-</Link>
+</Link> */}
 <Link
   to="/user/contact"
   className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/contact" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
@@ -157,7 +160,7 @@ const UserNavbar = () => {
         <header className={`my-bg w-full h-full flex items-center justify-between px-8 relative z-50`}>
 
           <div className='bg-white pr-2 absolute -top-4 left-0 z-20 h-28 w-56 logo'>
-            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-ActionPurple'>
+            <div className='flex flex-col text-white items-center justify-center h-full w-full logo bg-darkMainBg'>
               <div className='h-20 w-20'>
                 <img 
                   src={logo} 
@@ -192,12 +195,7 @@ const UserNavbar = () => {
 >
   About Us
 </Link>
-<Link
-  to="/user/services"
-  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
->
-  Services
-</Link>
+
 <Link
   to="/user/services"
   className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/contact" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
@@ -247,7 +245,57 @@ const UserNavbar = () => {
         </div>
       )}
     </div>
+    <div className="sticky top-0 left-0 h-20 z-20 flex md:hidden  bg-white ">
+      <div className="relative justify-between items-center w-full">
+        <div className="flex justify-between items-center w-full h-full pr-6">
+        <div className=" border h-full w-28 sm:w-36 flex justify-center items-center flex-col">
+      <img
+          src={logo}
+          alt="Logoipsum"
+          className=" w-[50px] h-[50px]"/>
 
+            <span className="text-2xl font-bold">FinLib</span>
+      </div>
+        <div className="border" onClick={()=>setHamburger(!hamburger)}>
+        <Menu size={32}/>
+        </div>
+        </div>
+        <div className={`blur-2 w-full h-[84vh] ${hamburger? "hidden": "block"}  absolute top-20 left-0`}>
+        <div className="flex space-x-4 p-4 font-medium">
+  <Link
+  to="/user/home"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/home" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>
+  Home
+</Link>
+<Link
+  to="/user/books"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/books" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>
+  Books
+</Link>
+<Link
+  to="/user/about"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/about" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>
+  About Us
+</Link>
+{/* <Link
+  to="/user/services"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/services" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>
+  Services
+</Link> */}
+<Link
+  to="/user/services"
+  className={`px-2 transition-all duration-300 ease-in-out ${currentPath === "/user/contact" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+>Contact
+</Link>
+  </div>
+            </div>
+      </div>
+    </div>
+    </div>
     </>
   );
 };
