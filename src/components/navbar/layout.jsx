@@ -4,7 +4,7 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import { useClickOutside } from "../../hooks/use-click-outside";
 
 import { Sidebar } from "../../layouts/sidebar";
-import { Header } from "../../layouts/header";
+import { Header } from "../../layouts/Header";
 
 import { cn } from "../../lib/utils";
 import { useEffect, useRef, useState } from "react";
