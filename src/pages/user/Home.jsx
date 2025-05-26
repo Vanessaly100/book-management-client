@@ -16,6 +16,10 @@ import { useNavigate } from 'react-router-dom';
 import PlayVideo from './PlayVideo';
 import { useAuth } from '@/contexts/AuthContext';
 import RegisterPromptModal from './RegisterModal';
+import AOS from 'aos';
+import contactformimg from '../../assets/Book-Hero-Image.jpg'
+import Form from "../public/Contact/Form";
+import 'aos/dist/aos.css';
 
 const Home = () => {
   const balls = [
@@ -225,6 +229,10 @@ const Home = () => {
 
   const location = useLocation();
 
+  useEffect(() => {
+    AOS.init({ duration: 800 });
+  }, []);
+
   const handleNav = () => {
     navigate('/user/books');
   };
@@ -262,7 +270,9 @@ const Home = () => {
       <RegisterPromptModal isOpen={showModal} onClose={() => setShowModal(false)} />
       <div className='relative flex flex-col items-center justify-center min-h-[90vh] p-6 overflow-hidden bg-lightMainBg'>
         {/* semi circle */}
-            <div className='border border-ActionPurple absolute h-[500px] md:h-[700px] w-[500px] md:w-[700px] rounded-full -top-[300px] md:-top-[450px] right-10 p-6'>
+            <div className='border border-ActionPurple absolute h-[500px] md:h-[700px] w-[500px] md:w-[700px] rounded-full -top-[300px] md:-top-[450px] right-10 p-6' data-aos="fade-down"
+                data-aos-easing="linear"
+                data-aos-duration="900">
               <div className='bg-white h-full w-full rounded-full'>
                 <img src={heroPng} alt="hero section png" className='rounded-full h-full w-full' />
               </div>
@@ -271,9 +281,12 @@ const Home = () => {
             <div className='flex flex-col md:flex-row w-full sm:h-[70vh] mt-4'>
               {/* big text */}
               <div className='md:flex hidden flex-col items-center justify-center px-6 w-full md:w-1/2 relative gap-10 h-full'>
-                <div className='mt-20'><h1 className='text-4xl md:text-6xl font-bold text-center md:text-left'>Welcome to FinLib</h1>
+                <div className='mt-20' data-aos="fade-up"
+          data-aos-duration="600"><h1 className='text-4xl md:text-6xl font-bold text-center md:text-left'>Welcome to FinLib</h1>
                 <p className='text-gray-500 text-center md:text-left mt-2'>Discover a world of knowledge and adventure at your fingertips.</p></div>
-                <div className='w-full flex justify-center items-center h-44'>
+                <div className='w-full flex justify-center items-center h-44' data-aos="zoom in"
+
+            data-aos-duration="900" >
                 <Swiper
                 modules={[Autoplay, EffectFade]}
                 effect='fade'
@@ -298,7 +311,7 @@ const Home = () => {
               </div>
               {/* image */}
               <div className=' w-full md:w-1/2 relative flex sm:flex-row-reverse overflow-hidden flex-col-reverse'>
-                <img src={heroGirl} alt="hero section png" className=' h-[400px] -mr-6 mt-3' />
+                <img src={heroGirl} alt="hero section png" className=' h-[400px] -mr-6 mt-3 floaty' />
 
                 <div className='flex flex-col mt-40 sm:w-1/2 w-full justify-baseline items-baseline md:hidden'>
                 <div className='flex  flex-col items-center justify-center w-full'>
@@ -312,7 +325,9 @@ const Home = () => {
       </div>
       {/* second section  */}
       <div className='bg-darkMainBg p-20'>
-        <div className='bg-lightMainBg rounded-md p-6 gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+        <div className='bg-lightMainBg rounded-md p-6 gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' data-aos="fade in"
+            data-aos-easing="linear"
+            data-aos-duration="900">
           {describe.map((des, index)=>(
             <div key={index} className='flex gap-4 items-center'>
               <div className='bg-ActionPurple h-20 w-20 rounded-2xl flex justify-center items-center text-white'>
@@ -417,7 +432,7 @@ const Home = () => {
         <div className='bg-ActionMiniPurple text-white rounded-3xl h-[60vh] relative overflow-hidden'>
           <div className='w-full h-full relative overflow-hidden'>
             <img src={book2} alt="" className='absolute -left-25 top-0 h-full' />
-            <img src={girl} alt="" className='absolute -right-10 top-0 h-full' />
+            <img src={girl} alt="" className='absolute -right-10 top-0 h-full floaty' />
           </div>
           <div className='absolute top-0 h-full w-full z-10 flex items-center justify-center bg-[#0000002f]'>
             {/* advertizing our web  */}
@@ -438,7 +453,9 @@ const Home = () => {
                 <PlayVideo/>
                 </div>
               </div>
-              <div className='md:w-1/2 p-3 w-full'>
+              <div className='md:w-1/2 p-3 w-full' data-aos="fade in"
+            data-aos-easing="linear"
+            data-aos-duration="600">
                 <h1 className='text-4xl font-bold capitalize mb-5'>about our library</h1>
                 <p>Designed to be your perfect study sanctuary, our space offers a welcoming atmosphere filled with cozy corners, natural light, and inspiring surroundings that fuel your love for learning. Whether you’re diving into fiction, exploring new genres, or conducting research, our vast collection has something for everyone. Plus, with easy borrowing and returning options, you have the freedom to enjoy your favorite reads at your own pace. </p>
 
@@ -568,6 +585,33 @@ const Home = () => {
         </div>
         <div id='contact-section'></div>
       </div>
+      <section className="h-fit bg-darkMainCardBg  text-white xl:p-10 p-5">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="300"
+          className="grid xl:grid-cols-2 grid-cols-1"
+        >
+          <div className="h-fit">
+            <Form />
+          </div>
+          <div className="h-full relative xl:rounded-r-lg">
+            <img
+              src={contactformimg}
+              alt=""
+              className="h-full xl:rounded-r-lg object-cover"
+            />
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-darkMainBg opacity-50"></div>
+            <div className="absolute inset-0 flex items-end justify-center">
+              <h1 className="text-white text-1xl p-3">
+                Working with them is always a pleasure. Their team is
+                responsive, efficient, and consistently meets deadlines. They’ve
+                been integral in pushing our digital boundaries.
+              </h1>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
     
   )

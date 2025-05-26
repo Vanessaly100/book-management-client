@@ -61,7 +61,7 @@ export const Header = ({ collapsed, setCollapsed }) => {
         <header className="relative z-10 flex h-[60px] items-center justify-between bg-tealGreenish px-4 shadow-md transition-colors">
             <div className="flex items-center gap-x-3">
                 <button
-                    className="btn-ghost size-10"
+                    className="btn-ghost size-10 cursor-pointer hover:bg-lightMainBg hover:text-ActionPurple"
                     onClick={() => setCollapsed(!collapsed)}
                 >
                     <ChevronsLeft className={collapsed && "rotate-180"} />
@@ -86,21 +86,21 @@ export const Header = ({ collapsed, setCollapsed }) => {
             <span>Hi! {user.first_name}</span>
           </div>
           )}<button
-          className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
+          className={`relative cursor-pointer hover:bg-lightMainBg hover:text-ActionPurple btn-ghost size-10 transition-all duration-200 rounded-full ${
    showNotifications
-     ? "bg-offWhite text-Gold shadow dark:bg-gray-700 dark:text-Gold"
+     ? "bg-offWhite text-ActionPurple shadow dark:bg-gray-700 dark:text--ActionPurple"
      : "hover:bg-gray-200 dark:hover:bg-gray-600"
  }`}
          onClick={() => setShowNotifications(!showNotifications)}
        >
          <Bell size={20} />
          {unreadCount > 0 && (
-           <span className="absolute right-0 top-0 h-4 w-4 rounded-full bg-red-600 text-xs text-white flex items-center justify-center">
+           <span className="absolute  right-0 top-0 h-4 w-4 rounded-full bg-red-600 text-xs text-white flex items-center justify-center">
              {unreadCount}
            </span>
          )}
        </button>
-                <button className="size-10 overflow-hidden rounded-full text-white">
+                <button className="size-10 hover:bg-lightMainBg hover:text-ActionPurple cursor-pointer overflow-hidden rounded-full text-white">
   {profile ? (
           <>
             <img

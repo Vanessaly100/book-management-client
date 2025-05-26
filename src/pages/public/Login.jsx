@@ -74,21 +74,21 @@ const Login = () => {
     <main className="min-h-screen bg">
       <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full lg:px-28 md:px-0 px-20'>
         <div className="md:w-1/3 sm:w-11/12 w-full bg-[#00000086] shadow-lg rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-center mb-4 text-green-700">Login</h2>
+          <h2 className="text-2xl font-bold text-center mb-4 text-ActionPurple">Login</h2>
 
           {error && <p className="text-red-500 text-center">{error}</p>}
 
           <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
             {/* Email */}
             <div>
-              <label className="block text-gray-400 text-xl">Email</label>
+              <label className="block text-gray-400 text-xl">Email<span className='text-red-500'>*</span></label>
               <input
                 type="email"
                 name="email"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
-                className="w-full p-2 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full p-2 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-ActionPurple"
               />
               {formik.touched.email && formik.errors.email ? (
                 <p className="text-red-500 text-sm">{formik.errors.email}</p>
@@ -97,7 +97,7 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-gray-400 text-xl">Password</label>
+              <label className="block text-gray-400 text-xl">Password <span className='text-red-500'>*</span></label>
               <div className='h-fit bg-white rounded-md border relative'>
                 <input
                   {...(isOpen ? { type: 'text' } : { type: 'password' })}
@@ -105,7 +105,7 @@ const Login = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-ActionPurple"
                 />
                 <div
                   className='absolute top-3 right-2 z-10'
@@ -123,14 +123,14 @@ const Login = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="bg-green-500 text-white py-2 mt-2 rounded-md hover:bg-green-600 transition-all"
+              className="bg-ActionPurple text-white py-2 mt-2 rounded-md hover:bg-ActionMiniPurple transition-all cursor-pointer"
               disabled={loading}
             >
               {loading ? "Logging in..." : "Login"}
             </button>
           </form>
           <div>
-            <p className="text-gray-400 text-center mt-4">Don't have an account? <Link to="/register" className="text-green-500 hover:underline">
+            <p className="text-gray-400 text-center mt-4">Don't have an account? <Link to="/register" className="text-ActionPurple hover:underline">
               Register
             </Link></p>
           </div>

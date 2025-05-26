@@ -66,10 +66,10 @@ useEffect(() => {
 
   if (!mounted) return null
   return (
-    <header className="relative z-10 flex h-[60px] items-center justify-between bg-lightMainCardBg px-4 shadow-md transition-colors dark:bg-darkTealGreenish">
+    <header className="relative z-10 flex h-[60px] items-center justify-between px-4 shadow-md transition-colors bg-darkTealGreenish">
       <div className="flex items-center gap-x-3">
         <button
-           className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
+           className={`relative btn-ghost hover:bg-lightMainBg hover:text-ActionPurple size-10 transition-all cursor-pointer duration-200 rounded-full ${
     collapsed
       ? "btn-ghost"
       : "btn-ghost"
@@ -85,18 +85,18 @@ useEffect(() => {
             name="search"
             id="search"
             placeholder="Search..."
-            className="w-full bg-transparent text-slate-900 outline-0 placeholder:text-slate-900 dark:placeholder:text-white dark:text-slate-50"
+            className="w-full bg-transparent text-white outline-0 placeholder:text-white "
           />
         </div>
       </div>
       <div className="flex items-center gap-x-3">
       <button
-                    className="btn-ghost size-10"
+                    className="btn-ghost size-10 hover:bg-lightMainBg hover:text-ActionPurple cursor-pointer "
                     onClick={toggleTheme}
                 >
                     <Sun
                         size={20}
-                        className="dark:hidden"
+                        className="dark:hidden "
                     />
                     <Moon
                         size={20}
@@ -104,7 +104,7 @@ useEffect(() => {
                     />
                 </button>
         <button
-           className={`relative btn-ghost size-10 transition-all duration-200 rounded-full ${
+           className={`relative btn-ghost hover:bg-lightMainBg hover:text-ActionPurple cursor-pointer size-10 transition-all duration-200 rounded-full ${
     showNotifications
       ? "btn-ghost shadow"
       : "btn-ghost"

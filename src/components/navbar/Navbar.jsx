@@ -131,7 +131,7 @@ const Navbar = () => {
       }
     }}
     className={`px-2 transition-all duration-300 ease-in-out ${
-      currentPath === "/" && !activeSection ? "font-bold text-lg text-green-700" : "text-gray-700"
+      currentPath === "/" && !activeSection ? "font-bold text-lg text-ActionPurple" : "text-gray-700"
     }`}
   >
     Home
@@ -139,20 +139,20 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer  duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
 </div>
             <div>
-              <button className="bg-ActionPurple p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
+              <button className="bg-ActionPurple p-2 w-24 text-white uppercase cursor-pointer  rounded" onClick={() => navigate("/register")}>
                 Register
               </button>
             </div>
@@ -181,7 +181,7 @@ const Navbar = () => {
       }
     }}
     className={`px-2 transition-all duration-300 ease-in-out ${
-      currentPath === "/" && !activeSection ? "font-bold text-lg text-green-700" : "text-gray-700"
+      currentPath === "/" && !activeSection ? "font-bold text-lg text-ActionPurple" : "text-gray-700"
     }`}
   >
     Home
@@ -189,20 +189,20 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer  duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer  duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
             </div>
             <div>
-              <button className="bg-ActionPurple p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
+              <button className="bg-ActionPurple p-2 w-24 text-white cursor-pointer  uppercase rounded" onClick={() => navigate("/register")}>
                 Register
               </button>
             </div>
@@ -244,18 +244,18 @@ const Navbar = () => {
 
   <button
     onClick={() => handleScrollToSection("about-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer  duration-300 ease-in-out ${activeSection === "about-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     About Us
   </button>
 
   <button
     onClick={() => handleScrollToSection("contact-section")}
-    className={`px-2 transition-all duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
+    className={`px-2 transition-all cursor-pointer  duration-300 ease-in-out ${activeSection === "contact-section" ? "font-bold text-lg text-ActionPurple" : "text-gray-700"}`}
   >
     Contact Us
   </button>
-  <button className="bg-ActionPurple p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
+  <button className="bg-ActionPurple cursor-pointer  p-2 w-24 text-white uppercase rounded" onClick={() => navigate("/register")}>
                 Register
               </button>
             </div>

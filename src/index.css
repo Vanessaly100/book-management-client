@@ -43,7 +43,7 @@ html {
 
 @layer base {
     body {
-        @apply [scrollbar-color:_#cbd5e1_transparent] dark:[scrollbar-color:_#334155_transparent] bg-[#e0fde3];
+        @apply [scrollbar-color:_#cbd5e1_transparent] dark:[scrollbar-color:_#334155_transparent];
     }
 }
 
@@ -236,6 +236,19 @@ html {
     animation: bounce 1.5s ease infinite alternate;
   }
   
+  @keyframes floaty {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(5px); /* Move a bit forward */
+    }
+  }
+  
+  .floaty {
+    animation: floaty 1s ease-in-out infinite;
+  }
+
   @keyframes bounce {
     0% {
       transform: translateY(2px);

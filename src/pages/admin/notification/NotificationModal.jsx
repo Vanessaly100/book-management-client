@@ -71,7 +71,7 @@ export default function NotificationModal({ userId, onClose }) {
         <Button
           type="button"
           onClick={handleMarkAllAsRead}
-          className="bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400 cursor-pointer"
+          className="bg-gray-300 hover:text-ActionPurple text-gray-700 py-2 rounded hover:bg-gray-400 cursor-pointer"
         >
           Mark all as read
         </Button>
@@ -112,7 +112,7 @@ export default function NotificationModal({ userId, onClose }) {
             e.stopPropagation();
             handleDelete(n.notification_id);
           }}
-          className="text-red-500 hover:text-gold cursor-pointer bg-darkOffWhite rounded-full p-2"
+          className="text-red-500 hover:text-gold cursor-pointer bg-ActionMiniPurple rounded-full p-2"
           title="Delete"
         >
           <Trash2 size={16} />
@@ -146,7 +146,7 @@ export default function NotificationModal({ userId, onClose }) {
               {selectedNotification.message}
             </p>
             <div className="mt-4 text-right">
-              <Button onClick={() => setSelectedNotification(null)}  className="bg-Gold hover:bg-amber-500 px-4 py-2 rounded cursor-pointer text-white">
+              <Button onClick={() => setSelectedNotification(null)}  className="bg-ActionMiniPurple hover:bg-ActionPurple px-4 py-2 rounded cursor-pointer text-white">
                 Close
               </Button>
             </div>
@@ -155,7 +155,7 @@ export default function NotificationModal({ userId, onClose }) {
       )}
 
       <button
-        className="mt-3 w-full rounded bg-teal-600 px-4 py-2 text-white hover:bg-teal-700"
+        className="mt-3 w-full rounded bg-ActionPurple px-4 py-2 text-white hover:bg-ActionMiniPurple"
         onClick={onClose}
       >
         Close
