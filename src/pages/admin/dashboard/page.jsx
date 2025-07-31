@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Footer } from "../../../layouts/footer";
+import { Footer } from "../../../layouts/Footer";
 import DashboardCharts from '../../admin/dashboard/DashboardCharts';
 
 import {
@@ -57,6 +57,7 @@ const DashboardPage = () => {
       console.log("Activity", recentActivityRes.data.data);
     } catch (error) {
       console.error("Error loading dashboard data:", error);
+      setError("Dashboard failed to load")
     } finally {
       setLoading(false);
     }
