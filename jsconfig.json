@@ -3,6 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
-  }
+    },
+    "checkJs": false,
+    "noEmit": true,
+    "allowJs": true
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
 }
