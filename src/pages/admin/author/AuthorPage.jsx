@@ -19,9 +19,9 @@ import {
   TableHeader,
   TableRow,
 } from "../../../components/ui/table";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 import {
   DropdownMenu,

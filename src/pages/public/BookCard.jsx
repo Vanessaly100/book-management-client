@@ -41,7 +41,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
     const checkReview = async () => {
       if (user && book?.id) {
         try {
-          const res = await axios.get(`http://localhost:4000/api/reviews/user/${user.user_id}/book/${book.id}`, {
+          const res = await axios.get(`https://project-backend-7hi1.onrender.com/api/reviews/user/${user.user_id}/book/${book.id}`, {
             withCredentials: true
           });
           setHasReviewed(res.data.hasReviewed);
@@ -55,7 +55,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
 
   const handleBorrow = async () => {
     try {
-      await axios.post('http://localhost:4000/api/borrowing', {
+      await axios.post('https://project-backend-7hi1.onrender.com/api/borrowing', {
         user_id: user.user_id,
         bookIds: [book.id],
       }, { withCredentials: true });
@@ -68,7 +68,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
 
   const handleReturn = async () => {
     try {
-      await axios.put('http://localhost:4000/api/borrowing/return', {
+      await axios.put('https://project-backend-7hi1.onrender.com/api/borrowing/return', {
         user_id: user.user_id,
         bookIds: [book.id],
       }, { withCredentials: true });
@@ -82,7 +82,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
 
   const handleReserve = async () => {
     try {
-      await axios.post('http://localhost:4000/api/reservations', {
+      await axios.post('https://project-backend-7hi1.onrender.com/api/reservations', {
         book_id: book.id, // send single book_id
       }, { withCredentials: true });
   
@@ -102,7 +102,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
         comment
       };
 
-      await axios.post("http://localhost:4000/api/reviews", payload, {
+      await axios.post("https://project-backend-7hi1.onrender.com/api/reviews", payload, {
         withCredentials: true
       });
 
@@ -111,7 +111,7 @@ const BookCard = ({ book, isBorrowed, availableCopies, onActionComplete }) => {
       setRating(0);
       setShowReviewModal(false);
 
-      const response = await axios.get(`http://localhost:4000/api/books/${book.id}`, {
+      const response = await axios.get(`https://project-backend-7hi1.onrender.com/api/books/${book.id}`, {
         withCredentials: true
       });
       setAverageRating(response.data.avgRating);

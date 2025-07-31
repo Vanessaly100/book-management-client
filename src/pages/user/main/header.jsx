@@ -3,7 +3,6 @@ import { Bell, ChevronsLeft, Moon, Search, Sun } from "lucide-react";
 import PropTypes from "prop-types";
 import LogoutButton from "../../../components/buttons/LogoutButton";
 import { getUser } from "../../../api/users"; 
-// import { useNavigate } from "react-router-dom";
 import png from "../../../assets/gray-user-profile-icon-png-fP8Q1P.png";
 import NotificationModal from "../../../pages/admin/notification/NotificationModal";
 import { getUnreadNotificationCount } from "../../../api/notification";
@@ -66,19 +65,6 @@ export const Header = ({ collapsed, setCollapsed }) => {
                 >
                     <ChevronsLeft className={collapsed && "rotate-180"} />
                 </button>
-                {/* <div className="input bg-[#B3C7C6]">
-                    <Search
-                        size={20}
-                        className="text-slate-900"
-                    />
-                    <input
-                        type="text"
-                        name="search"
-                        id="search"
-                        placeholder="Search..."
-                        className="w-full bg-transparent text-slate-900 outline-0 placeholder:text-slate-900"
-                    />
-                </div> */}
             </div>
             <div className="flex items-center gap-x-3">
             {user && (

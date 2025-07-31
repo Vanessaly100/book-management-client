@@ -35,13 +35,13 @@ const Books = () => {
     const fetchCategories = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:4000/api/categories/no-filter-all",
+          "https://project-backend-7hi1.onrender.com/api/categories/no-filter-all",
           {
             withCredentials: true,
           }
         );
         console.log("category", res);
-        setCategories(res.data.categories); // adjust based on your response structure
+        setCategories(res.data.categories); 
       } catch (err) {
         console.error("Failed to fetch categories", err);
       }
@@ -66,14 +66,14 @@ const Books = () => {
         setTotalPages(booksRes.pagination?.totalPages || 1);
 
         const borrowedRes = await axios.get(
-          "http://localhost:4000/api/user/borrowed-books",
+          "https://project-backend-7hi1.onrender.com/api/user/borrowed-books",
           {
             withCredentials: true,
           }
         );
         setBorrowedBooks(borrowedRes.data);
-      } catch (err) {
-        console.error("Fetch failed:", err);
+      } catch (error) {
+        console.error("Fetch failed:", error)
         setError("Failed to fetch books.");
       }
     };
@@ -83,7 +83,7 @@ const Books = () => {
 
   const refreshBorrowedBooks = () => {
     axios
-      .get("http://localhost:4000/api/user/borrowed-books", {
+      .get("https://project-backend-7hi1.onrender.com/api/user/borrowed-books", {
         withCredentials: true,
       })
       .then((res) => setBorrowedBooks(res.data))

@@ -56,7 +56,7 @@ const BookEditForm = ({ initialValues, onSave, onClose }) => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/genres", {
+        const res = await axios.get("https://project-backend-7hi1.onrender.com/api/genres", { 
           withCredentials: true,
         });
         setGenres(res.data.genres);

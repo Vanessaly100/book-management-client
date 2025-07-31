@@ -24,6 +24,7 @@ const NotifySingleForm = () => {
         const res = await getAllUsers("users?limit=1000");
         setUsers(Array.isArray(res.users) ? res.users : []);
       } catch (err) {
+        console.log(err)
         toast.error("Failed to load users");
       }
     })();

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "../../../components/ui/table";
 
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 import {
   DropdownMenu,

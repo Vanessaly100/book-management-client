@@ -36,7 +36,7 @@ useEffect(() => {
     const fetchRecommendedBooks = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:4000/api/recommendations/user",
+          "https://project-backend-7hi1.onrender.com/api/recommendations/user",
           {
             withCredentials: true,
           }

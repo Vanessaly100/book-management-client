@@ -22,7 +22,7 @@ const Report = () => {
 
   const fetchActivities = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/dashboard/all-recent-activity", {
+      const res = await axios.get("https://project-backend-7hi1.onrender.com/api/dashboard/all-recent-activity", {
         withCredentials: true,
         params: {
           type: type || undefined,

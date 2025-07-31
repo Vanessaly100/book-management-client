@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:4000/api/dashboard", 
+  baseURL: "https://project-backend-7hi1.onrender.com/api/dashboard",
   withCredentials: true,
 });
 

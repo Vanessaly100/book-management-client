@@ -2,7 +2,6 @@ import { Routes, Route, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Preloader from "../components/Preloader";
 
-// Your imports
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/navbar/Footer";
 import Home from "@/pages/user/Home";
@@ -33,10 +32,10 @@ const UserRoutes = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setInitialLoading(false);
-    }, 1000); // Show preloader for 1 second on initial load
+    }, 1000); 
 
     return () => clearTimeout(timer);
-  }, []); //  Empty dependency array means this only runs on first render
+  }, []); 
 
   if (initialLoading) return <Preloader />;
 

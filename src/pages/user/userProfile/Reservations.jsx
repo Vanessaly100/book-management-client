@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getMyReservations } from "../../../api/reservationApi"; // adjust path as needed
+import { getMyReservations } from "../../../api/reservationApi"; 
 
 const Reservations = () => {
   const [reservations, setReservations] = useState([]);

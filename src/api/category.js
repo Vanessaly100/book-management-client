@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create a reusable Axios instance
 const API = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
   withCredentials: true,
 });
 

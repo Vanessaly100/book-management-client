@@ -31,13 +31,11 @@ const Register = () => {
       setError("");
       setSuccess("");
       try {
-        const response = await axios.post("http://localhost:4000/api/auth/user/register", values, {
+        const response = await axios.post("https://project-backend-7hi1.onrender.com/api/auth/user/register", values, {
           withCredentials: true,
         });
-        // setUser(response.data.user);
         setSuccess("Registration successful! Redirecting...");
         resetForm();
-        // Redirect after 2 seconds
     const user = response.data.user; 
     console.log(user.user_id, user.role);
     socket.emit("register", {
