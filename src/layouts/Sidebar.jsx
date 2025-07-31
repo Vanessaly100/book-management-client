@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { NavLink } from "react-router-dom";
-import { navbarLinks } from "../constants";
+import { navbarLinks } from "../constants/Index";
 import logo from "../assets/book_7629876.png";
 import { cn } from "../lib/utils";
 import PropTypes from "prop-types";

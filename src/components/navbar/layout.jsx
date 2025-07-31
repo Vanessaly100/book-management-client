@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useClickOutside } from "../../hooks/use-click-outside";
 
-import { Sidebar } from "../../layouts/sidebar";
+import { Sidebar } from "../../layouts/Sidebar";
 import { Header } from "../../layouts/Header";
 import { cn } from "../../lib/utils";
 import { useEffect, useRef, useState } from "react";

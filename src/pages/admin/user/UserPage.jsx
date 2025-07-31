@@ -9,7 +9,7 @@ import {flexRender,getCoreRowModel,getPaginationRowModel,getSortedRowModel,useRe
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,
 } from "../../../components/ui/table";
 
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 import {DropdownMenu,DropdownMenuTrigger,DropdownMenuContent,
   DropdownMenuItem,DropdownMenuSeparator,DropdownMenuCheckboxItem,
