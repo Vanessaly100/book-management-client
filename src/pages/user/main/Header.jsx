@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import LogoutButton from "../../../components/buttons/LogoutButton";
 import { getUser } from "../../../api/users"; 
 import png from "../../../assets/gray-user-profile-icon-png-fP8Q1P.png";
-import NotificationModal from "../../../pages/admin/notification/NotificationModal";
+import NotificationModal from "../../admin/notification/NotificationModal";
 import { getUnreadNotificationCount } from "../../../api/notification";
 import { useAuth } from "../../../contexts/AuthContext"
 import socket from "../../../utils/socket";
