@@ -13,7 +13,7 @@ import Reservations from "../pages/user/userProfile/Reservations";
 import BorrowedBooks from "../pages/user/userProfile/BorrowedBooks";
 // import Reviews from "../pages/user/userProfile/Reviews";
 import EditProfile from "../pages/user/userProfile/EditProfile";
-import Layout from "@/pages/user/main/layout";
+import Layout from "@/pages/user/main/Layout";
 import Dashboard from "@/pages/user/userProfile/Dashboard";
 import Notification from "@/pages/user/userProfile/Notification";
 import ErrorPage from "@/pages/public/ErrorPage";

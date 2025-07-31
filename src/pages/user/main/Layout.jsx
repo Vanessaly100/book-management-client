@@ -14,7 +14,7 @@ import { Header } from "./Header";
 const Layout = () => {
     const isDesktopDevice = useMediaQuery("(min-width: 768px)");
     const [collapsed, setCollapsed] = useState(!isDesktopDevice);
-
+ 
     const sidebarRef = useRef(null);
 
     useEffect(() => {
