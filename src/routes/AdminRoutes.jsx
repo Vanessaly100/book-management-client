@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Preloader from "../components/Preloader";
-import Layout from "../components/navbar/layout";
+import Layout from "../components/navbar/Layout";
 import DashboardPage from "../pages/admin/dashboard/page";
 import UserPage from "../pages/admin/user/UserPage";
 import AdminProfile from "../pages/admin/profile/AdminProfile";
