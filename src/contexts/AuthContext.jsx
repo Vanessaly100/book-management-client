@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         const response = await axios.get(
-          "http://localhost:4000/api/user/profile",
+          "https://project-backend-7hi1.onrender.com/api/user/profile",
           {
             withCredentials: true,
           }
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://project-backend-7hi1.onrender.com/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     await axios.post(
-      "http://localhost:4000/api/auth/logout",
+      "https://project-backend-7hi1.onrender.com/api/auth/logout",
       {},
       { withCredentials: true }
     );
