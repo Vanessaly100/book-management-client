@@ -12,12 +12,13 @@ const Login = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { auth, login } = useAuth(); 
+  const { user, login } = useAuth();
+; 
 
   // Redirect logged-in users away from login page
   useEffect(() => {
-    if (auth?.user) {
-      const role = auth.role?.toLowerCase();
+    if (user) {
+      const role = user.role?.toLowerCase();
       const currentPath = location.pathname;
   
       if (role === "admin" && !currentPath.startsWith("/admin")) {
@@ -26,7 +27,7 @@ const Login = () => {
         navigate("/user/home");
       }
     }
-  }, [auth?.user, auth?.role, location.pathname, navigate]);
+  }, [user, user?.role, navigate]);
   
 
   const onSubmit = async (values, { resetForm }) => {

@@ -60,13 +60,14 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
 
-      if (response.data) {
-        const userData = response.data;
-        setUser(userData);
-        Cookies.set("user", JSON.stringify(userData), { expires: 7 });
+    if (response.data) {
+  const userData = response.data;
+  setUser(userData);
+  Cookies.set("user", JSON.stringify(userData), { expires: 7 });
+  Cookies.set("accessToken", userData.accessToken); 
+  return userData;
+}
 
-        return userData;
-      }
     } catch (error) {
       console.error("Login error:", error);
       throw new Error("Invalid email or password");
@@ -82,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     );
     setUser(null);
     Cookies.remove("user");
+    Cookies.remove("accessToken");
     socket.disconnect();
   };
 
