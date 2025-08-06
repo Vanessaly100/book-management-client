@@ -19,9 +19,9 @@ export const AuthProvider = ({ children }) => {
         role: user.role,
       });
     }
-  }, [user]); // Only runs when user is set
+  }, [user]); 
 
-  // Run once on mount to fetch user from cookies/server
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     );
     setUser(null);
     Cookies.remove("user");
-    socket.disconnect(); // Optionally disconnect on logout
+    socket.disconnect();
   };
 
   return (

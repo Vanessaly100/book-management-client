@@ -47,7 +47,7 @@ const Login = () => {
           navigate("/user/home");
         } else {
           setError("Unknown role");
-        }
+        } 
       }
     } catch (error) {
       console.error(error);
