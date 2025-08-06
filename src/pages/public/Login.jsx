@@ -12,22 +12,24 @@ const Login = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { auth, login } = useAuth(); 
+  const { user, login } = useAuth(); 
 
   // Redirect logged-in users away from login page
-  useEffect(() => {
-    if (auth?.user) {
-      const role = auth.role?.toLowerCase();
-      const currentPath = location.pathname;
-  
-      if (role === "admin" && !currentPath.startsWith("/admin")) {
-        navigate("/admin/");
-      } else if (role === "user" && !currentPath.startsWith("/user")) {
-        navigate("/user/home");
-      }
+ useEffect(() => {
+  if (user) {
+    const role = user.role?.toLowerCase();
+    const currentPath = location.pathname;
+
+    if (role === "admin" && !currentPath.startsWith("/admin")) {
+      navigate("/admin/");
+    } else if (role === "user" && !currentPath.startsWith("/user")) {
+      navigate("/user/home");
+    } else {
+      console.error("Unknown role:", role);
     }
-  }, [auth?.user, auth?.role, location.pathname, navigate]);
-  
+  }
+}, [user, location.pathname, navigate]);
+
 
   const onSubmit = async (values, { resetForm }) => {
     setError("");
