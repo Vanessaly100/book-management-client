@@ -26,30 +26,30 @@ const Login = () => {
     }
   }, [auth?.user, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (values) => {
+  setLoading(true);
 
-    const response = await login(formik.values.email, formik.values.password);
-    setLoading(false);
+  const response = await login(values.email, values.password);
+  setLoading(false);
 
-    if (!response || response.message !== "Login successful") {
-      toast.error(response?.message || "Login failed");
-      return;
-    }
+  if (!response || response.message !== "Login successful") {
+    toast.error(response?.message || "Login failed");
+    return;
+  }
 
-    toast.success("Login successful");
+  toast.success("Login successful");
 
-    const role = response.user?.role?.toLowerCase();
+  const role = response.user?.role?.toLowerCase();
 
-    if (role === "admin") {
-      navigate("/admin/");
-    } else if (role === "user") {
-      navigate("/user/home");
-    } else {
-      console.error("Unknown role:", role);
-    }
-  };
+  if (role === "admin") {
+    navigate("/admin/");
+  } else if (role === "user") {
+    navigate("/user/home");
+  } else {
+    console.error("Unknown role:", role);
+  }
+};
+
 
   const formik = useFormik({
     initialValues: {
