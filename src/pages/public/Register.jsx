@@ -2,7 +2,7 @@ import  { useState } from 'react';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
+import api from "../../utils/axios";
 import socket from "../../utils/socket";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const Register = () => {
       setError("");
       setSuccess("");
       try {
-        const response = await axios.post("https://project-backend-7hi1.onrender.com/api/auth/user/register", values, {
+        const response = await api.post("/auth/user/register", values, {
           withCredentials: true,
         });
         setSuccess("Registration successful! Redirecting...");

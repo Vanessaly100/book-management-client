@@ -44,7 +44,7 @@ export const Header = ({ collapsed, setCollapsed }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const userData = await getUser();  // just call your function
+        const userData = await getUser(); 
         setProfile(userData);
       } catch (error) {
         console.error('Failed to fetch user profile:', error);

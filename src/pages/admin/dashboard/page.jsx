@@ -9,7 +9,7 @@ import {
   Package,
   Trash,
   TrendingUp,
-  Users,
+  Users, 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import api from "../../admin/api";
@@ -43,10 +43,10 @@ const DashboardPage = () => {
         lowStockBooksRes,
         recentActivityRes,
       ] = await Promise.all([
-        api.get("/overview"),
-        api.get("/popular-books"),
-        api.get("/low-stock-books"),
-        api.get("/recent-activity"),
+        api.get("/dashboard/overview"),
+        api.get("/dashboard/popular-books"),
+        api.get("/dashboard/low-stock-books"),
+        api.get("/dashboard/recent-activity"),
       ]);
 
       setOverview(overviewRes.data.data);
@@ -69,7 +69,7 @@ const DashboardPage = () => {
 
 useEffect(() => {
   const fetchStats = async () => {
-      const response = await fetch('http://localhost:4000/api/dashboard/overview', { 
+      const response = await api.get('/dashboard/overview', { 
         credentials: 'include',
       });
       

@@ -54,7 +54,7 @@ const Form = () => {
       <section className="flex items-center bg-BackgroundColor p-5 xl:rounded-l-lg">
         <form
           onSubmit={formik.handleSubmit}
-          className="bg-BackgroundColor text-white py-5 px-15 shadow-l rounded- xl:rounded-l-l w-full"
+          className="bg-BackgroundColor text-white py-5 lg:px-15 shadow-l rounded- xl:rounded-l-l w-full"
         >
           <p className="text-PrimaryColor text-3xl pb-2 font-bold">
             Let's Connect..............

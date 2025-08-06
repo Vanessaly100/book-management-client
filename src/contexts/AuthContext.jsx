@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import axios from "axios";
+// import axios from "axios";
+import api from "../utils/axios"
 import socket from "../utils/socket";
 
 const AuthContext = createContext(null);
@@ -29,8 +30,8 @@ export const AuthProvider = ({ children }) => {
           setUser(JSON.parse(cookieUser));
         }
 
-        const response = await axios.get(
-          "https://project-backend-7hi1.onrender.com/api/user/profile",
+        const response = await api.get(
+          "/user/profile",
           {
             withCredentials: true,
           }
@@ -53,8 +54,8 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (email, password) => {
     try {
-      const response = await axios.post(
-        "https://project-backend-7hi1.onrender.com/api/auth/login",
+      const response = await api.post(
+        "/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -74,8 +75,8 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = async () => {
-    await axios.post(
-      "https://project-backend-7hi1.onrender.com/api/auth/logout",
+    await api.post(
+      "/auth/logout",
       {},
       { withCredentials: true }
     );
