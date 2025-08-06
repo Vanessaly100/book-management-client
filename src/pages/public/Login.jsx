@@ -5,57 +5,49 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 const Login = () => {
   const navigate = useNavigate(); 
   const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user, login } = useAuth(); 
+  const [error, setError] = useState("");
 
-  // Redirect logged-in users away from login page
- useEffect(() => {
-  if (user) {
-    const role = user.role?.toLowerCase();
-    const currentPath = location.pathname;
+  const { auth, login } = useAuth(); 
 
-    if (role === "admin" && !currentPath.startsWith("/admin")) {
+  useEffect(() => {
+    if (auth?.user) {
+      const role = auth.user.role?.toLowerCase();
+      if (role === "admin") {
+        navigate("/admin/");
+      } else if (role === "user") {
+        navigate("/user/home");
+      }
+    }
+  }, [auth?.user, navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const response = await login(formik.values.email, formik.values.password);
+    setLoading(false);
+
+    if (!response || response.message !== "Login successful") {
+      toast.error(response?.message || "Login failed");
+      return;
+    }
+
+    toast.success("Login successful");
+
+    const role = response.user?.role?.toLowerCase();
+
+    if (role === "admin") {
       navigate("/admin/");
-    } else if (role === "user" && !currentPath.startsWith("/user")) {
+    } else if (role === "user") {
       navigate("/user/home");
     } else {
       console.error("Unknown role:", role);
-    }
-  }
-}, [user, location.pathname, navigate]);
-
-
-  const onSubmit = async (values, { resetForm }) => {
-    setError("");
-    setLoading(true);
-
-    try {
-      const response = await login(values.email, values.password);
-
-      if (response.message !== "Login successful") {
-        setError(response.message || "Login failed");
-      } else {
-        resetForm();
-        const role = response.role?.toLowerCase();
-        if (role === "admin") {
-          navigate("/admin/");
-        } else if (role === "user") {
-          navigate("/user/home");
-        } else {
-          setError("Unknown role");
-        } 
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Something went wrong during login");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,9 +60,8 @@ const Login = () => {
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string().required("Required").min(6, "Password too short"),
     }),
-    onSubmit,
+    onSubmit: handleSubmit, 
   });
-
 
   return (
     <main className="min-h-screen bg">
