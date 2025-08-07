@@ -3,14 +3,12 @@ import Cookies from "js-cookie";
 // import axios from "axios";
 import api from "../utils/axios"
 import socket from "../utils/socket";
-import { usePathname } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const pathname = usePathname();
 
   //  Socket registration logic AFTER user is set
   useEffect(() => {
@@ -25,13 +23,8 @@ export const AuthProvider = ({ children }) => {
 
 
   useEffect(() => {
-  const fetchUser = async () => {
-    if (pathname === "/login") {
-      setLoading(false);
-      return;
-    }
-
-    const accessToken = Cookies.get("accessToken");
+    const fetchUser = async () => {
+       const accessToken = Cookies.get("accessToken");
     if (!accessToken) {
       console.warn("No access token found. Skipping profile fetch.");
       setLoading(false);
@@ -60,8 +53,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  fetchUser();
-}, [pathname]);
+    fetchUser();
+  }, []);
 
   // Login function
 const login = async (email, password) => {
