@@ -32,29 +32,39 @@ const handleSubmit = async (values) => {
   setLoading(true);
   setError("");
 
-  const response = await login(values.email, values.password);
-  setLoading(false);
+  try {
+    const response = await login(values.email, values.password);
 
-  if (!response || response.message !== "Login successful") {
-    const errorMsg = response?.message || "Login failed";
-    setError(errorMsg); 
-    toast.error(errorMsg); 
-    return;
-  }
+    if (!response || response.message !== "Login successful") {
+      const errorMsg = response?.message || "Login failed";
+      setError(errorMsg);
+      toast.error(errorMsg);
+      setLoading(false); 
+      return;
+    }
 
-  toast.success("Login successful");
+    toast.success("Login successful");
 
-  const role = response.user?.role?.toLowerCase();
+    const role = response.user?.role?.toLowerCase();
 
-  if (role === "admin") {
-    navigate("/admin/");
-  } else if (role === "user") {
-    navigate("/user/home");
-  } else {
-    setError("Unknown role: " + role);
-    console.error("Unknown role:", role);
+    if (role === "admin") {
+      navigate("/admin/");
+    } else if (role === "user") {
+      navigate("/user/home");
+    } else {
+      const errorMsg = "Unknown role: " + role;
+      setError(errorMsg);
+      console.error(errorMsg);
+    }
+  } catch (err) {
+    const errorMsg = err.message || "Login failed";
+    setError(errorMsg);
+    toast.error(errorMsg);
+  } finally {
+    setLoading(false);
   }
 };
+
 
 
   const formik = useFormik({
