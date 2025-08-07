@@ -25,9 +25,9 @@ export const AuthProvider = ({ children }) => {
 useEffect(() => {
   const fetchUser = async () => {
     try {
-      const accessToken = Cookies.get("accessToken");
+      const token = Cookies.get("accessToken");
 
-      if (!accessToken) {
+      if (!token) {
         console.warn("⛔ No access token found.");
         setLoading(false);
         return;
@@ -60,16 +60,14 @@ console.log("Token:", Cookies.get("accessToken"));
 
 const login = async (email, password) => {
   try {
-    const response = await api.post("/auth/login", { email, password },{ withCredentials: true });
+    const response = await api.post("/auth/login", { email, password });
 
     if (response.data?.accessToken && response.data?.user) {
       const { accessToken, user } = response.data;
 
-      setUser(user);
-      Cookies.set("user", JSON.stringify(user), { expires: 7 });
       Cookies.set("accessToken", accessToken, { expires: 7 });
-      
-      
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
+      setUser(user);
       console.log("Token from cookie:", Cookies.get("accessToken"));
 
 
