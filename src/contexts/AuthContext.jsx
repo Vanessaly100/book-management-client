@@ -57,7 +57,8 @@ const login = async (email, password) => {
     console.log("🔍 Attempting login for:", email);
     console.log("🔍 API Base URL:", api.defaults.baseURL);
     
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/auth/login", { email: email.trim(), 
+      password: password.trim()});
     
     console.log("📥 Full login response:", response.data);
     
