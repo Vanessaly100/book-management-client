@@ -54,26 +54,22 @@ export const AuthProvider = ({ children }) => {
   // Login function
 const login = async (email, password) => {
   try {
-    const response = await api.post(
-      "/auth/login",
-      { email, password },
-      { withCredentials: true }
-    );
+    const response = await api.post("/auth/login", { email, password });
     
     if (response.data) {
       const userData = response.data;
-      setUser(userData);
-      Cookies.set("user", JSON.stringify(userData), { expires: 7 });
-      Cookies.set("accessToken", userData.accessToken); 
-    
+      setUser(userData.user);
+      Cookies.set("user", JSON.stringify(userData.user), { expires: 7 });
+      Cookies.set("accessToken", userData.accessToken, { expires: 7 });
+      
       return {
         message: "Login successful",
-        user: userData,
-        ...userData
+        user: userData.user,
       };
     }
   } catch (error) {
     console.error("Login error:", error);
+    
     return {
       message: error.response?.data?.message || "Invalid email or password",
       error: true
