@@ -36,7 +36,7 @@ useEffect(() => {
       if (cookieUser) {
         setUser(JSON.parse(cookieUser));
       }
-
+console.log("Token:", Cookies.get("accessToken"));
       const response = await api.get("/user/profile");
 
       if (response.data) {
@@ -64,6 +64,8 @@ const login = async (email, password) => {
       Cookies.set("accessToken", accessToken, { expires: 7 });
       Cookies.set("user", JSON.stringify(user), { expires: 7 });
       setUser(user);
+      console.log("Token from cookie:", Cookies.get("accessToken"));
+
 
       return { message: "Login successful", user };
     } else {
