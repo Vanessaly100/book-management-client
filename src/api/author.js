@@ -1,18 +1,8 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
-
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
-
-export default API;
-
+import api from "../utils/axios";
 
 export const getAllAuthorsNoFilter = async () => {
   try {
-    const response = await API.get("/authors/no-filter-all");
+    const response = await api.get("/authors/no-filter-all");
     return response.data;
   } catch (error) {
     console.error("Error fetching all authors:", error);
@@ -27,7 +17,7 @@ export const getAllAuthors = async ({
   order = "asc", 
   filter = "",
 } = {}) => {
-  const response = await API.get(`/authors/?page=${page}&limit=${limit}`, {
+  const response = await api.get(`/authors/?page=${page}&limit=${limit}`, {
     params: {
       page,
       limit,
@@ -43,7 +33,7 @@ export const getAllAuthors = async ({
 
 export const getAuthorByName = async (name) => {
   try {
-    const response = await axios.get(`${API_URL}/authors/name/${name}`, {
+    const response = await api.get(`/authors/name/${name}`, {
       withCredentials: true,
     });
     return response.data;
@@ -56,7 +46,7 @@ export const getAuthorByName = async (name) => {
 // Admin Services (manage authors)
 export const createAuthor = async (authorData) => {
   try {
-    const response = await axios.post(`${API_URL}/authors`, authorData, {
+    const response = await api.post(`/authors`, authorData, {
       withCredentials: true,
     });
     return response.data;
@@ -68,8 +58,8 @@ export const createAuthor = async (authorData) => {
 
 export const updateAuthor = async (authorId, authorData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/authors/${authorId}`,
+    const response = await api.put(
+      `/authors/${authorId}`,
       authorData,
       { withCredentials: true }
     );
@@ -82,7 +72,7 @@ export const updateAuthor = async (authorId, authorData) => {
 
 export const deleteAuthor = async (authorId) => {
   try {
-    await axios.delete(`${API_URL}/authors/${authorId}`, {
+    await api.delete(`/authors/${authorId}`, {
       withCredentials: true,
     });
     return { message: "Author deleted successfully" };

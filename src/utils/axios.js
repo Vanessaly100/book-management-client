@@ -8,9 +8,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = Cookies.get("accessToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const accessToken = Cookies.get("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
@@ -28,22 +28,26 @@ api.interceptors.response.use(
       !originalRequest.url.includes("/auth/refresh-token")
     ) {
       originalRequest._retry = true;
+
       try {
         const res = await api.post("/auth/refresh-token");
-        const newToken = res.data.accessToken;
+        const newAccessToken = res.data.accessToken;
 
-        if (newToken) {
-          Cookies.set("accessToken", newToken, { expires: 7 });
-          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        if (newAccessToken) {
+          Cookies.set("accessToken", newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         }
       } catch (err) {
+        console.error("Token refresh failed:", err);
         Cookies.remove("accessToken");
         Cookies.remove("user");
-        window.location.href = "/login";
+
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
       }
     }
-
     return Promise.reject(error);
   }
 );

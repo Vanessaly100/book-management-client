@@ -1,12 +1,4 @@
-import axios from "axios";
-
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
-
-export default API;
-
+import api from "../utils/axios";
 
 //  Get all books
 export const getAllBooks = async ({
@@ -18,7 +10,7 @@ export const getAllBooks = async ({
   category = ""
 } = {}) => {
   try {
-    const res = await API.get("/books/all", {
+    const res = await api.get("/books/all", {
       params: {
         page,
         limit,
@@ -38,7 +30,7 @@ export const getAllBooks = async ({
 
 export  const createBook = async (formData) => {
   try {
-    const response =  await API.post("/books", formData, {
+    const response =  await api.post("/books", formData, {
       withCredentials: true,
     });
     return response.data;
@@ -49,7 +41,7 @@ export  const createBook = async (formData) => {
 }
 //  Add a new book
 export const addBook = async (formData) => {
-  return await API.post("/books", formData, {
+  return await api.post("/books", formData, {
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
   });
@@ -58,7 +50,7 @@ export const addBook = async (formData) => {
 // Update a book
 export const updateBook = async (bookId, formData) => {
   try {
-    const response = await API.put(`/books/${bookId}`, formData, {
+    const response = await api.put(`/books/${bookId}`, formData, {
       withCredentials: true,
     });
     return response.data.book;
@@ -71,7 +63,7 @@ export const updateBook = async (bookId, formData) => {
 //  Delete a book
 export const deleteBook = async (id) => {
   console.log("Deleting book with ID:", id);
-  return await API.delete(`/books/${id}`, {
+  return await api.delete(`/books/${id}`, {
     withCredentials: true,
   });
 };

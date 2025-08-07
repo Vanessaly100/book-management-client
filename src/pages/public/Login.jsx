@@ -32,14 +32,14 @@ const Login = () => {
     }
 
     toast.success("Login successful");
-
-    const role = response.user?.role?.toLowerCase();
+const user = response.user;
+    const role = user?.role?.toLowerCase();
     
     console.log("🔍 User role from response:", role);
 
     if (role === "admin") {
       console.log("🔄 Navigating to admin dashboard");
-      navigate("/admin/");
+      navigate("/admin");
     } else if (role === "user") {
       console.log("🔄 Navigating to user home");
       navigate("/user/home");
@@ -70,7 +70,7 @@ const Login = () => {
     onSubmit: handleSubmit, 
   });
 
-  // Optional: Show message if user is already logged in
+  
   if (auth?.user) {
     return (
       <main className="min-h-screen bg">
