@@ -32,8 +32,8 @@ const Login = () => {
     }
 
     toast.success("Login successful");
-const user = response.user;
-    const role = user?.role?.toLowerCase();
+
+    const role = response.user?.role?.toLowerCase();
     
     console.log("🔍 User role from response:", role);
 
@@ -70,7 +70,7 @@ const user = response.user;
     onSubmit: handleSubmit, 
   });
 
-  
+  // Optional: Show message if user is already logged in
   if (auth?.user) {
     return (
       <main className="min-h-screen bg">
