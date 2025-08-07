@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   }, [user]); 
 
 
-  useEffect(() => {
+useEffect(() => {
   const fetchUser = async () => {
     const accessToken = Cookies.get("accessToken");
     if (!accessToken) {
@@ -37,32 +37,19 @@ export const AuthProvider = ({ children }) => {
         setUser(JSON.parse(cookieUser));
       }
 
-      console.log("Making request to:", api.defaults.baseURL + "/user/profile");
-      console.log("Access token:", accessToken ? "Present" : "Missing");
-
       const response = await api.get("/user/profile", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // ✅ Explicitly add token here
+        },
       });
 
       if (response.data) {
         setUser(response.data);
-        console.log("✅ User data fetched successfully:", response.data);
         Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
       }
     } catch (error) {
-      console.error("🔴 Full error object:", error);
-      if (error.response) {
-        console.error("🔴 Response status:", error.response.status);
-        console.error("🔴 Response data:", error.response.data);
-        console.error("🔴 Response headers:", error.response.headers);
-      } else if (error.request) {
-        console.error("🔴 No response received:", error.request);
-      } else {
-        console.error("🔴 Error setting up request:", error.message);
-      }
+      console.error("🔴 Failed to fetch user profile:", error);
     } finally {
       setLoading(false);
     }
@@ -70,6 +57,7 @@ export const AuthProvider = ({ children }) => {
 
   fetchUser();
 }, []);
+
   // Login function
 const login = async (email, password) => {
   try {
