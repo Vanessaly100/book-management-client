@@ -3,12 +3,14 @@ import Cookies from "js-cookie";
 // import axios from "axios";
 import api from "../utils/axios"
 import socket from "../utils/socket";
+import { usePathname } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   //  Socket registration logic AFTER user is set
   useEffect(() => {
@@ -23,33 +25,43 @@ export const AuthProvider = ({ children }) => {
 
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const cookieUser = Cookies.get("user");
-        if (cookieUser) {
-          setUser(JSON.parse(cookieUser));
-        }
+  const fetchUser = async () => {
+    if (pathname === "/login") {
+      setLoading(false);
+      return;
+    }
 
-        const response = await api.get(
-          "/user/profile",
-          {
-            withCredentials: true,
-          }
-        );
+    const accessToken = Cookies.get("accessToken");
+    if (!accessToken) {
+      console.warn("No access token found. Skipping profile fetch.");
+      setLoading(false);
+      return;
+    }
 
-        if (response.data) {
-          setUser(response.data);
-          Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
-        }
-      } catch (error) {
-        console.error("Failed to verify user from server:", error);
-      } finally {
-        setLoading(false);
+    try {
+      const cookieUser = Cookies.get("user");
+      if (cookieUser) {
+        setUser(JSON.parse(cookieUser));
       }
-    };
 
-    fetchUser();
-  }, []);
+      const response = await api.get("/user/profile", {
+        withCredentials: true,
+      });
+
+      if (response.data) {
+        setUser(response.data);
+        console.log("user data",response.data)
+        Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
+      }
+    } catch (error) {
+      console.error("🔴 Token verification failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchUser();
+}, [pathname]);
 
   // Login function
 const login = async (email, password) => {
