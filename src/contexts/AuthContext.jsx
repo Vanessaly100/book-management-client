@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 // import axios from "axios";
 import api from "../utils/axios"
 import socket from "../utils/socket";
+import axios from "axios";
 
 const AuthContext = createContext(null);
 
@@ -37,7 +38,9 @@ useEffect(() => {
         setUser(JSON.parse(cookieUser));
       }
 console.log("Token:", Cookies.get("accessToken"));
-      const response = await api.get("/user/profile");
+      const response = await axios.get("https://project-backend-7hi1.onrender.com/api/user/profile", {
+        withCredentials: true,
+      });
 
       if (response.data) {
         setUser(response.data);
