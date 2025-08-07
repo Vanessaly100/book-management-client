@@ -1,17 +1,16 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-console.log("API baseURL:", import.meta.env.VITE_PUBLIC_API_URL);
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
+  withCredentials: true, 
 });
-
 
 api.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get("accessToken");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const token = Cookies.get("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -29,26 +28,22 @@ api.interceptors.response.use(
       !originalRequest.url.includes("/auth/refresh-token")
     ) {
       originalRequest._retry = true;
-
       try {
         const res = await api.post("/auth/refresh-token");
-        const newAccessToken = res.data.accessToken;
+        const newToken = res.data.accessToken;
 
-        if (newAccessToken) {
-          Cookies.set("accessToken", newAccessToken);
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        if (newToken) {
+          Cookies.set("accessToken", newToken, { expires: 7 });
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return api(originalRequest);
         }
       } catch (err) {
-        console.error("Token refresh failed:", err);
         Cookies.remove("accessToken");
         Cookies.remove("user");
-
-        if (window.location.pathname !== "/login") {
-          window.location.href = "/login";
-        }
+        window.location.href = "/login";
       }
     }
+
     return Promise.reject(error);
   }
 );

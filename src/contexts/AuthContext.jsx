@@ -21,28 +21,23 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]); 
 
-
 useEffect(() => {
   const fetchUser = async () => {
-    const accessToken = Cookies.get("accessToken");
-    if (!accessToken) {
-      console.warn("No access token found. Skipping profile fetch.");
-      setLoading(false);
-      return;
-    }
-
     try {
+      const token = Cookies.get("accessToken");
+
+      if (!token) {
+        console.warn("⛔ No access token found.");
+        setLoading(false);
+        return;
+      }
+
       const cookieUser = Cookies.get("user");
       if (cookieUser) {
         setUser(JSON.parse(cookieUser));
       }
 
-      const response = await api.get("/user/profile", {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // ✅ Explicitly add token here
-        },
-      });
+      const response = await api.get("/user/profile");
 
       if (response.data) {
         setUser(response.data);
@@ -55,56 +50,28 @@ useEffect(() => {
     }
   };
 
-  fetchUser();
+  // Delay slightly to allow cookie write
+  setTimeout(fetchUser, 200); // 200ms delay
 }, []);
 
-  // Login function
 const login = async (email, password) => {
   try {
-    console.log("🔍 Attempting login for:", email);
-    console.log("🔍 API Base URL:", api.defaults.baseURL);
-    
-    const response = await api.post("/auth/login", { email: email.trim(), 
-      password: password.trim()});
-    
-    console.log("📥 Full login response:", response.data);
-    
-    if (response.data && response.data.message === "Login successful") {
-      const userData = response.data;
-      
-      // Store user data (use the full user object from backend)
-      setUser(userData.user);
-      Cookies.set("user", JSON.stringify(userData.user), { expires: 7 });
-      Cookies.set("accessToken", userData.accessToken, { expires: 7 });
-      
-      console.log("✅ Login successful, stored user:", userData.user);
-      
-      return {
-        message: "Login successful",
-        user: userData.user,
-      };
+    const response = await api.post("/auth/login", { email, password });
+
+    if (response.data?.accessToken && response.data?.user) {
+      const { accessToken, user } = response.data;
+
+      Cookies.set("accessToken", accessToken, { expires: 7 });
+      Cookies.set("user", JSON.stringify(user), { expires: 7 });
+      setUser(user);
+
+      return { message: "Login successful", user };
     } else {
-      console.error("❌ Unexpected response structure:", response.data);
-      return {
-        message: "Unexpected response from server",
-        error: true
-      };
+      return { message: "Login failed", error: true };
     }
-    
   } catch (error) {
-    console.error("❌ Login error details:", {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data,
-      config: {
-        url: error.config?.url,
-        baseURL: error.config?.baseURL,
-        method: error.config?.method
-      }
-    });
-    
     return {
-      message: error.response?.data?.message || error.message || "Login failed",
+      message: error.response?.data?.message || "Login failed",
       error: true
     };
   }
