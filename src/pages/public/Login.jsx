@@ -17,41 +17,46 @@ const Login = () => {
   const { auth, login } = useAuth(); 
 
   const handleSubmit = async (values) => {
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const response = await login(values.email, values.password);
+  try {
+    const response = await login(values.email, values.password);
 
-      if (!response || response.message !== "Login successful") {
-        const errorMsg = response?.message || "Login failed";
-        setError(errorMsg);
-        toast.error(errorMsg);
-        setLoading(false); 
-        return;
-      }
-
-      toast.success("Login successful");
-
-      const role = response.user?.role?.toLowerCase();
-
-      if (role === "admin") {
-        navigate("/admin/");
-      } else if (role === "user") {
-        navigate("/user/home");
-      } else {
-        const errorMsg = "Unknown role: " + role;
-        setError(errorMsg);
-        console.error(errorMsg);
-      }
-    } catch (err) {
-      const errorMsg = err.message || "Login failed";
+    if (!response || response.error || response.message !== "Login successful") {
+      const errorMsg = response?.message || "Login failed";
       setError(errorMsg);
       toast.error(errorMsg);
-    } finally {
-      setLoading(false);
+      setLoading(false); 
+      return;
     }
-  };
+
+    toast.success("Login successful");
+
+    const role = response.user?.role?.toLowerCase();
+    
+    console.log("🔍 User role from response:", role);
+
+    if (role === "admin") {
+      console.log("🔄 Navigating to admin dashboard");
+      navigate("/admin/");
+    } else if (role === "user") {
+      console.log("🔄 Navigating to user home");
+      navigate("/user/home");
+    } else {
+      const errorMsg = "Unknown role: " + role;
+      setError(errorMsg);
+      console.error(errorMsg);
+    }
+  } catch (err) {
+    const errorMsg = err.message || "Login failed";
+    setError(errorMsg);
+    toast.error(errorMsg);
+    console.error("🚨 Catch block error:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const formik = useFormik({
     initialValues: {

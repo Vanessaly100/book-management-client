@@ -4,7 +4,12 @@ import Cookies from "js-cookie";
 const api = axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_API_URL,
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 10000,
 });
+
 
 api.interceptors.request.use(
   (config) => {
@@ -12,49 +17,69 @@ api.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    
+    console.log("Making request to:", config.baseURL + config.url);
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error("Request error:", error);
+    return Promise.reject(error);
+  }
 );
 
+
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log("Response success:", response.config.url, response.status);
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+    
+    console.error("Response error:", {
+      url: originalRequest.url,
+      status: error.response?.status,
+      message: error.response?.data?.message,
+      fullError: error.response?.data
+    });
 
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/refresh-token") 
+      !originalRequest.url.includes("/refresh-token") &&
+      !originalRequest.url.includes("/login")
     ) {
       originalRequest._retry = true;
+      console.log("Attempting token refresh...");
 
       try {
         const res = await api.post("/auth/refresh-token");
         const newAccessToken = res.data.accessToken;
 
         if (newAccessToken) {
+          console.log("Token refreshed successfully");
           Cookies.set("accessToken", newAccessToken);
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         }
       } catch (err) {
-        console.error("Token refresh failed:", err);
+        console.error("❌ Token refresh failed:", err);
+        
+        // Clear all auth data
         Cookies.remove("accessToken");
         Cookies.remove("refreshToken");
         Cookies.remove("user");
 
-        // Redirect to login if not already there
-        if (
-          window.location.pathname !== "/login" &&
-          window.location.pathname !== "/"
-        ) {
+        // Only redirect if not already on login page
+        if (!window.location.pathname.includes("/login")) {
+          console.log("Redirecting to login...");
           window.location.href = "/login";
         }
       }
     }
     return Promise.reject(error);
   }
+
 );
 
 export default api;

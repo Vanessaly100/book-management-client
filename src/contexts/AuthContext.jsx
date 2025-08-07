@@ -54,24 +54,49 @@ export const AuthProvider = ({ children }) => {
   // Login function
 const login = async (email, password) => {
   try {
+    console.log("🔍 Attempting login for:", email);
+    console.log("🔍 API Base URL:", api.defaults.baseURL);
+    
     const response = await api.post("/auth/login", { email, password });
     
-    if (response.data) {
+    console.log("📥 Full login response:", response.data);
+    
+    if (response.data && response.data.message === "Login successful") {
       const userData = response.data;
+      
+      // Store user data (use the full user object from backend)
       setUser(userData.user);
       Cookies.set("user", JSON.stringify(userData.user), { expires: 7 });
       Cookies.set("accessToken", userData.accessToken, { expires: 7 });
+      
+      console.log("✅ Login successful, stored user:", userData.user);
       
       return {
         message: "Login successful",
         user: userData.user,
       };
+    } else {
+      console.error("❌ Unexpected response structure:", response.data);
+      return {
+        message: "Unexpected response from server",
+        error: true
+      };
     }
+    
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("❌ Login error details:", {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      config: {
+        url: error.config?.url,
+        baseURL: error.config?.baseURL,
+        method: error.config?.method
+      }
+    });
     
     return {
-      message: error.response?.data?.message || "Invalid email or password",
+      message: error.response?.data?.message || error.message || "Login failed",
       error: true
     };
   }
