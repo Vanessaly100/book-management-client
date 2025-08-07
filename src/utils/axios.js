@@ -14,10 +14,16 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get("accessToken");
-    if (accessToken) {
+
+    // Don't attach Authorization header to login or refresh-token routes
+    const skipAuth =
+      config.url.includes("/auth/login") ||
+      config.url.includes("/auth/refresh-token");
+
+    if (accessToken && !skipAuth) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
-    
+
     console.log("Making request to:", config.baseURL + config.url);
     return config;
   },
@@ -26,6 +32,7 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 
 
 api.interceptors.response.use(
