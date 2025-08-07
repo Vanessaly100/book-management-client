@@ -52,27 +52,35 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Login function
-  const login = async (email, password) => {
-    try {
-      const response = await api.post(
-        "/auth/login",
-        { email, password },
-        { withCredentials: true }
-      );
-
+const login = async (email, password) => {
+  try {
+    const response = await api.post(
+      "/auth/login",
+      { email, password },
+      { withCredentials: true }
+    );
+    
     if (response.data) {
-  const userData = response.data;
-  setUser(userData);
-  Cookies.set("user", JSON.stringify(userData), { expires: 7 });
-  Cookies.set("accessToken", userData.accessToken); 
-  return userData;
-}
-
-    } catch (error) {
-      console.error("Login error:", error);
-      throw new Error("Invalid email or password");
+      const userData = response.data;
+      setUser(userData);
+      Cookies.set("user", JSON.stringify(userData), { expires: 7 });
+      Cookies.set("accessToken", userData.accessToken); 
+    
+      return {
+        message: "Login successful",
+        user: userData,
+        ...userData
+      };
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+    return {
+      message: error.response?.data?.message || "Invalid email or password",
+      error: true
+    };
+  }
+};
+
 
   // Logout function
   const logout = async () => {
