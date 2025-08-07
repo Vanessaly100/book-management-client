@@ -35,58 +35,38 @@ api.interceptors.request.use(
 
 
 
-// api.interceptors.response.use(
-//   (response) => {
-//     console.log("Response success:", response.config.url, response.status);
-//     return response;
-//   },
-//   async (error) => {
-//     const originalRequest = error.config;
-    
-//     console.error("Response error:", {
-//       url: originalRequest.url,
-//       status: error.response?.status,
-//       message: error.response?.data?.message,
-//       fullError: error.response?.data
-//     });
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-//     if (
-//       error.response?.status === 401 &&
-//       !originalRequest._retry &&
-//       !originalRequest.url.includes("/refresh-token") &&
-//       !originalRequest.url.includes("/login")
-//     ) {
-//       originalRequest._retry = true;
-//       console.log("Attempting token refresh...");
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh-token")
+    ) {
+      originalRequest._retry = true;
 
-//       try {
-//         const res = await api.post("/auth/refresh-token");
-//         const newAccessToken = res.data.accessToken;
+      try {
+        const res = await api.post("/auth/refresh-token");
+        const newAccessToken = res.data.accessToken;
 
-//         if (newAccessToken) {
-//           console.log("Token refreshed successfully");
-//           Cookies.set("accessToken", newAccessToken);
-//           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-//           return api(originalRequest);
-//         }
-//       } catch (err) {
-//         console.error("❌ Token refresh failed:", err);
-        
-//         // Clear all auth data
-//         Cookies.remove("accessToken");
-//         Cookies.remove("refreshToken");
-//         Cookies.remove("user");
+        if (newAccessToken) {
+          Cookies.set("accessToken", newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return api(originalRequest);
+        }
+      } catch (err) {
+        console.error("Token refresh failed:", err);
+        Cookies.remove("accessToken");
+        Cookies.remove("user");
 
-//         // Only redirect if not already on login page
-//         if (!window.location.pathname.includes("/login")) {
-//           console.log("Redirecting to login...");
-//           window.location.href = "/login";
-//         }
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-
-// );
-
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 export default api;
