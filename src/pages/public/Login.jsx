@@ -17,23 +17,28 @@ const Login = () => {
 
   useEffect(() => {
     if (auth?.user) {
-      const role = auth.user.role?.toLowerCase();
+      const role = auth.user?.role?.toLowerCase();
       if (role === "admin") {
         navigate("/admin/");
       } else if (role === "user") {
         navigate("/user/home");
-      }
+      }else {
+      console.error("Unknown role:", role);
+    }
     }
   }, [auth?.user, navigate]);
 
- const handleSubmit = async (values) => {
+const handleSubmit = async (values) => {
   setLoading(true);
+  setError("");
 
   const response = await login(values.email, values.password);
   setLoading(false);
 
   if (!response || response.message !== "Login successful") {
-    toast.error(response?.message || "Login failed");
+    const errorMsg = response?.message || "Login failed";
+    setError(errorMsg); 
+    toast.error(errorMsg); 
     return;
   }
 
@@ -46,6 +51,7 @@ const Login = () => {
   } else if (role === "user") {
     navigate("/user/home");
   } else {
+    setError("Unknown role: " + role);
     console.error("Unknown role:", role);
   }
 };

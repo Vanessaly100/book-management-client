@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ErrorPage from "./pages/public/ErrorPage";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
           route = "/"
           page = "Page Not Found"
       />} />
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
         </Routes>
       </AuthProvider>
       <ToastContainer />
