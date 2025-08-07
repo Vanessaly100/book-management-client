@@ -1,16 +1,10 @@
-import axios from "axios";
+import api from "@/utils/axios";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
-
-export default API;
 
 // Create a new reservation
 export const createReservation = async (data) => {
   try {
-    const response = await API.post("/reservations", data);
+    const response = await api.post("/reservations", data);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -20,7 +14,7 @@ export const createReservation = async (data) => {
 // Get logged-in user's reservations
 export const getMyReservations = async () => {
   try {
-    const response = await API.get("/reservations/my");
+    const response = await api.get("/reservations/my");
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -36,7 +30,7 @@ export const getAllReservations = async ({
   filter = "",
 } = {}) => {
   try {
-    const response = await API.get(
+    const response = await api.get(
       `/reservations/all?page=${page}&limit=${limit}`,
       {
         params: { page, limit, sort, order, filter },
@@ -52,7 +46,7 @@ export const getAllReservations = async ({
 // User: Cancel own reservation
 export const cancelReservationByUser = async (reservationId) => {
   try {
-    const response = await API.put(
+    const response = await api.put(
       `/reservations/${reservationId}/user/cancel`
     );
     return response.data;
@@ -64,7 +58,7 @@ export const cancelReservationByUser = async (reservationId) => {
 // Admin: Fulfill a reservation
 export const fulfillReservation = async (reservationId) => {
   try {
-    const response = await API.put(`/reservations/${reservationId}/fulfill`);
+    const response = await api.put(`/reservations/${reservationId}/fulfill`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -74,7 +68,7 @@ export const fulfillReservation = async (reservationId) => {
 // Admin: Cancel reservation with reason
 export const cancelReservationByAdmin = async (id) => {
   try {
-    const response = await API.put(`/reservations/${id}/admin/cancel`, {
+    const response = await api.put(`/reservations/${id}/admin/cancel`, {
       reason: "The book is out of stock",
     });
     return response.data;
@@ -86,7 +80,7 @@ export const cancelReservationByAdmin = async (id) => {
 // Admin: Delete a reservation
 export const deleteReservation = async (id) => {
   try {
-    const response = await API.delete(`/reservations/${id}`);
+    const response = await api.delete(`/reservations/${id}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

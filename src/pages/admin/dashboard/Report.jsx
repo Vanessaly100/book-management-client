@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../../utils/axios";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectItem, SelectValue, SelectContent } from "@/components/ui/select";
@@ -9,9 +9,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 const Report = () => {
   const [activities, setActivities] = useState([]);
-  const [type, setType] = useState(""); // e.g. borrow, return, register
-  const [startDate, setStartDate] = useState(undefined); // Date or undefined
-  const [endDate, setEndDate] = useState(undefined);     // Date or undefined
+  const [type, setType] = useState(""); 
+  const [startDate, setStartDate] = useState(undefined); 
+  const [endDate, setEndDate] = useState(undefined);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
@@ -22,7 +22,7 @@ const Report = () => {
 
   const fetchActivities = async () => {
     try {
-      const res = await axios.get("https://project-backend-7hi1.onrender.com/api/dashboard/all-recent-activity", {
+      const res = await api.get("/dashboard/all-recent-activity", {
         withCredentials: true,
         params: {
           type: type || undefined,

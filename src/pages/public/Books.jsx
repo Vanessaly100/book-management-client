@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 // import { useAuth } from '../../contexts/AuthContext';
 import BookCard from "./BookCard";
 import BooksImage1 from "../../assets/books-Two.jpg";
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import api from "@/utils/axios";
 
 const Books = () => {
   // const { user } = useAuth();
@@ -34,8 +34,8 @@ const Books = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(
-          "https://project-backend-7hi1.onrender.com/api/categories/no-filter-all",
+        const res = await api.get(
+          "/categories/no-filter-all",
           {
             withCredentials: true,
           }
@@ -65,9 +65,9 @@ const Books = () => {
         setBooks(Array.isArray(booksRes.data) ? booksRes.data : []);
         setTotalPages(booksRes.pagination?.totalPages || 1);
 
-        const borrowedRes = await axios.get(
-          "https://project-backend-7hi1.onrender.com/api/user/borrowed-books",
-          {
+        const borrowedRes = await api.get(
+          "/user/borrowed-books",
+          { 
             withCredentials: true,
           }
         );
@@ -82,8 +82,8 @@ const Books = () => {
   }, [searchTerm, currentPage, selectedCategory]);
 
   const refreshBorrowedBooks = () => {
-    axios
-      .get("https://project-backend-7hi1.onrender.com/api/user/borrowed-books", {
+    api
+      .get("/user/borrowed-books", {
         withCredentials: true,
       })
       .then((res) => setBorrowedBooks(res.data))

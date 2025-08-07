@@ -12,7 +12,7 @@ import {
   Users, 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import api from "../../admin/api";
+import api from "../../../utils/axios";
 import {  deleteBook } from "../../../api/book";
 import ConfirmDeleteModal from "@/components/ConfirmDeleteModal";
 
@@ -69,16 +69,28 @@ const DashboardPage = () => {
 
 useEffect(() => {
   const fetchStats = async () => {
-      const response = await api.get('/dashboard/overview', { 
-        credentials: 'include',
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      try {
+  const response = await api.get('/dashboard/overview', { 
+    withCredentials: true,
+  });
 
-      const data = await response.json();
-      console.log("API response:", data);
+  const data = response.data;
+
+  setStats({
+    data: {
+      ...data.data,
+      recentActivity: data.data?.recentActivity || [],
+      mostBorrowedBooks: data.data?.mostBorrowedBooks || [],
+      lowStockBooks: data.data?.lowStockBooks || [],
+    }
+  });
+
+  setIsLoading(false);
+} catch (error) {
+  console.error("Failed to fetch stats:", error);
+  setError("Failed to load stats");
+}
+
       
       setStats({
         data: {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 // import { useEffect, useState } from 'react';
-import axios from "axios";
+
 import {
   Navigation,
   Pagination,
@@ -18,6 +18,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination"; 
+import api from "@/utils/axios";
 // import 'swiper/css/scrollbar';
 
 const Dashboard = () => {
@@ -69,8 +70,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchRecommendedBooks = async () => {
       try {
-        const res = await axios.get(
-          "https://project-backend-7hi1.onrender.com/api/recommendations/user",
+        const res = await api.get(
+          "/recommendations/user",
           {
             withCredentials: true,
           }

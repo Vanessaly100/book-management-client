@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import BooksImage1 from "../../assets/books-Two.jpg";
 import {
     Navigation,
@@ -14,6 +13,7 @@ import {
   import "swiper/css";
   import "swiper/css/navigation";
   import "swiper/css/pagination";
+import api from "@/utils/axios";
   // import 'swiper/css/scrollbar';
   
 
@@ -35,8 +35,8 @@ const BookDetailsModal = ({ book, onClose }) => {
 useEffect(() => {
     const fetchRecommendedBooks = async () => {
       try {
-        const res = await axios.get(
-          "https://project-backend-7hi1.onrender.com/api/recommendations/user",
+        const res = await api.get(
+          "/recommendations/user",
           {
             withCredentials: true,
           }

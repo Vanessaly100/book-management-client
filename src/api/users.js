@@ -1,11 +1,5 @@
-import axios from "axios";
+import api from "../utils/axios";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
-
-export default API;
 
 
 // Get all users with optional params for pagination, sorting, etc.
@@ -16,7 +10,7 @@ export const getAllUsers = async ({
   order,
   filter,
 }) => {
-  const response = await API.get("/user/all", {
+  const response = await api.get("/user/all", {
     params: {
       page,
       limit,
@@ -28,16 +22,16 @@ export const getAllUsers = async ({
 
   return response.data;
 };
-
+ 
 export const getUser = async () => {
-  const response = await API.get(`/user/profile`);
+  const response = await api.get(`/user/profile`, { withCredentials: true });
   return response.data;
 };
 
 
 export const updateUserProfile = async (formData) => {
   try {
-    const response = await API.put("/user/update-profile", formData, {
+    const response = await api.put("/user/update-profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -57,7 +51,7 @@ export const updateUserProfile = async (formData) => {
 
 export const updateUserByAdmin = async (userId, formData) => {
   try {
-    const response = await API.put(`/user/update-user/${userId}`, formData);
+    const response = await api.put(`/user/update-user/${userId}`, formData);
 
     return response.data;
   } catch (error) {
@@ -71,7 +65,7 @@ export const updateUserByAdmin = async (userId, formData) => {
 
 export const handleViewUser = async (userId) => {
   try {
-    const response = await API.get(`/user/${userId}/details`);
+    const response = await api.get(`/user/${userId}/details`);
     return response.data;
   } catch (error) {
     console.error(
@@ -85,7 +79,7 @@ export const handleViewUser = async (userId) => {
 
 export const deleteUser = async (userId) => {
   try {
-    const response = await API.delete(`/user/delete/${userId}`);
+    const response = await api.delete(`/user/delete/${userId}`);
 
     return response.data;
   } catch (error) {

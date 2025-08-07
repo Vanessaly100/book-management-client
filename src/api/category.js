@@ -1,15 +1,8 @@
-import axios from "axios";
-
-// Create a reusable Axios instance
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
-
+import api from "@/utils/axios";
 
 export const getAllCategoryNoFilter = async () => {
   try {
-    const response = await API.get("/categories/no-filter-all");
+    const response = await api.get("/categories/no-filter-all");
     return response.data;
   } catch (error) {
     console.error("Error fetching all authors:", error);
@@ -25,7 +18,7 @@ export const getAllCategories = async ({
   order = "asc",
   filter = "",
 } ={}) => {
-  const response = await API.get(`/categories?page=${page}&limit=${limit}`, {
+  const response = await api.get(`/categories?page=${page}&limit=${limit}`, {
     params: { page, limit, sort, order, filter },
   });
   return response.data;
@@ -34,7 +27,7 @@ export const getAllCategories = async ({
 // Get category by ID
 export const getCategoryById = async (category_id) => {
   try {
-    const response = await API.get(`/categories/${category_id}`);
+    const response = await api.get(`/categories/${category_id}`);
     return response.data;
   } catch (error) {
     console.error(
@@ -48,7 +41,7 @@ export const getCategoryById = async (category_id) => {
 // Create a new category (Admin only)
 export const createCategory = async (categoryData) => {
   try {
-    const response = await API.post("/categories", categoryData);
+    const response = await api.post("/categories", categoryData);
     return response.data;
   } catch (error) {
     console.error(
@@ -62,7 +55,7 @@ export const createCategory = async (categoryData) => {
 // Update a category (Admin only)
 export const updateCategory = async (categoryId, updatedData) => {
   try {
-    const response = await API.put(`/categories/${categoryId}`, updatedData);
+    const response = await api.put(`/categories/${categoryId}`, updatedData);
     return response.data;
   } catch (error) {
     console.error(
@@ -77,7 +70,7 @@ export const updateCategory = async (categoryId, updatedData) => {
 export const deleteCategory = async (categoryId) => {
   try {
   console.log("Deleting book with ID:", categoryId);
-    await API.delete(`/categories/${categoryId}`);
+    await api.delete(`/categories/${categoryId}`);
     return { success: true };
   } catch (error) {
     console.error(

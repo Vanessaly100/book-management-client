@@ -22,23 +22,23 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]); 
 
+
 useEffect(() => {
   const fetchUser = async () => {
+    const accessToken = Cookies.get("accessToken");
+    if (!accessToken) {
+      console.warn("No access token found. Skipping profile fetch.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const token = Cookies.get("accessToken");
-
-      if (!token) {
-        console.warn("⛔ No access token found.");
-        setLoading(false);
-        return;
-      }
-
       const cookieUser = Cookies.get("user");
       if (cookieUser) {
         setUser(JSON.parse(cookieUser));
       }
-console.log("Token:", Cookies.get("accessToken"));
-      const response = await axios.get("https://project-backend-7hi1.onrender.com/api/user/profile", {
+
+      const response = await api.get("/user/profile", {
         withCredentials: true,
       });
 
@@ -48,19 +48,21 @@ console.log("Token:", Cookies.get("accessToken"));
         Cookies.set("user", JSON.stringify(response.data), { expires: 7 });
       }
     } catch (error) {
-      console.error("🔴 Failed to fetch user profile:", error);
+      console.error("🔴 Token verification failed:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Delay slightly to allow cookie write
-  setTimeout(fetchUser, 200); // 200ms delay
+  fetchUser();
 }, []);
 
+
 const login = async (email, password) => {
+   const trimmedEmail = email.trim();
+  const trimmedPassword = password.trim();
   try {
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/auth/login", { email: trimmedEmail, password: trimmedPassword });
 
     if (response.data?.accessToken && response.data?.user) {
       const { accessToken, user } = response.data;

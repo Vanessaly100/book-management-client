@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import BorrowSection from "./BorrowSection";
-import api from "../api"; 
+import api from "../../../utils/axios"; 
 
 
 

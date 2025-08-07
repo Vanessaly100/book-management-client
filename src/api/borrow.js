@@ -1,10 +1,4 @@
-import axios from "axios";
-
-// Create a reusable Axios instance
-const API = axios.create({
-  baseURL: import.meta.env.VITE_PUBLIC_API_URL,
-  withCredentials: true,
-});
+import api from "@/utils/axios";
 
 // Get all categories with pagination, sorting, filtering
 export const getAllBorrows = async ({
@@ -15,7 +9,7 @@ export const getAllBorrows = async ({
   status = "",
   filter = "",
 } = {}) => {
-  const response = await API.get(`/borrowing/all`, {
+  const response = await api.get(`/borrowing/all`, {
     params: { page, limit, sort, order, filter,status },
   });
   return response.data;
@@ -24,7 +18,7 @@ export const getAllBorrows = async ({
 // get all borrows by user 
 export const getUserBorrowedBooks = async () => {
   try {
-    const response = await API.get(`/user/borrowed-books`);
+    const response = await api.get(`/user/borrowed-books`);
     console.log("response", response)
     return response.data; 
   } catch (error) {
@@ -36,7 +30,7 @@ export const getUserBorrowedBooks = async () => {
 // return borrowed book 
 export const returnBook = async (userId, bookId) => {
   try {
-    const response = await API.put(`/borrowing/return`, {
+    const response = await api.put(`/borrowing/return`, {
       user_id: userId,
       bookIds: [bookId],
     });
@@ -51,7 +45,7 @@ export const returnBook = async (userId, bookId) => {
 
 export const borrowBook = async ({ user_id, bookId }) => {
   try {
-    const response = await API.post("/borrowing", {
+    const response = await api.post("/borrowing", {
       user_id,
       bookIds: [bookId], // send single book ID inside an array
     });
@@ -87,7 +81,7 @@ export const borrowBook = async ({ user_id, bookId }) => {
 export const deleteBorrow = async (borrowId) => {
   try {
     console.log("Deleting book with ID:", borrowId);
-    await API.delete(`/borrowing/${borrowId}`);
+    await api.delete(`/borrowing/${borrowId}`);
     return { success: true };
   } catch (error) {
     console.error(
@@ -104,7 +98,7 @@ export const deleteBorrow = async (borrowId) => {
 // Helper for GET requests
 export const getData = async (endpoint, filters) => {
   try {
-    const res = await API.get(endpoint, { params: filters });
+    const res = await api.get(endpoint, { params: filters });
     console.log("API response", res.data);
     return {
       rows: res.data.rows || [],
@@ -120,7 +114,7 @@ export const getData = async (endpoint, filters) => {
 // 1. Borrow books
 export const borrowBooks = async (borrowData) => {
   try {
-    const res = await API.post("/borrow", borrowData);
+    const res = await api.post("/borrow", borrowData);
     return res.data;
   } catch (error) {
     console.error("Error borrowing books:", error);
@@ -131,7 +125,7 @@ export const borrowBooks = async (borrowData) => {
 // 3. Return borrowed books
 export const returnBooks = async (returnData) => {
   try {
-    const res = await API.put("/borrowing/return", returnData);
+    const res = await api.put("/borrowing/return", returnData);
     return res.data;
   } catch (error) {
     console.error("Error returning books:", error);
@@ -142,7 +136,7 @@ export const returnBooks = async (returnData) => {
 // 4. Get active borrows for a user
 export const getActiveBorrows = async () => {
   try {
-    const res = await API.get("/borrowing/borrows/active");
+    const res = await api.get("/borrowing/borrows/active");
     return res.data;
   } catch (error) {
     console.error("Error fetching active borrows:", error);
@@ -155,7 +149,7 @@ export const getActiveBorrows = async () => {
 // 5. Get overdue borrows for a user
 export const getOverdueBorrows = async () => {
   try {
-    const res = await API.get("/borrowing/borrows/overdue");
+    const res = await api.get("/borrowing/borrows/overdue");
     return res.data;
   } catch (error) {
     console.error("Error fetching overdue borrows:", error);
@@ -168,7 +162,7 @@ export const getOverdueBorrows = async () => {
 // 6. Get return history
 export const getReturnHistory = async () => {
   try {
-    const res = await API.get("/borrowing/returns");
+    const res = await api.get("/borrowing/returns");
     return res.data;
   } catch (error) {
     console.error("Error fetching return history:", error);
@@ -181,7 +175,7 @@ export const getReturnHistory = async () => {
 // 7. Get borrow by ID
 export const getBorrowById = async (borrowId) => {
   try {
-    const res = await API.get(`/borrowing/${borrowId}`);
+    const res = await api.get(`/borrowing/${borrowId}`);
     return res.data;
   } catch (error) {
     console.error("Error fetching borrow by ID:", error);
@@ -192,7 +186,7 @@ export const getBorrowById = async (borrowId) => {
 // 8. Update borrow (admin only)
 export const updateBorrow = async (id, updatedData) => {
   try {
-    const res = await API.put(`/borrowing/${id}`, updatedData);
+    const res = await api.put(`/borrowing/${id}`, updatedData);
     return res.data;
   } catch (error) {
     console.error("Error updating borrow:", error);
@@ -206,7 +200,7 @@ export const updateBorrow = async (id, updatedData) => {
 // 10. Check book availability
 export const checkBookAvailability = async (bookId) => {
   try {
-    const res = await API.get(`/borrowing/books/${bookId}/availability`);
+    const res = await api.get(`/borrowing/books/${bookId}/availability`);
     return res.data;
   } catch (error) {
     console.error("Error checking book availability:", error);
