@@ -90,7 +90,7 @@ export const Header = ({ collapsed, setCollapsed }) => {
   {profile ? (
           <>
             <img
-              src={profile.profile_picture_url || png}
+              src={profile.profile_picture_url || "../assets/gray-user-profile-icon-png-fP8Q1P.png"}
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover bg-gray-300"
             />
