@@ -59,7 +59,7 @@ const Register = () => {
     <main className="h-[120vh] bg">
       <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full px-8'>
         <div className="md:w-1/3 sm:w-11/12 w-full h-ful bg-[#00000086] shadow-lg rounded-2xl p-6 my-7">
-          <h2 className="text-2xl font-bold text-center mb-4 text-ActionPurple ">Sign Up</h2>
+          <h2 className="text-2xl font-bold text-center mb-4 text-red-700 ">Sign Up</h2>
 
           {/* Display Error Message */}
           {error && <p className="text-red-500 text-center">{error}</p>}
