@@ -103,8 +103,8 @@ const Login = () => {
 
   return (
     <main className="min-h-screen bg">
-      <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full lg:px-28 md:px-0 px-20'>
-        <div className="md:w-1/3 sm:w-11/12 w-full bg-[#00000086] shadow-lg rounded-2xl p-6">
+      <div className='bg-blur flex flex-row-reverse items-center justify-center h-full w-full'>
+        <div className="lg:w-[50%] w-[90%] bg-[#00000086] shadow-lg rounded-2xl p-6">
           <h2 className="text-2xl font-bold text-center mb-4 text-ActionPurple">Login</h2>
 
           {error && <p className="text-red-500 text-center">{error}</p>}
